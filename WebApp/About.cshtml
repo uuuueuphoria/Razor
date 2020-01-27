@@ -1,5 +1,6 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
+    Page.Title = string.Format("Razor - {0}", "About");
 }
 
 
@@ -8,5 +9,5 @@
 </blockquote>
 
 @section banner {
-    <h1>Razor About</h1>
+    <h1>@Page.Title</h1>
 }

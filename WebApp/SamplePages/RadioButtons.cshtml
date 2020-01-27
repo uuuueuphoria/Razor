@@ -1,12 +1,12 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
-    Page.Title = string.Format("Razor - {0}", "RadioButtons");
+    Page.Title = string.Format("Razor - {0}", "Form with Radio Buttons");
     var languagegroup = Request.Form["LanguageGroup"];
     var scriptgroup = Request.Form["ScriptGroup"];
 }
 
 @section banner {
-    <h1>RadioButtons on Form</h1>
+    <h1>@Page.Title</h1>
 }
 
 @if (IsPost)
