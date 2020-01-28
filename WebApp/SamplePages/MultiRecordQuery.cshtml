@@ -1,6 +1,6 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
-    Page.Title = string.Format("Razor - {0}", "DDL Selection Query");
+    Page.Title = string.Format("Razor - {0}", "Drop Down List Selection Query");
 
     var db = Database.Open("NWDB");
     var sqlquery = @"SELECT CategoryID, CategoryName
@@ -11,7 +11,7 @@
 
 
 @section banner {
-    <h1>DropdownList Selection Query</h1>
+    <h1>@Page.Title</h1>
 }
 
 @if (IsPost)
