@@ -35,7 +35,7 @@
             var choicesarray = choices.Split(',');
             for(int i = 0; i < choicesarray.Length; i++)
             {
-
+                <p>Choice @i: @choicesarray[i]</p>
             }
             //for a checkbox list, your choices will be a set of strings
             //   separated by a delimiter (in this case is a comma)
@@ -68,7 +68,7 @@ else
                    @*@(Array.IndexOf(choices.Split(','), "PS4") >= 0 ? "checked" : "")*@ />PS4<br />
             <input type="checkbox" id="GameGroup" name="GameGroup" value="Computer"
                    @*@(Array.IndexOf(choices.Split(','), "Computer") >= 0 ? "checked" : "")*@ />Computer<br />
-            <input type="checkbox" id="GameGroup" name="GameGroup" value="XBOX One"
+            <input type="checkbox" id="GameGroup" name="GameGroup" value="XBOX One" checked
                    @*@(Array.IndexOf(choices.Split(','), "XBOX One") >= 0 ? "checked" : "")*@ />XBOX One<br />
             <input type="checkbox" id="GameGroup" name="GameGroup" value="Switch"
                    @(Array.IndexOf(choices.Split(','), "Switch") >= 0 ? "checked" : "") />Switch<br />

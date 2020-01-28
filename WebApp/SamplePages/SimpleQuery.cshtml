@@ -1,6 +1,6 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
-    Page.Title = string.Format("Razor - {0}", "Simple PKey Query");
+    Page.Title = string.Format("Razor - {0}", "Primary Key Query");
 
     //output variable
     string regionid = "";
@@ -18,27 +18,24 @@
         regionarg = "0";
     }
 
-    //this page will access the the database
+    //this page will access the database
     //the project needs access to 2 more NuGet packages
     //Microsoft.Aspnet.WebPages.Data
     //Microsoft.Aspnet.Webpages.WebData
 
     //connect to the database
     //use the name attribute off your web connection string
+
     var db = Database.Open("NWDB");
 
     //create the sql command to be executed on the database
     //input parameters will be represented by the use of placeholders
-    //placeholder are indexes (0, 1, 2,...)
-    //your command can used multiple placeholders
-    //var sqlcommand = "SELECT RegionID, RegionDescription "
-    //                + "FROM Region "
-    //                + "WHERE RegionID = @0";
+    //placeholders are indexes (0, 1, 2,...)
+    //your command can use multiple placeholders
 
-    var sqlcommand = @"SELECT RegionID, RegionDescription 
-                        FROM Region 
-                        WHERE RegionID = @0";
-
+    var sqlcommand = @"SELECT RegionID, RegionDescription
+        FROM Region
+        WHERE RegionID = @0";
 
     //execute command
     //there is 3 ways to execute a query DEPENDING on your expected results
@@ -46,21 +43,21 @@
     //b) 0, 1 or more records   .Query(command [, list of argments])
     //c) a single value   .QueryValue(command [, list of argments])
     //the list of argments are your positional incoming argment values
-
-
     //primary key lookup
     //result should  be one record
+
     var results = db.QuerySingle(sqlcommand, regionarg);
 }
 
 @section banner {
-    <h1>Database PKey Query</h1>
+    <h1>@Page.Title</h1>
 }
 
-@if(IsPost)
+@if (IsPost)
 {
     if (thebutton.Equals("reset"))
     {
+        <p style="color:darkgreen">The Reset Button was just Pressed</p>
         regionarg = "";
         regionid = "";
         regiondescription = "";
@@ -74,15 +71,17 @@
         // b) check the .Count of the results
 
         //a primary key lookup returns either the record or nothing
+
         if (results == null)
         {
-            <p>There was no record returned from DB</p>
+            <p style="color:firebrick">There was no record returned from the Data Base</p>
+            regionarg = "";
             regionid = "";
             regiondescription = "";
         }
         else
         {
-            <p>Found</p>
+            <p style="color:darkgreen">There was a record returned from the Data Base</p>
 
             //accessing the data out of your results
             //there is 2 ways to access data on a result row
@@ -99,12 +98,13 @@
 }
 else
 {
+    <p style="color:darkgreen">We have not accessed the Data Base</p>
     regionarg = "";
 }
 
 <form id="theform" method="post">
     <dic class="row">
-        <div class="col-6">
+        <div class="col-3">
             <div class="offset-1">
                 <label id="lblRegionArg" for="RegionArg">Enter a Region ID:</label>&nbsp;&nbsp;
                 <input type="number" step="1" min="1" id="RegionArg" name="RegionArg"
@@ -120,7 +120,7 @@ else
                 </button>
             </div>
         </div>
-        <div class="col-6">
+        <div class="col-3">
             <div class="offset-1">
                 <label id="lblRegionID">Region ID:</label>&nbsp;&nbsp;
                 <label id="RegionID">@regionid</label>
