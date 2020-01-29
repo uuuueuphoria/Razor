@@ -6,7 +6,7 @@
     //to retreive the passed data use .QueryString["label"]
     //data is returned as a string
     var cid = Request.QueryString["cid"];
-
+    <p>Your choice was: @cid</p>
     //good practice
     //check that you actually retreived data
     if (string.IsNullOrEmpty(cid))
@@ -17,17 +17,17 @@
     //use data to lookup products
     var db = Database.Open("NWDB");
     var prodquery = @"SELECT ProductID, ProductName, UnitPrice, UnitsInStock, Discontinued
-                        FROM Products 
-                        WHERE CategoryID = @0
-                        ORDER BY ProductName";
+                FROM Products
+                WHERE CategoryID = @0
+                ORDER BY ProductName";
     var prodinfo = db.Query(prodquery, cid);
 
     //use data to get category name for display heading
     //yes: you could have passed the category name with the category id
     //demonstration of using .QueryValue()
     var catquery = @"SELECT CategoryName
-                    FROM Categories
-                    WHERE CategoryID = @0";
+            FROM Categories
+            WHERE CategoryID = @0";
     var catname = db.QueryValue(catquery, cid);
 
     //setup display to use the class WebGrid
@@ -35,7 +35,7 @@
     //to alter the number of rows display by the WebGrid instance,
     //   you need to specify the value when you first create the instance
     //   syntax attribute --> rowsPerPage:value
-    var gridinstance = new WebGrid(prodinfo, rowsPerPage:5);
+    var gridinstance = new WebGrid(prodinfo, rowsPerPage: 5);
 }
 
 
@@ -46,7 +46,7 @@
     <h3>Products for Category: @catname</h3>
     <div class="col-11">
         @gridinstance.GetHtml(
-            tableStyle:"table table-striped table-bordered table-hover",
+            tableStyle: "table table-striped table-bordered table-hover",
             mode: WebGridPagerModes.All,
             firstText: "Start",
             lastText: "End",
@@ -57,15 +57,15 @@
                     format: (item) => item.UnitPrice.ToString("0.00")),
                gridinstance.Column(columnName: "UnitsInStock", header: "QoH", canSort: false),
                gridinstance.Column(columnName: "Discontinued", header: "Disc", canSort: false,
-                    format:@<input type="checkbox" id="Discontinued"
-                                   name="Discontinued" disabled="disabled"
-                                   value="@item.Discontinued"
-                                   @(item.Discontinued == true ? "Checked" : "")/>),
-               gridinstance.Column(header:"", canSort:false,
-                    format:@<text>
-                            <a href="~/SamplePages/WebGridDestination.cshtml?pid=@item.ProductID"
-                               onclick="return confirm('Are you sure you wish to view @item.ProductName ?')">View</a>
-                            </text>)
-                ))
+                    format: @<input type="checkbox" id="Discontinued"
+                                    name="Discontinued" disabled="disabled"
+                                    value="@item.Discontinued"
+                                    @(item.Discontinued == true ? "Checked" : "") />),
+gridinstance.Column(header: "", canSort: false,
+format:@<text>
+                                <a href="~/SamplePages/WebGridDestination.cshtml?pid=@item.ProductID"
+                                   onclick="return confirm('Are you sure you wish to view @item.ProductName ?')">View</a>
+</text>)
+))
     </div>
 </div>
