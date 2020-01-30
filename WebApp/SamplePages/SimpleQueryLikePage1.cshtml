@@ -1,6 +1,6 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
-    Page.Title = string.Format("Razor - {0}", "Partial Name Query with SQL LIKE");
+    Page.Title = string.Format("Razor - {0}", "Partial Name Query with SQL LIKE Page 1");
 
     //output variable
     string artistid = "";
@@ -47,6 +47,7 @@
 
 @if (IsPost)
 {
+    <p>IsPost = true</p>
     if (thebutton.Equals("reset"))
     {
         <p style="color:darkblue">The Reset Button was just Pressed</p>
@@ -65,18 +66,29 @@
         }
         else
         {
+            //yes products:
+            //pass ddl value (CategoryID) to next page
+            // to go to another page use Response.Redirect(pagename) (GET method)
+            // to pass data along with the page
+            // add a ? after the name
+            // add for each parameter a coded pair of    label = value
+            // separate data pairs with an  &
+            // sample syntax    Response.Redirect(page.ext?lbl=value[&lbl=value ...])
+            //WARNING: value are passed in plain text on Url
+            Response.Redirect("SimpleQueryLikePage2.cshtml?cid=" + artistarg);
             <p style="color:darkgreen">There was @results.Count() record/s returned from the Data Base</p>
         }
     }
 }
 else
 {
+    <p>IsPost = false</p>
     <p style="color:darkblue">The Data Base has NOT been queried</p>
     artistarg = "";
 }
 
 <form id="theform" method="post">
-    <dic class="row">
+    <div class="row">
         <div class="col-3">
             <div class="offset-1">
                 <label id="lblartistArg" for="artistArg">Enter a partial artist name:</label>&nbsp;&nbsp;
@@ -92,24 +104,6 @@ else
                     Reset
                 </button>
             </div>
-        </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Artist Name</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var row in results)
-                {
-                <tr>
-                    <td>@row.ArtistId</td>
-                    <td>@row.Name</td>
-                </tr>
-                }
-            </tbody>
-        </table>
-    </dic>
+        </div>  
+    </div>
 </form>
