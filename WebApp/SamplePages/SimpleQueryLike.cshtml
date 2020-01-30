@@ -1,6 +1,6 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
-    Page.Title = string.Format("Razor - {0}", "Primary Key Query");
+    Page.Title = string.Format("Razor - {0}", "Partial Name Query with SQL LIKE");
 
     //output variable
     string artistid = "";
@@ -65,7 +65,7 @@
         }
         else
         {
-            <p style="color:darkgreen">There was a record returned from the Data Base</p>
+            <p style="color:darkgreen">There was @results.Count() record/s returned from the Data Base</p>
         }
     }
 }
@@ -79,9 +79,9 @@ else
     <dic class="row">
         <div class="col-3">
             <div class="offset-1">
-                <label id="lblartistArg" for="artistArg">Enter a artist ID:</label>&nbsp;&nbsp;
+                <label id="lblartistArg" for="artistArg">Enter a partial artist name:</label>&nbsp;&nbsp;
                 <input type="text" id="artistArg" name="artistArg"
-                       value="@artistarg" placeholder="artist id" />
+                       value="@artistarg" placeholder="partial artist name" />
                 <br /><br />
                 <button type="submit" id="theButton" name="theButton"
                         value="submit" class="btn btn-primary">
