@@ -96,7 +96,7 @@ else
         <table>
             <thead>
                 <tr>
-                    <th>Artist ID</th>
+                    <th>ID</th>
                     <th>Artist Name</th>
                     <th></th>
                 </tr>
@@ -104,10 +104,10 @@ else
             <tbody>
                 @foreach (var row in results)
                 {
-                    <tr>
-                        <td>@row.ArtistId</td>
-                        <td>@row.Name</td>
-                    </tr>
+                <tr>
+                    <td>@row.ArtistId</td>
+                    <td>@row.Name</td>
+                </tr>
                 }
             </tbody>
         </table>
