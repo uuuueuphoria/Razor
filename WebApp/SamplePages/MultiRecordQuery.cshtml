@@ -21,14 +21,10 @@
     //check for a selection
     if (choice.Equals("0"))
     {
-        //  no:
-        //      message to user
-        <p style="color:darkturquoise">Select a product category to view:</p>
+        <p style="color:firebrick">Select a product category to view:</p>
     }
     else
     {
-        //  yes:
-        //query db for products of selected category
         var prodquery = @"SELECT ProductID
                 FROM Products
                 WHERE CategoryID = @0";
@@ -36,7 +32,7 @@
         //      check to see if there are products for category
         if (prodinfo.Count() == 0)
         {
-            <p style="color:darkturquoise">There are no products for the selected category.</p>
+            <p style="color:firebrick">There are no products for the selected category.</p>
         }
         else
         {
@@ -60,7 +56,7 @@ else
     //the .Query() command will give you a collection of 0, 1 or more records
     if (catinfo.Count() == 0)
     {
-        <p style="color:darkturquoise">There are no categories on file.</p>
+        <p style="color:firebrick">There are no categories on file.</p>
     }
 }
 
