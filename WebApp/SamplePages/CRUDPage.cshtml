@@ -1,6 +1,6 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
-    Page.Title = string.Format("Razor - {0}", "CRUD - Insert");
+    Page.Title = string.Format("Razor - {0}", "CRUD-Insert-with-Validation");
 
     //consider your need for global variables
     var productname = "";
@@ -23,7 +23,7 @@ Order by CategoryName";
     var supplierlist = db.Query(supplierquery);
     var categorylist = db.Query(categoryquery);
 
-    //these are validator controls execute on the server side
+    //these are validator controls that execute on the server side
 
     Validation.Add("ProductName",
          Validator.Required("Product name is required"),
@@ -65,7 +65,7 @@ Order by CategoryName";
 }
 
 @section banner{
-    <h1>Database: CRUD Product - Insert</h1>
+    <h1>@Page.Title</h1>
 }
 
 @if (IsPost)
@@ -82,7 +82,7 @@ Order by CategoryName";
     var thebutton = Request.Form["FormButton"];
 
     //when you have multiple buttons, a good practice is to determine
-    //    what action to do for the press button FIRST!
+    //    what action to do for the reset/clear button FIRST!
     if (thebutton.Equals("Clear"))
     {
         //empty the form fields
@@ -100,7 +100,7 @@ Order by CategoryName";
         //Validation of data
         //Validation.IsValid() is used to execute the server side validation
         //the if statement DOES NOT need an else as the Validation control
-        //      message will appear in your Summary() or Message() controls
+        //message will appear in your Summary() or Message() controls
         if (Validation.IsValid())
         {
             //you may have logical validation needed for your data that cannot
@@ -177,7 +177,7 @@ else
     <div class="row">
         <div class="col-md-6 text-right">
 
-            <label for="ProductName">Name:</label><br />
+            <label for="ProductName">Product Name:</label><br />
             <label for="SupplierID">Supplier:</label><br />
             <label for="CategoryID">Catgeory:</label><br />
             <label for="QuantityPerUnit">Qty/Unit:</label><br />
@@ -244,10 +244,10 @@ else
     </div>
     <div class="row">
         <div class="col-md-12 text-center">
-            <input type="submit" id="FormButton" name="FormButton"
-                   class="btn btn-primary" value="Add" />
-            <input type="submit" id="FormButton" name="FormButton" formnovalidate
-                   class="btn" value="Clear" />
+            <button type="submit" id="FormButton" name="FormButton"
+                   class="btn btn-primary" value="Add">Add</button>
+            <button type="submit" id="FormButton" name="FormButton" formnovalidate
+                   class="btn" value="Clear">Clear</button>
         </div>
     </div>
 </form>
