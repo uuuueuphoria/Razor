@@ -49,23 +49,12 @@
             tableStyle: "table table-striped table-bordered table-hover",
             mode: WebGridPagerModes.All,
             firstText: "Start",
-            lastText: "End",
+            lastText: "Ends",
             columns: gridinstance.Columns(
                gridinstance.Column(columnName: "ProductID", header: "ID"),
                gridinstance.Column(columnName: "ProductName", header: "Name"),
                gridinstance.Column(columnName: "UnitPrice", header: "$", canSort: false,
                     format: (item) => item.UnitPrice.ToString("0.00")),
-               gridinstance.Column(columnName: "UnitsInStock", header: "QoH", canSort: false),
-               gridinstance.Column(columnName: "Discontinued", header: "Disc", canSort: false,
-                    format: @<input type="checkbox" id="Discontinued"
-                                    name="Discontinued" disabled="disabled"
-                                    value="@item.Discontinued"
-                                    @(item.Discontinued == true ? "Checked" : "") />),
-gridinstance.Column(header: "", canSort: false,
-format:@<text>
-                                <a href="~/SamplePages/WebGridDestination.cshtml?pid=@item.ProductID"
-                                   onclick="return confirm('Are you sure you wish to view @item.ProductName ?')">View</a>
-</text>)
-))
+               gridinstance.Column(columnName: "UnitsInStock", header: "QiS", canSort: false)))
     </div>
 </div>

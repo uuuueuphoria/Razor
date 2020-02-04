@@ -7,8 +7,19 @@
             FROM Categories
             ORDER BY CategoryName";
     var catinfo = db.Query(sqlquery);
-    var items = catinfo.Select(i => new SelectListItem {
-        Value = i.CategoryId.ToString(), 
+
+    List<SelectListItem> items1 = new List<SelectListItem>();
+    foreach (var i in catinfo)
+    {
+        items1.Add(new SelectListItem
+        {
+            Value = i.CategoryId.ToString(),
+            Text = i.CategoryName
+        });
+    }
+    
+    var items2 = catinfo.Select(i => new SelectListItem {
+        Value = i.CategoryId.ToString(),
         Text = i.CategoryName
     });
 }
@@ -84,7 +95,8 @@ else
             }
         </select>
         &nbsp;&nbsp;
-        @Html.DropDownList("CategoryId", items)
+        @Html.DropDownList("CategoryId", items1)
+        @Html.DropDownList("CategoryId", items2)
 
         <button type="submit" id="theButton" name="theButton" value="submit"
                 class="btn btn-primary">

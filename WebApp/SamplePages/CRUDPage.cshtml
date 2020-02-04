@@ -200,8 +200,11 @@ else
         new SelectListItem {Value = "5", Text = "Black"}
     };
             }
-            
-            @Html.DropDownList("CategoryId", items)
+            @{ 
+                List<SelectListItem> fun = new List<SelectListItem>();
+                fun.Add(new SelectListItem {Value = "6", Text = "Ya Man" });
+            }
+            @Html.DropDownList("CategoryId", fun)
 
             <select id="SupplierList" name="SupplierList">
                 <option value="0">select supplier...</option>
