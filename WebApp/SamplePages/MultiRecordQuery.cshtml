@@ -7,6 +7,10 @@
             FROM Categories
             ORDER BY CategoryName";
     var catinfo = db.Query(sqlquery);
+    var items = catinfo.Select(i => new SelectListItem {
+        Value = i.CategoryId.ToString(), 
+        Text = i.CategoryName
+    });
 }
 
 
@@ -79,6 +83,8 @@ else
             }
         </select>
         &nbsp;&nbsp;
+        @Html.DropDownList("CategoryId", items)
+
         <button type="submit" id="theButton" name="theButton" value="submit"
                 class="btn btn-primary">
             View Category Products ...

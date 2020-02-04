@@ -61,7 +61,7 @@ Order by CategoryName";
     //     "Postal Code format invalid (T7T7T7"));
 }
 @section head{
-    <link href="~/Content/MySpacing.css" rel="stylesheet" />
+    <link href="~/Content/MyCss.css" rel="stylesheet" />
 }
 
 @section banner{
@@ -173,27 +173,36 @@ else
         - display only the 1st error of field*@
 
 @Html.ValidationSummary()
-<form id="theform" method="post">
-    <div class="row">
-        <div class="col-md-6 text-right">
-
-            <label for="ProductName">Product Name:</label><br />
-            <label for="SupplierID">Supplier:</label><br />
-            <label for="CategoryID">Catgeory:</label><br />
-            <label for="QuantityPerUnit">Qty/Unit:</label><br />
-            <label for="UnitPrice">Price:</label><br />
-            <label for="UnitsInStock">QoH:</label><br />
-            <label for="UnitsOnOrder">QoO:</label><br />
-            <label for="ReorderLevel">RoL:</label><br />
-            <br />
-        </div>
-        <div class="col-me-6 text-left">
-
-            <input type="text" value="@productname"
-                   id="ProductName" name="ProductName" required />
-            @* using ValidationMessage("controlname") *@
+<fieldset>
+    <legend>Web Pages 2 Validation</legend>
+    <form id="theform" method="post">
+        <div class="row">
+            <label class="label" for="ProductName">ProductName:</label>
+            <span>@Html.TextBox("ProductName", Request["ProductName"])</span>
             @Html.ValidationMessage("ProductName")
+        </div>
+            
+
+
+        <div>
+            @*<input type="text" value="@productname"
+               id="ProductName" name="ProductName" required />
+
+        @Html.ValidationMessage("ProductName")*@
             <br />
+
+            @{
+                var items = new List<SelectListItem>{
+        new SelectListItem {Value = "1", Text = "Blue"},
+        new SelectListItem {Value = "2", Text = "Red"},
+        new SelectListItem {Value = "3", Text = "Green", Selected = true},
+        new SelectListItem {Value = "4", Text = "Yellow", Selected = true},
+        new SelectListItem {Value = "5", Text = "Black"}
+    };
+            }
+            
+            @Html.DropDownList("CategoryId", items)
+
             <select id="SupplierList" name="SupplierList">
                 <option value="0">select supplier...</option>
                 @foreach (var item in supplierlist)
@@ -235,19 +244,25 @@ else
                    value="@unitprice" min="0.00" max="9999999.0" step="0.01" /><br />
             <input type="text" id="UnitsInStock" name="UnitsInStock"
                    value="@unitsinstock" /><br />
+            @Html.ValidationMessage("UnitsInStock")
             <input type="text" id="UnitsOnOrder" name="UnitsOnOrder"
                    value="@unitsonorder" /><br />
             <input type="text" id="ReorderLevel" name="ReorderLevel"
                    value="@reorderlevel" /><br />
             <br />
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12 text-center">
-            <button type="submit" id="FormButton" name="FormButton"
-                   class="btn btn-primary" value="Add">Add</button>
-            <button type="submit" id="FormButton" name="FormButton" formnovalidate
-                   class="btn" value="Clear">Clear</button>
+        
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <button type="submit" id="FormButton" name="FormButton"
+                        class="btn btn-primary" value="Add">
+                    Add
+                </button>
+                <button type="submit" id="FormButton" name="FormButton" formnovalidate
+                        class="btn" value="Clear">
+                    Clear
+                </button>
+            </div>
         </div>
-    </div>
-</form>
+    </form>
+</fieldset>
