@@ -14,14 +14,20 @@
 
     //obtain two lists: SupplierList and CategoryList
     var db = Database.Open("NWDB");
-    var supplierquery = @"SELECT SupplierID, CompanyName
-FROM Suppliers
-Order by CompanyName";
-    var categoryquery = @"SELECT CategoryID, CategoryName
-FROM Categories
-Order by CategoryName";
+
+    var supplierquery = @"SELECT SupplierID, CompanyName FROM Suppliers Order by CompanyName";
     var supplierlist = db.Query(supplierquery);
+    var supplieritems = supplierlist.Select(i => new SelectListItem {
+        Value = i.SupplierId.ToString(),
+        Text = i.CompanyName
+    });
+
+    var categoryquery = @"SELECT CategoryID, CategoryName FROM Categories Order by CategoryName";
     var categorylist = db.Query(categoryquery);
+    var categoryitems = categorylist.Select(i => new SelectListItem {
+        Value = i.CategoryId.ToString(),
+        Text = i.CategoryName
+    });
 
     //these are validator controls that execute on the server side
 
@@ -181,91 +187,51 @@ else
             <span>@Html.TextBox("ProductName", Request["ProductName"])</span>
             @Html.ValidationMessage("ProductName")
         </div>
-            
-
-
-        <div>
-            @*<input type="text" value="@productname"
-               id="ProductName" name="ProductName" required />
-
-        @Html.ValidationMessage("ProductName")*@
-            <br />
-
-            @{
-                var items = new List<SelectListItem>{
-        new SelectListItem {Value = "1", Text = "Blue"},
-        new SelectListItem {Value = "2", Text = "Red"},
-        new SelectListItem {Value = "3", Text = "Green", Selected = true},
-        new SelectListItem {Value = "4", Text = "Yellow", Selected = true},
-        new SelectListItem {Value = "5", Text = "Black"}
-    };
-            }
-            @{ 
-                List<SelectListItem> fun = new List<SelectListItem>();
-                fun.Add(new SelectListItem {Value = "6", Text = "Ya Man" });
-            }
-            @Html.DropDownList("CategoryId", fun)
-
-            <select id="SupplierList" name="SupplierList">
-                <option value="0">select supplier...</option>
-                @foreach (var item in supplierlist)
-                {
-                    //for the select control, the default display on an event
-                    //   is the 1st option tag
-                    //to retain the option selected between posts, you need to
-                    //   set the selected option using the attribute selected
-                    if (supplierid == item.SupplierID.ToString())
-                    {
-                        <option value="@item.SupplierID" selected>@item.CompanyName</option>
-                    }
-                    else
-                    {
-                        <option value="@item.SupplierID">@item.CompanyName</option>
-                    }
-
-                }
-            </select>
-            <br />
-            <select id="CategoryList" name="CategoryList">
-                <option value="0">select category...</option>
-                @foreach (var item in categorylist)
-                {
-                    if (categoryid == item.CategoryID.ToString())
-                    {
-                        <option value="@item.CategoryID" selected>@item.CategoryName</option>
-                    }
-                    else
-                    {
-                        <option value="@item.CategoryID">@item.CategoryName</option>
-                    }
-                }
-            </select>
-            <br />
-            <input type="text" id="QuantityPerUnit" name="QuantityPerUnit"
-                   value="@quantityperunit" /><br />
-            <input type="number" id="UnitPrice" name="UnitPrice"
-                   value="@unitprice" min="0.00" max="9999999.0" step="0.01" /><br />
-            <input type="text" id="UnitsInStock" name="UnitsInStock"
-                   value="@unitsinstock" /><br />
-            @Html.ValidationMessage("UnitsInStock")
-            <input type="text" id="UnitsOnOrder" name="UnitsOnOrder"
-                   value="@unitsonorder" /><br />
-            <input type="text" id="ReorderLevel" name="ReorderLevel"
-                   value="@reorderlevel" /><br />
-            <br />
-        </div>
-        
         <div class="row">
-            <div class="col-md-12 text-center">
-                <button type="submit" id="FormButton" name="FormButton"
-                        class="btn btn-primary" value="Add">
-                    Add
-                </button>
-                <button type="submit" id="FormButton" name="FormButton" formnovalidate
-                        class="btn" value="Clear">
-                    Clear
-                </button>
-            </div>
+            <label class="label" for="CategoryList">Category:</label>
+            <span>@Html.DropDownList("CategoryList", categoryitems)</span>
+            @Html.ValidationMessage("CategoryList")
+        </div>
+        <div class="row">
+            <label class="label" for="SupplierList">Supplier:</label>
+            <span>@Html.DropDownList("SupplierList", supplieritems)</span>
+            @Html.ValidationMessage("SupplierList")
+        </div>
+        <div class="row">
+            <label class="label" for="QuantityPerUnit">QuantityPerUnit:</label>
+            <span>@Html.TextBox("QuantityPerUnit", Request["QuantityPerUnit"])</span>
+            @Html.ValidationMessage("QuantityPerUnit")
+        </div>
+        <div class="row">
+            <label class="label" for="UnitPrice">UnitPrice:</label>
+            <span>@Html.TextBox("UnitPrice", Request["UnitPrice"])</span>
+            @Html.ValidationMessage("UnitPrice")
+        </div>
+        <div class="row">
+            <label class="label" for="UnitsInStock">UnitsInStock:</label>
+            <span>@Html.TextBox("UnitsInStock", Request["UnitsInStock"])</span>
+            @Html.ValidationMessage("UnitsInStock")
+        </div>
+        <div class="row">
+            <label class="label" for="UnitsOnOrder">UnitsOnOrder:</label>
+            <span>@Html.TextBox("UnitsOnOrder", Request["UnitsOnOrder"])</span>
+            @Html.ValidationMessage("UnitsOnOrder")
+        </div>
+        <div class="row">
+            <label class="label" for="ReorderLevel">ReorderLevel:</label>
+            <span>@Html.TextBox("ReorderLevel", Request["ReorderLevel"])</span>
+            @Html.ValidationMessage("ReorderLevel")
+        </div>
+
+        <div class="row">
+            <button type="submit" id="FormButton" name="FormButton"
+                    class="btn btn-primary" value="Add">
+                Add
+            </button>
+            <button type="submit" id="FormButton" name="FormButton" formnovalidate
+                    class="btn" value="Clear">
+                Clear
+            </button>
         </div>
     </form>
 </fieldset>
