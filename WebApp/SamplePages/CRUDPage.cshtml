@@ -16,18 +16,38 @@
     var db = Database.Open("NWDB");
 
     var supplierquery = @"SELECT SupplierID, CompanyName FROM Suppliers Order by CompanyName";
-    var supplierlist = db.Query(supplierquery);
-    var supplieritems = supplierlist.Select(i => new SelectListItem {
-        Value = i.SupplierId.ToString(),
-        Text = i.CompanyName
+    var supplierrecords = db.Query(supplierquery);
+    List<SelectListItem> supplieritems = new List<SelectListItem>();
+    supplieritems.Add(new SelectListItem
+    {
+        Value = "0",
+        Text = "select..."
     });
+    foreach (var record in supplierrecords)
+    {
+        supplieritems.Add(new SelectListItem
+        {
+            Value = record.SupplierID.ToString(),
+            Text = record.CompanyName
+        });
+    }
 
     var categoryquery = @"SELECT CategoryID, CategoryName FROM Categories Order by CategoryName";
-    var categorylist = db.Query(categoryquery);
-    var categoryitems = categorylist.Select(i => new SelectListItem {
-        Value = i.CategoryId.ToString(),
-        Text = i.CategoryName
+    var categoryrecords = db.Query(categoryquery);
+    List<SelectListItem> categoryitems = new List<SelectListItem>();
+    categoryitems.Add(new SelectListItem
+    {
+        Value = "0",
+        Text = "select..."
     });
+    foreach (var record in categoryrecords)
+    {
+        categoryitems.Add(new SelectListItem
+        {
+            Value = record.CategoryId.ToString(),
+            Text = record.CategoryName
+        });
+    }
 
     //these are validator controls that execute on the server side
 
@@ -45,15 +65,15 @@
 
     Validation.Add("UnitsInStock",
         Validator.Integer("Units in stock must be a number."),
-        Validator.Range(0.00, 32767.0, "Units in stock must be between 0.00 and 32767"));
+        Validator.Range(0.00, 2000.0, "Units in stock must be between 0.00 and 32767"));
 
     Validation.Add("UnitsOnOrder",
         Validator.Integer("Units on order must be a number."),
-        Validator.Range(0.00, 32767.0, "Units on order must be between 0.00 and 32767"));
+        Validator.Range(0.00, 2000.0, "Units on order must be between 0.00 and 32767"));
 
     Validation.Add("ReorderLevel",
         Validator.Integer("Reorder level must be a number."),
-        Validator.Range(0.00, 32767.0, "Reorder level must be between 0.00 and 32767"));
+        Validator.Range(0.00, 2000.0, "Reorder level must be between 0.00 and 32767"));
 
     //compare two fields together (ie password)
     //Validation.Add("ConfirmPassword",
@@ -180,50 +200,50 @@ else
 
 @Html.ValidationSummary()
 <fieldset>
-    <legend>Web Pages 2 Validation</legend>
+    <legend>Web Pages with Validation</legend>
     <form id="theform" method="post">
-        <div class="row">
+        <div class="row offset-1">
             <label class="label" for="ProductName">ProductName:</label>
             <span>@Html.TextBox("ProductName", Request["ProductName"])</span>
             @Html.ValidationMessage("ProductName")
         </div>
-        <div class="row">
+        <div class="row offset-1">
             <label class="label" for="CategoryList">Category:</label>
             <span>@Html.DropDownList("CategoryList", categoryitems)</span>
             @Html.ValidationMessage("CategoryList")
         </div>
-        <div class="row">
+        <div class="row offset-1">
             <label class="label" for="SupplierList">Supplier:</label>
             <span>@Html.DropDownList("SupplierList", supplieritems)</span>
             @Html.ValidationMessage("SupplierList")
         </div>
-        <div class="row">
+        <div class="row offset-1">
             <label class="label" for="QuantityPerUnit">QuantityPerUnit:</label>
             <span>@Html.TextBox("QuantityPerUnit", Request["QuantityPerUnit"])</span>
             @Html.ValidationMessage("QuantityPerUnit")
         </div>
-        <div class="row">
+        <div class="row offset-1">
             <label class="label" for="UnitPrice">UnitPrice:</label>
             <span>@Html.TextBox("UnitPrice", Request["UnitPrice"])</span>
             @Html.ValidationMessage("UnitPrice")
         </div>
-        <div class="row">
+        <div class="row offset-1">
             <label class="label" for="UnitsInStock">UnitsInStock:</label>
             <span>@Html.TextBox("UnitsInStock", Request["UnitsInStock"])</span>
             @Html.ValidationMessage("UnitsInStock")
         </div>
-        <div class="row">
+        <div class="row offset-1">
             <label class="label" for="UnitsOnOrder">UnitsOnOrder:</label>
             <span>@Html.TextBox("UnitsOnOrder", Request["UnitsOnOrder"])</span>
             @Html.ValidationMessage("UnitsOnOrder")
         </div>
-        <div class="row">
+        <div class="row offset-1">
             <label class="label" for="ReorderLevel">ReorderLevel:</label>
             <span>@Html.TextBox("ReorderLevel", Request["ReorderLevel"])</span>
             @Html.ValidationMessage("ReorderLevel")
         </div>
 
-        <div class="row">
+        <div class="row offset-1">
             <button type="submit" id="FormButton" name="FormButton"
                     class="btn btn-primary" value="Add">
                 Add

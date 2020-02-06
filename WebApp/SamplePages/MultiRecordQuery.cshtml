@@ -3,23 +3,23 @@
     Page.Title = string.Format("Razor - {0}", "Drop Down List Selection Query");
 
     var db = Database.Open("NWDB");
-    var sqlquery = @"SELECT CategoryID, CategoryName
+    var categoryquery = @"SELECT CategoryID, CategoryName
             FROM Categories
             ORDER BY CategoryName";
-    var categoryrecords = db.Query(sqlquery);
+    var categoryrecords = db.Query(categoryquery);
 
     List<SelectListItem> categoryitems = new List<SelectListItem>();
     categoryitems.Add(new SelectListItem
     {
         Value = "0",
-        Text = "Select..."
+        Text = "select..."
     });
-    foreach (var i in categoryrecords)
+    foreach (var record in categoryrecords)
     {
         categoryitems.Add(new SelectListItem
         {
-            Value = i.CategoryId.ToString(),
-            Text = i.CategoryName
+            Value = record.CategoryId.ToString(),
+            Text = record.CategoryName
         });
     }
 }
@@ -36,12 +36,12 @@
     }
     else
     {
-        var prodquery = @"SELECT ProductID
+        var productquery = @"SELECT ProductID
                 FROM Products
                 WHERE CategoryID = @0";
-        var prodinfo = db.Query(prodquery, choice);
+        var productinfo = db.Query(productquery, choice);
         
-        if (prodinfo.Count() == 0)
+        if (productinfo.Count() == 0)
         {
             <p style="color:firebrick">There are no products for the selected category.</p>
         }
