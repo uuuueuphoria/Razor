@@ -208,14 +208,14 @@ else
             @Html.ValidationMessage("ProductName")
         </div>
         <div class="row offset-1">
-            <label class="label" for="CategoryList">Category:</label>&nbsp;&nbsp;
-            <span>@Html.DropDownList("CategoryList", categoryitems)</span>
-            @Html.ValidationMessage("CategoryList")
-        </div>
-        <div class="row offset-1">
             <label class="label" for="SupplierList">Supplier:</label>&nbsp;&nbsp;
             <span>@Html.DropDownList("SupplierList", supplieritems)</span>
             @Html.ValidationMessage("SupplierList")
+        </div>
+        <div class="row offset-1">
+            <label class="label" for="CategoryList">Category:</label>&nbsp;&nbsp;
+            <span>@Html.DropDownList("CategoryList", categoryitems)</span>
+            @Html.ValidationMessage("CategoryList")
         </div>
         <div class="row offset-1">
             <label class="label" for="QuantityPerUnit">QuantityPerUnit:</label>&nbsp;&nbsp;
