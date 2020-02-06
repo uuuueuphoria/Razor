@@ -203,43 +203,43 @@ else
     <legend>Web Pages with Validation</legend>
     <form id="theform" method="post">
         <div class="row offset-1">
-            <label class="label" for="ProductName">ProductName:</label>
-            <span>@Html.TextBox("ProductName", Request["ProductName"])</span>
+            <label class="label" for="ProductName">ProductName:</label>&nbsp;&nbsp;
+            <span>@Html.TextBox("ProductName", productname)</span>
             @Html.ValidationMessage("ProductName")
         </div>
         <div class="row offset-1">
-            <label class="label" for="CategoryList">Category:</label>
+            <label class="label" for="CategoryList">Category:</label>&nbsp;&nbsp;
             <span>@Html.DropDownList("CategoryList", categoryitems)</span>
             @Html.ValidationMessage("CategoryList")
         </div>
         <div class="row offset-1">
-            <label class="label" for="SupplierList">Supplier:</label>
+            <label class="label" for="SupplierList">Supplier:</label>&nbsp;&nbsp;
             <span>@Html.DropDownList("SupplierList", supplieritems)</span>
             @Html.ValidationMessage("SupplierList")
         </div>
         <div class="row offset-1">
-            <label class="label" for="QuantityPerUnit">QuantityPerUnit:</label>
-            <span>@Html.TextBox("QuantityPerUnit", Request["QuantityPerUnit"])</span>
+            <label class="label" for="QuantityPerUnit">QuantityPerUnit:</label>&nbsp;&nbsp;
+            <span>@Html.TextBox("QuantityPerUnit", quantityperunit)</span>
             @Html.ValidationMessage("QuantityPerUnit")
         </div>
         <div class="row offset-1">
-            <label class="label" for="UnitPrice">UnitPrice:</label>
-            <span>@Html.TextBox("UnitPrice", Request["UnitPrice"])</span>
+            <label class="label" for="UnitPrice">UnitPrice:</label>&nbsp;&nbsp;
+            <span>@Html.TextBox("UnitPrice", unitprice)</span>
             @Html.ValidationMessage("UnitPrice")
         </div>
         <div class="row offset-1">
-            <label class="label" for="UnitsInStock">UnitsInStock:</label>
-            <span>@Html.TextBox("UnitsInStock", Request["UnitsInStock"])</span>
+            <label class="label" for="UnitsInStock">UnitsInStock:</label>&nbsp;&nbsp;
+            <span>@Html.TextBox("UnitsInStock", unitsinstock)</span>
             @Html.ValidationMessage("UnitsInStock")
         </div>
         <div class="row offset-1">
-            <label class="label" for="UnitsOnOrder">UnitsOnOrder:</label>
-            <span>@Html.TextBox("UnitsOnOrder", Request["UnitsOnOrder"])</span>
+            <label class="label" for="UnitsOnOrder">UnitsOnOrder:</label>&nbsp;&nbsp;
+            <span>@Html.TextBox("UnitsOnOrder", unitsonorder)</span>
             @Html.ValidationMessage("UnitsOnOrder")
         </div>
         <div class="row offset-1">
-            <label class="label" for="ReorderLevel">ReorderLevel:</label>
-            <span>@Html.TextBox("ReorderLevel", Request["ReorderLevel"])</span>
+            <label class="label" for="ReorderLevel">ReorderLevel:</label>&nbsp;&nbsp;
+            <span>@Html.TextBox("ReorderLevel", reorderlevel)</span>
             @Html.ValidationMessage("ReorderLevel")
         </div>
 
