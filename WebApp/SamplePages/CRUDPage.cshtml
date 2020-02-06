@@ -68,15 +68,15 @@
 
     Validation.Add("UnitsInStock",
         Validator.Integer("Units in stock must be a number."),
-        Validator.Range(0.00, 2000.0, "Units in stock must be between 0.00 and 32767"));
+        Validator.Range(0.00, 2000.0, "Units in stock must be between 0 and 2000"));
 
     Validation.Add("UnitsOnOrder",
         Validator.Integer("Units on order must be a number."),
-        Validator.Range(0.00, 2000.0, "Units on order must be between 0.00 and 32767"));
+        Validator.Range(0.00, 2000.0, "Units on order must be between 0 and 2000"));
 
     Validation.Add("ReorderLevel",
         Validator.Integer("Reorder level must be a number."),
-        Validator.Range(0.00, 2000.0, "Reorder level must be between 0.00 and 32767"));
+        Validator.Range(0.00, 2000.0, "Reorder level must be between 0 and 2000"));
 
     //compare two fields together (ie password)
     //Validation.Add("ConfirmPassword",
