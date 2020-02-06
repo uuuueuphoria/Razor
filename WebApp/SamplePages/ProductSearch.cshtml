@@ -13,10 +13,8 @@
                         + "ORDER BY ProductName";
    
 }
-@section banner{
-    <h1>Product Search</h1>
-}
-<div class="form-group">
+@section banner{<h1>@Page.Title</h1>}
+@*<div class="form-group">*@
   
     <form id="theForm" action="" method="post">
         <div class="col-sm-3">
@@ -25,6 +23,7 @@
             <button type="submit" class="btn btn-primary" name="Search" id="theSearch">Search</button>
                     
         </div>
+    </form>
         <div class="col-sm-8">
             @if (IsPost)
             {
@@ -51,7 +50,7 @@
                         grid.Column(columnName: "Name"),
                         grid.Column(columnName: "CategoryID", header: "Cat"),
                         grid.Column(columnName: "UnitPrice", header: "$"),
-                        grid.Column(columnName: "UnitsInStock", header: "UOS"),
+                        grid.Column(columnName: "UnitsInStock", header: "UiS"),
                         grid.Column(header:"", format:@<text><a href="~/SamplePages/ProductEdit.cshtml?pid=@item.ProductID">Edit</a></text>)
                         ));
                     }
@@ -62,13 +61,13 @@
          webgrid's paging method:Get ends in a conflict
         The following script causes the webgrid paging Get to be converted into
          a method: post*@ 
-        <script type="text/javascript">
+        @*<script type="text/javascript">
             var links = $('a[href*=page], a[href*=sort]'), form = $('form');
             links.click(function () {
                 form.attr("action", this.href);
                 $(this).attr("href", "javascript:");
                 form.submit();
             });
-        </script>
-    </form>
-</div> 
+        </script>*@
+    
+@*</div>*@ 

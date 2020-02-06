@@ -5,16 +5,16 @@ select{
 
 .validation-summary-errors {
     border: 2px solid #990099;
-    color: red;
+    color: yellow;
 }
 
 .field-validation-error {
-    color: #990099;
+    color: red;
 }
 
 .input-validation-error {
-    color: #990099;
-    background-color: #ff80ff;
+    color: red;
+    background-color: yellow;
     border-top: 2px solid #990099;
     border-left: 2px solid #990099;
 }

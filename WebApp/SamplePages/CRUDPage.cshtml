@@ -204,7 +204,8 @@ else
     <form id="theform" method="post">
         <div class="row offset-1">
             <label class="label" for="ProductName">ProductName:</label>&nbsp;&nbsp;
-            <span>@Html.TextBox("ProductName", productname)</span>
+            <span><input name="ProductName" type="text" value="@productname" class="@Validation.ClassFor("ProductName")"/></span>
+            @*<span>@Html.TextBox("ProductName", productname)</span>*@
             @Html.ValidationMessage("ProductName")
         </div>
         <div class="row offset-1">
