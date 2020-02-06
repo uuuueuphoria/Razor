@@ -4,7 +4,7 @@ select{
 }
 
 .validation-summary-errors {
-    border: 2px solid #990099;
+    border: 2px solid #ffd800;
     color: yellow;
 }
 
