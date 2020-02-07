@@ -30,11 +30,11 @@ Order by CategoryName";
           Validator.StringLength(16, 1, "Product name is limited to 16 characters"));
 
     Validation.Add("CategoryList",
-         Validator.Required("Category is required"));
+         Validator.Range(1, 9, "Category is required"));
 
     //QuantityPerUnit is nullable which means 0 required characters
     Validation.Add("QuantityPerUnit",
-         Validator.StringLength(40, 0, "Quantity per unit is limited to 40 characters"));
+ Validator.StringLength(40, 0, "Quantity per unit is limited to 40 characters"));
 
     Validation.Add("UnitPrice",
         Validator.Decimal("Unit price is a money field."),
@@ -176,7 +176,7 @@ else
                    id="ProductName" name="ProductName" />
             <br />
             <label for="SupplierID">Supplier:</label>
-            <select id="SupplierList" name="SupplierList">
+            <select id="SupplierList" name="SupplierList" >
                 <option value="0">select supplier...</option>
                 @foreach (var item in supplierlist)
                 {
