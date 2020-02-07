@@ -2,33 +2,20 @@
     Layout = "~/_Layout.cshtml";
     Page.Title = string.Format("Razor - {0}", "Drop Down List Selection Query");
 
+    var choice = Request.Form["CategoryList"];
+
     var db = Database.Open("NWDB");
     var categoryquery = @"SELECT CategoryID, CategoryName
             FROM Categories
             ORDER BY CategoryName";
     var categoryrecords = db.Query(categoryquery);
-
-    List<SelectListItem> categoryitems = new List<SelectListItem>();
-    categoryitems.Add(new SelectListItem
-    {
-        Value = "0",
-        Text = "select..."
-    });
-    foreach (var record in categoryrecords)
-    {
-        categoryitems.Add(new SelectListItem
-        {
-            Value = record.CategoryId.ToString(),
-            Text = record.CategoryName
-        });
-    }
 }
 
 @section banner {<h1>@Page.Title</h1>}
 
 @if (IsPost)
 {
-    var choice = Request.Form["CategoryList"];
+    
     
     if (choice.Equals("0"))
     {
@@ -62,8 +49,25 @@ else
 <form id="theform" method="post">
     <div class="row offset-1">
         <label class="label" for="CategoryList">Category:  </label>&nbsp;&nbsp;
-        <span>@Html.DropDownList("CategoryList", categoryitems)</span>
-    </div>
+        <select id="CategoryList" name="CategoryList">
+            <option value="0">select category...</option>
+            @foreach (var item in categoryrecords)
+            {
+                //for the select control, the default display on an event
+                    //is the 1st option tag
+                    //to retain the option selected between posts, you need to
+                    //set the selected option using the attribute selected
+                if (choice == item.CategoryID.ToString())
+                {
+                    <option value="@item.CategoryID" selected>@item.CategoryName</option>
+                }
+                else
+                {
+                    <option value="@item.CategoryID">@item.CategoryName</option>
+                }
+            }
+        </select>
+    </div><br />
     <div class="row offset-1">
         <button type="submit" id="theButton" name="theButton" value="submit"
                 class="btn btn-primary">

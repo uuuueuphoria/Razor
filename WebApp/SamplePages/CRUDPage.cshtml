@@ -1,6 +1,6 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
-    Page.Title = string.Format("Razor - {0}", "CRUD - Insert");
+    Page.Title = string.Format("Razor - {0}", "CRUD - Insert with Validation");
 
     //consider your need for global variables
     var productname = "";
@@ -28,6 +28,9 @@ Order by CategoryName";
     Validation.Add("ProductName",
          Validator.Required("Product name is required"),
           Validator.StringLength(16, 1, "Product name is limited to 16 characters"));
+
+    Validation.Add("CategoryList",
+         Validator.Required("Category is required"));
 
     //QuantityPerUnit is nullable which means 0 required characters
     Validation.Add("QuantityPerUnit",
@@ -65,12 +68,11 @@ Order by CategoryName";
 }
 
 @section banner{
-    <h1>Database: CRUD Product - Insert</h1>
+    <h1>@Page.Title</h1>
 }
 
 @if (IsPost)
 {
-    // retreive the data from the form
     productname = Request.Form["ProductName"];
     supplierid = Request.Form["SupplierList"];
     categoryid = Request.Form["CategoryList"];
@@ -81,11 +83,8 @@ Order by CategoryName";
     reorderlevel = Request.Form["ReorderLevel"];
     var thebutton = Request.Form["FormButton"];
 
-    //when you have multiple buttons, a good practice is to determine
-    //    what action to do for the press button FIRST!
     if (thebutton.Equals("Clear"))
     {
-        //empty the form fields
         productname = "";
         supplierid = "0";
         categoryid = "0";
@@ -165,12 +164,6 @@ else
 {
 
 }
-@* there are two ways to display your validation errors
-    a) using the ValidationSummary()
-        - bulleted list of all errors in all fields
-    b) using the ValidationMessage()
-        - placed beside the actual control field
-        - display only the 1st error of field*@
 
 @Html.ValidationSummary()
 <form id="theform" method="post">
@@ -187,10 +180,7 @@ else
                 <option value="0">select supplier...</option>
                 @foreach (var item in supplierlist)
                 {
-                    //for the select control, the default display on an event
-                    //   is the 1st option tag
-                    //to retain the option selected between posts, you need to
-                    //   set the selected option using the attribute selected
+                    
                     if (supplierid == item.SupplierID.ToString())
                     {
                         <option value="@item.SupplierID" selected>@item.CompanyName</option>

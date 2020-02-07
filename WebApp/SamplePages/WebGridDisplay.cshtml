@@ -2,19 +2,14 @@
     Layout = "~/_Layout.cshtml";
     Page.Title = string.Format("Razor - {0}", "WebGrid Display");
 
-    //reteive the passed data value
-    //to retreive the passed data use .QueryString["label"]
-    //data is returned as a string
     var cid = Request.QueryString["cid"];
     <p>Your choice was: @cid</p>
-    //good practice
-    //check that you actually retreived data
+    
     if (string.IsNullOrEmpty(cid))
     {
         Response.Redirect("MultiRecordQuery.cshtml");
     }
 
-    //use data to lookup products
     var db = Database.Open("NWDB");
     var prodquery = @"SELECT ProductID, ProductName, UnitPrice, UnitsInStock, Discontinued
                 FROM Products
@@ -22,19 +17,11 @@
                 ORDER BY ProductName";
     var prodinfo = db.Query(prodquery, cid);
 
-    //use data to get category name for display heading
-    //yes: you could have passed the category name with the category id
-    //demonstration of using .QueryValue()
     var catquery = @"SELECT CategoryName
             FROM Categories
             WHERE CategoryID = @0";
     var catname = db.QueryValue(catquery, cid);
 
-    //setup display to use the class WebGrids
-    //assign the display data to the instance when it is created
-    //to alter the number of rows display by the WebGrid instance,
-    //   you need to specify the value when you first create the instance
-    //   syntax attribute --> rowsPerPage:value
     var gridinstance = new WebGrid(prodinfo, rowsPerPage: 5);
 }
 @section banner {<h1>WebGrid Display</h1>}
@@ -49,8 +36,7 @@
             columns: gridinstance.Columns(
                gridinstance.Column(columnName: "ProductID", header: "ID"),
                gridinstance.Column(columnName: "ProductName", header: "Name"),
-               gridinstance.Column(columnName: "UnitPrice", header: "$", canSort: false,
-                    format: (item) => item.UnitPrice.ToString("0.00")),
+               gridinstance.Column(columnName: "UnitPrice", header: "$", canSort: false),
                gridinstance.Column(columnName: "UnitsInStock", header: "QiS", canSort: false)))
     </div>
 </div>
