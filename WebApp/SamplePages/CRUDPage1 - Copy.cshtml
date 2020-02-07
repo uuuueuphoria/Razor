@@ -1,0 +1,224 @@
+﻿@{
+    Layout = "~/_Layout.cshtml";
+    Page.Title = string.Format("Razor - {0}", "CRUD-Insert-with-Validation");
+
+    //consider your need for global variables
+    var productname = "";
+    var supplierid = "0";
+    var categoryid = "0";
+    var quantityperunit = "";
+    var unitprice = "";
+    var unitsinstock = "";
+    var unitsonorder = "";
+    var reorderlevel = "";
+
+    //obtain two lists: SupplierList and CategoryList
+    var db = Database.Open("NWDB");
+
+    var supplierquery = @"SELECT SupplierID, CompanyName FROM Suppliers Order by CompanyName";
+    var supplierrecords = db.Query(supplierquery);
+    List<SelectListItem> supplieritems = new List<SelectListItem>();
+    supplieritems.Add(new SelectListItem
+    {
+        Value = "0",
+        Text = "select..."
+    });
+    foreach (var record in supplierrecords)
+    {
+        supplieritems.Add(new SelectListItem
+        {
+            Value = record.SupplierID.ToString(),
+            Text = record.CompanyName
+        });
+    }
+
+    var categoryquery = @"SELECT CategoryID, CategoryName FROM Categories Order by CategoryName";
+    var categoryrecords = db.Query(categoryquery);
+    List<SelectListItem> categoryitems = new List<SelectListItem>();
+    categoryitems.Add(new SelectListItem
+    {
+        Value = "0",
+        Text = "select..."
+    });
+    foreach (var record in categoryrecords)
+    {
+        categoryitems.Add(new SelectListItem
+        {
+            Value = record.CategoryId.ToString(),
+            Text = record.CategoryName
+        });
+    }
+
+    //these are validator controls that execute on the server side
+
+    Validation.Add("ProductName",
+         Validator.Required("Product name is required"),
+          Validator.StringLength(160, 1, "Product name is limited to 160 characters"));
+
+    Validation.Add("CategoryList",
+          Validator.Range(1, 9, "Category is required"));
+
+    //QuantityPerUnit is nullable which means 0 required characters
+    Validation.Add("QuantityPerUnit",
+         Validator.StringLength(40, 0, "Quantity per unit is limited to 40 characters"));
+
+    Validation.Add("UnitPrice",
+        Validator.Decimal("Unit price is a money field."),
+        Validator.Range(0.00, double.MaxValue, "Unit price must be 0.00 or more"));
+
+    Validation.Add("UnitsInStock",
+        Validator.Integer("Units in stock must be a number."),
+        Validator.Range(0.00, 2000.0, "Units in stock must be between 0 and 2000"));
+
+    Validation.Add("UnitsOnOrder",
+        Validator.Integer("Units on order must be a number."),
+        Validator.Range(0.00, 2000.0, "Units on order must be between 0 and 2000"));
+
+    Validation.Add("ReorderLevel",
+        Validator.Integer("Reorder level must be a number."),
+        Validator.Range(0.00, 2000.0, "Reorder level must be between 0 and 2000"));
+
+    //compare two fields together (ie password)
+    //Validation.Add("ConfirmPassword",
+    //    Validator.Required("Missing confirm password"),
+    //      Validator.StringLength(160, 1, "Confirm password is too long"),
+    //      Validator.EqualsTo("Password", "Password not confirmed"));
+
+    //pattern testing (ie PostalCode)
+    //Validation.Add("PostalCode",
+    //     Validator.Regex(@"^[A-Za-z][0-9][A-Za-z][0-9][A-Za-z][0-9]$",
+    //     "Postal Code format invalid (T7T7T7"));
+}
+@section head{
+    <link href="~/Content/MyCssCopy.css" rel="stylesheet" />
+}
+
+@section banner{
+    <h1>@Page.Title</h1>
+}
+
+@if (IsPost)
+{
+    // retreive the data from the form
+    productname = Request.Form["ProductName"];
+    supplierid = Request.Form["SupplierList"];
+    categoryid = Request.Form["CategoryList"];
+    quantityperunit = Request.Form["QuantityPerUnit"];
+    unitprice = Request.Form["UnitPrice"];
+    unitsinstock = Request.Form["UnitsInStock"];
+    unitsonorder = Request.Form["UnitsOnOrder"];
+    reorderlevel = Request.Form["ReorderLevel"];
+    var thebutton = Request.Form["FormButton"];
+
+    if (thebutton.Equals("Clear"))
+    {
+        productname = "";
+        supplierid = "0";
+        categoryid = "0";
+        quantityperunit = "";
+        unitprice = "";
+        unitsinstock = "";
+        unitsonorder = "";
+        reorderlevel = "";
+    }
+    else
+    {
+        //Validation of data
+        //Validation.IsValid() is used to execute the server side validation
+        //the if statement DOES NOT need an else as the Validation control
+        //message will appear in your Summary() or Message() controls
+        if (Validation.IsValid())  //good data
+        {  
+            try
+            {
+                var inscommand = @"INSERT INTO Products (ProductName, SupplierID, CategoryID,
+                                    QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder,
+                                    ReorderLevel, Discontinued)
+                                    VALUES(@0, @1, @2, @3, @4, @5, @6, @7, 0)";
+                db.Execute(inscommand, productname,
+                    supplierid.Equals("0") ? null : supplierid,
+                    categoryid.Equals("0") ? null : categoryid,
+                    string.IsNullOrEmpty(quantityperunit) ? null : quantityperunit,
+                    string.IsNullOrEmpty(unitprice) ? null : unitprice,
+                    string.IsNullOrEmpty(unitsinstock) ? null : unitsinstock,
+                    string.IsNullOrEmpty(unitsonorder) ? null : unitsonorder,
+                    string.IsNullOrEmpty(reorderlevel) ? null : reorderlevel);
+                <div class="col-12 text-center">
+                    <p style="color:green">
+                        Product has been added
+                    </p>
+                </div>
+            }
+            catch (Exception ex)
+            {
+                <div class="col-12 text-center">
+                    <p style="color:firebrick; font-size:large">
+                        Processing error: @ex.Message
+                    </p>
+                </div>
+            }
+        }
+    }
+}
+else
+{
+
+}
+
+<fieldset>
+    <legend>Web Pages with Validation</legend>
+    <form id="theform" method="post">
+        <div class="row offset-1">
+            <label class="label" for="ProductName">ProductName:</label>&nbsp;&nbsp;
+            @*<span><input name="ProductName" type="text" value="@productname" class="@Validation.ClassFor("ProductName")"/></span>*@
+            <span>@Html.TextBox("ProductName", productname)</span>
+            @Html.ValidationMessage("ProductName")
+        </div>
+        <div class="row offset-1">
+            <label class="label" for="SupplierList">Supplier:</label>&nbsp;&nbsp;
+            <span>@Html.DropDownList("SupplierList", supplieritems)</span>
+            @Html.ValidationMessage("SupplierList")
+        </div>
+        <div class="row offset-1">
+            <label class="label" for="CategoryList">Category:</label>&nbsp;&nbsp;
+            <span>@Html.DropDownList("CategoryList", categoryitems)</span>
+            @Html.ValidationMessage("CategoryList")
+        </div>
+        <div class="row offset-1">
+            <label class="label" for="QuantityPerUnit">QuantityPerUnit:</label>&nbsp;&nbsp;
+            <span>@Html.TextBox("QuantityPerUnit", quantityperunit)</span>
+            @Html.ValidationMessage("QuantityPerUnit")
+        </div>
+        <div class="row offset-1">
+            <label class="label" for="UnitPrice">UnitPrice:</label>&nbsp;&nbsp;
+            <span>@Html.TextBox("UnitPrice", unitprice)</span>
+            @Html.ValidationMessage("UnitPrice")
+        </div>
+        <div class="row offset-1">
+            <label class="label" for="UnitsInStock">UnitsInStock:</label>&nbsp;&nbsp;
+            <span>@Html.TextBox("UnitsInStock", unitsinstock)</span>
+            @Html.ValidationMessage("UnitsInStock")
+        </div>
+        <div class="row offset-1">
+            <label class="label" for="UnitsOnOrder">UnitsOnOrder:</label>&nbsp;&nbsp;
+            <span>@Html.TextBox("UnitsOnOrder", unitsonorder)</span>
+            @Html.ValidationMessage("UnitsOnOrder")
+        </div>
+        <div class="row offset-1">
+            <label class="label" for="ReorderLevel">ReorderLevel:</label>&nbsp;&nbsp;
+            <span>@Html.TextBox("ReorderLevel", reorderlevel)</span>
+            @Html.ValidationMessage("ReorderLevel")
+        </div>
+        <div class="row offset-1">
+            <button type="submit" id="FormButton" name="FormButton"
+                    class="btn btn-primary" value="Add">
+                Add
+            </button>
+            <button type="submit" id="FormButton" name="FormButton" formnovalidate
+                    class="btn" value="Clear">
+                Clear
+            </button>
+        </div>
+    </form>
+</fieldset>
+@Html.ValidationSummary()

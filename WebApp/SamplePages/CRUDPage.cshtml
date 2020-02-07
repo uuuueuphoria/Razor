@@ -1,6 +1,6 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
-    Page.Title = string.Format("Razor - {0}", "CRUD-Insert-with-Validation");
+    Page.Title = string.Format("Razor - {0}", "CRUD - Insert");
 
     //consider your need for global variables
     var productname = "";
@@ -14,49 +14,20 @@
 
     //obtain two lists: SupplierList and CategoryList
     var db = Database.Open("NWDB");
+    var supplierquery = @"SELECT SupplierID, CompanyName
+FROM Suppliers
+Order by CompanyName";
+    var categoryquery = @"SELECT CategoryID, CategoryName
+FROM Categories
+Order by CategoryName";
+    var supplierlist = db.Query(supplierquery);
+    var categorylist = db.Query(categoryquery);
 
-    var supplierquery = @"SELECT SupplierID, CompanyName FROM Suppliers Order by CompanyName";
-    var supplierrecords = db.Query(supplierquery);
-    List<SelectListItem> supplieritems = new List<SelectListItem>();
-    supplieritems.Add(new SelectListItem
-    {
-        Value = "0",
-        Text = "select..."
-    });
-    foreach (var record in supplierrecords)
-    {
-        supplieritems.Add(new SelectListItem
-        {
-            Value = record.SupplierID.ToString(),
-            Text = record.CompanyName
-        });
-    }
-
-    var categoryquery = @"SELECT CategoryID, CategoryName FROM Categories Order by CategoryName";
-    var categoryrecords = db.Query(categoryquery);
-    List<SelectListItem> categoryitems = new List<SelectListItem>();
-    categoryitems.Add(new SelectListItem
-    {
-        Value = "0",
-        Text = "select..."
-    });
-    foreach (var record in categoryrecords)
-    {
-        categoryitems.Add(new SelectListItem
-        {
-            Value = record.CategoryId.ToString(),
-            Text = record.CategoryName
-        });
-    }
-
-    //these are validator controls that execute on the server side
+    //these are validator controls execute on the server side
 
     Validation.Add("ProductName",
          Validator.Required("Product name is required"),
           Validator.StringLength(160, 1, "Product name is limited to 160 characters"));
-
-    Validation.Add("CategoryList",
-          Validator.Range(1, 9, "Category is required"));
 
     //QuantityPerUnit is nullable which means 0 required characters
     Validation.Add("QuantityPerUnit",
@@ -68,15 +39,15 @@
 
     Validation.Add("UnitsInStock",
         Validator.Integer("Units in stock must be a number."),
-        Validator.Range(0.00, 2000.0, "Units in stock must be between 0 and 2000"));
+        Validator.Range(0.00, 32767.0, "Units in stock must be between 0.00 and 32767"));
 
     Validation.Add("UnitsOnOrder",
         Validator.Integer("Units on order must be a number."),
-        Validator.Range(0.00, 2000.0, "Units on order must be between 0 and 2000"));
+        Validator.Range(0.00, 32767.0, "Units on order must be between 0.00 and 32767"));
 
     Validation.Add("ReorderLevel",
         Validator.Integer("Reorder level must be a number."),
-        Validator.Range(0.00, 2000.0, "Reorder level must be between 0 and 2000"));
+        Validator.Range(0.00, 32767.0, "Reorder level must be between 0.00 and 32767"));
 
     //compare two fields together (ie password)
     //Validation.Add("ConfirmPassword",
@@ -90,11 +61,11 @@
     //     "Postal Code format invalid (T7T7T7"));
 }
 @section head{
-    <link href="~/Content/MyCssCopy.css" rel="stylesheet" />
+    <link href="~/Content/MySpacing.css" rel="stylesheet" />
 }
 
 @section banner{
-    <h1>@Page.Title</h1>
+    <h1>Database: CRUD Product - Insert</h1>
 }
 
 @if (IsPost)
@@ -110,8 +81,11 @@
     reorderlevel = Request.Form["ReorderLevel"];
     var thebutton = Request.Form["FormButton"];
 
+    //when you have multiple buttons, a good practice is to determine
+    //    what action to do for the press button FIRST!
     if (thebutton.Equals("Clear"))
     {
+        //empty the form fields
         productname = "";
         supplierid = "0";
         categoryid = "0";
@@ -126,99 +100,154 @@
         //Validation of data
         //Validation.IsValid() is used to execute the server side validation
         //the if statement DOES NOT need an else as the Validation control
-        //message will appear in your Summary() or Message() controls
-        if (Validation.IsValid())  //good data
-        {  
-            try
+        //      message will appear in your Summary() or Message() controls
+        if (Validation.IsValid())
+        {
+            //you may have logical validation needed for your data that cannot
+            //be accomplished using Validation Controls or HTML5
+            //this type of validation is a programmed validation
+
+            //assume that the categoryid is a required field
+            var valid = true;
+            if (categoryid.Equals("0"))
             {
-                var inscommand = @"INSERT INTO Products (ProductName, SupplierID, CategoryID,
-                                    QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder,
-                                    ReorderLevel, Discontinued)
-                                    VALUES(@0, @1, @2, @3, @4, @5, @6, @7, 0)";
-                db.Execute(inscommand, productname,
-                    supplierid.Equals("0") ? null : supplierid,
-                    categoryid.Equals("0") ? null : categoryid,
-                    string.IsNullOrEmpty(quantityperunit) ? null : quantityperunit,
-                    string.IsNullOrEmpty(unitprice) ? null : unitprice,
-                    string.IsNullOrEmpty(unitsinstock) ? null : unitsinstock,
-                    string.IsNullOrEmpty(unitsonorder) ? null : unitsonorder,
-                    string.IsNullOrEmpty(reorderlevel) ? null : reorderlevel);
+                valid = false;
                 <div class="col-12 text-center">
-                    <p style="color:green">
-                        Product has been added
+                    <p style="color:darkslateblue">
+                        You must select a category
                     </p>
                 </div>
             }
-            catch (Exception ex)
+            //check validation result
+            if (valid)
             {
-                <div class="col-12 text-center">
-                    <p style="color:firebrick; font-size:large">
-                        Processing error: @ex.Message
-                    </p>
-                </div>
+                //good data
+                try
+                {
+                    //connect to the database
+                    //  done above
+                    //create sql command
+                    var inscommand = @"INSERT INTO Products (ProductName, SupplierID, CategoryID,
+    QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder,
+    ReorderLevel, Discontinued)
+    VALUES(@0, @1, @2, @3, @4, @5, @6, @7, 0)";
+                    //execute the command
+                    db.Execute(inscommand, productname,
+                        supplierid.Equals("0") ? null : supplierid,
+                        categoryid.Equals("0") ? null : categoryid,
+                        string.IsNullOrEmpty(quantityperunit) ? null : quantityperunit,
+                        string.IsNullOrEmpty(unitprice) ? null : unitprice,
+                        string.IsNullOrEmpty(unitsinstock) ? null : unitsinstock,
+                        string.IsNullOrEmpty(unitsonorder) ? null : unitsonorder,
+                        string.IsNullOrEmpty(reorderlevel) ? null : reorderlevel);
+                    <div class="col-12 text-center">
+                        <p style="color:green">
+                            Product has been added
+                        </p>
+                    </div>
+                }
+                catch (Exception ex)
+                {
+                    <div class="col-12 text-center">
+                        <p style="color:firebrick; font-size:large">
+                            Processing error: @ex.Message
+                        </p>
+                    </div>
+                }
             }
+
         }
+
     }
+
 }
 else
 {
 
 }
+@* there are two ways to display your validation errors
+    a) using the ValidationSummary()
+        - bulleted list of all errors in all fields
+    b) using the ValidationMessage()
+        - placed beside the actual control field
+        - display only the 1st error of field*@
 
-<fieldset>
-    <legend>Web Pages with Validation</legend>
-    <form id="theform" method="post">
-        <div class="row offset-1">
-            <label class="label" for="ProductName">ProductName:</label>&nbsp;&nbsp;
-            @*<span><input name="ProductName" type="text" value="@productname" class="@Validation.ClassFor("ProductName")"/></span>*@
-            <span>@Html.TextBox("ProductName", productname)</span>
-            @Html.ValidationMessage("ProductName")
-        </div>
-        <div class="row offset-1">
-            <label class="label" for="SupplierList">Supplier:</label>&nbsp;&nbsp;
-            <span>@Html.DropDownList("SupplierList", supplieritems)</span>
-            @Html.ValidationMessage("SupplierList")
-        </div>
-        <div class="row offset-1">
-            <label class="label" for="CategoryList">Category:</label>&nbsp;&nbsp;
-            <span>@Html.DropDownList("CategoryList", categoryitems)</span>
-            @Html.ValidationMessage("CategoryList")
-        </div>
-        <div class="row offset-1">
-            <label class="label" for="QuantityPerUnit">QuantityPerUnit:</label>&nbsp;&nbsp;
-            <span>@Html.TextBox("QuantityPerUnit", quantityperunit)</span>
-            @Html.ValidationMessage("QuantityPerUnit")
-        </div>
-        <div class="row offset-1">
-            <label class="label" for="UnitPrice">UnitPrice:</label>&nbsp;&nbsp;
-            <span>@Html.TextBox("UnitPrice", unitprice)</span>
-            @Html.ValidationMessage("UnitPrice")
-        </div>
-        <div class="row offset-1">
-            <label class="label" for="UnitsInStock">UnitsInStock:</label>&nbsp;&nbsp;
-            <span>@Html.TextBox("UnitsInStock", unitsinstock)</span>
-            @Html.ValidationMessage("UnitsInStock")
-        </div>
-        <div class="row offset-1">
-            <label class="label" for="UnitsOnOrder">UnitsOnOrder:</label>&nbsp;&nbsp;
-            <span>@Html.TextBox("UnitsOnOrder", unitsonorder)</span>
-            @Html.ValidationMessage("UnitsOnOrder")
-        </div>
-        <div class="row offset-1">
-            <label class="label" for="ReorderLevel">ReorderLevel:</label>&nbsp;&nbsp;
-            <span>@Html.TextBox("ReorderLevel", reorderlevel)</span>
-            @Html.ValidationMessage("ReorderLevel")
-        </div>
-        <div class="row offset-1">
-            <button type="submit" id="FormButton" name="FormButton"
-                    class="btn btn-primary" value="Add">
-                Add
-            </button>
-            <button type="submit" id="FormButton" name="FormButton" formnovalidate
-                    class="btn" value="Clear">
-                Clear
-            </button>
-        </div>
-    </form>
-</fieldset>
 @Html.ValidationSummary()
+<form id="theform" method="post">
+    <div class="row">
+        <div class="col-md-6 text-right">
+
+            <label for="ProductName">Name:</label><br />
+            <label for="SupplierID">Supplier:</label><br />
+            <label for="CategoryID">Catgeory:</label><br />
+            <label for="QuantityPerUnit">Qty/Unit:</label><br />
+            <label for="UnitPrice">Price:</label><br />
+            <label for="UnitsInStock">QoH:</label><br />
+            <label for="UnitsOnOrder">QoO:</label><br />
+            <label for="ReorderLevel">RoL:</label><br />
+            <br />
+        </div>
+        <div class="col-me-6 text-left">
+
+            <input type="text" value="@productname"
+                   id="ProductName" name="ProductName" required />
+            @* using ValidationMessage("controlname") *@
+            @*@Html.ValidationMessage("ProductName")*@
+            <br />
+            <select id="SupplierList" name="SupplierList">
+                <option value="0">select supplier...</option>
+                @foreach (var item in supplierlist)
+                {
+                    //for the select control, the default display on an event
+                    //   is the 1st option tag
+                    //to retain the option selected between posts, you need to
+                    //   set the selected option using the attribute selected
+                    if (supplierid == item.SupplierID.ToString())
+                    {
+                        <option value="@item.SupplierID" selected>@item.CompanyName</option>
+                    }
+                    else
+                    {
+                        <option value="@item.SupplierID">@item.CompanyName</option>
+                    }
+
+                }
+            </select>
+            <br />
+            <select id="CategoryList" name="CategoryList">
+                <option value="0">select category...</option>
+                @foreach (var item in categorylist)
+                {
+                    if (categoryid == item.CategoryID.ToString())
+                    {
+                        <option value="@item.CategoryID" selected>@item.CategoryName</option>
+                    }
+                    else
+                    {
+                        <option value="@item.CategoryID">@item.CategoryName</option>
+                    }
+                }
+            </select>
+            <br />
+            <input type="text" id="QuantityPerUnit" name="QuantityPerUnit"
+                   value="@quantityperunit" /><br />
+            <input type="number" id="UnitPrice" name="UnitPrice"
+                   value="@unitprice" min="0.00" max="9999999.0" step="0.01" /><br />
+            <input type="text" id="UnitsInStock" name="UnitsInStock"
+                   value="@unitsinstock" /><br />
+            <input type="text" id="UnitsOnOrder" name="UnitsOnOrder"
+                   value="@unitsonorder" /><br />
+            <input type="text" id="ReorderLevel" name="ReorderLevel"
+                   value="@reorderlevel" /><br />
+            <br />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <input type="submit" id="FormButton" name="FormButton"
+                   class="btn btn-primary" value="Add" />
+            <input type="submit" id="FormButton" name="FormButton" formnovalidate
+                   class="btn" value="Clear" />
+        </div>
+    </div>
+</form>
