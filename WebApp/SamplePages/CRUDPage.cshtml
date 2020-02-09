@@ -96,64 +96,39 @@ Order by CategoryName";
     }
     else
     {
-        //Validation of data
-        //Validation.IsValid() is used to execute the server side validation
-        //the if statement DOES NOT need an else as the Validation control
-        //      message will appear in your Summary() or Message() controls
         if (Validation.IsValid())
         {
-            //you may have logical validation needed for your data that cannot
-            //be accomplished using Validation Controls or HTML5
-            //this type of validation is a programmed validation
-
-            //assume that the categoryid is a required field
-            var valid = true;
-            if (categoryid.Equals("0"))
+            
+            try
             {
-                valid = false;
+                var inscommand = @"INSERT INTO Products (ProductName, SupplierID, CategoryID,
+                    QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder,
+                    ReorderLevel, Discontinued)
+                    VALUES(@0, @1, @2, @3, @4, @5, @6, @7, 0)";
+                //execute the command
+                db.Execute(inscommand, productname,
+                    supplierid.Equals("0") ? null : supplierid,
+                    categoryid.Equals("0") ? null : categoryid,
+                    string.IsNullOrEmpty(quantityperunit) ? null : quantityperunit,
+                    string.IsNullOrEmpty(unitprice) ? null : unitprice,
+                    string.IsNullOrEmpty(unitsinstock) ? null : unitsinstock,
+                    string.IsNullOrEmpty(unitsonorder) ? null : unitsonorder,
+                    string.IsNullOrEmpty(reorderlevel) ? null : reorderlevel);
                 <div class="col-12 text-center">
-                    <p style="color:darkslateblue">
-                        You must select a category
+                    <p style="color:green">
+                        Product has been added
                     </p>
                 </div>
             }
-            //check validation result
-            if (valid)
+            catch (Exception ex)
             {
-                //good data
-                try
-                {
-                    //connect to the database
-                    //  done above
-                    //create sql command
-                    var inscommand = @"INSERT INTO Products (ProductName, SupplierID, CategoryID,
-    QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder,
-    ReorderLevel, Discontinued)
-    VALUES(@0, @1, @2, @3, @4, @5, @6, @7, 0)";
-                    //execute the command
-                    db.Execute(inscommand, productname,
-                        supplierid.Equals("0") ? null : supplierid,
-                        categoryid.Equals("0") ? null : categoryid,
-                        string.IsNullOrEmpty(quantityperunit) ? null : quantityperunit,
-                        string.IsNullOrEmpty(unitprice) ? null : unitprice,
-                        string.IsNullOrEmpty(unitsinstock) ? null : unitsinstock,
-                        string.IsNullOrEmpty(unitsonorder) ? null : unitsonorder,
-                        string.IsNullOrEmpty(reorderlevel) ? null : reorderlevel);
-                    <div class="col-12 text-center">
-                        <p style="color:green">
-                            Product has been added
-                        </p>
-                    </div>
-                }
-                catch (Exception ex)
-                {
-                    <div class="col-12 text-center">
-                        <p style="color:firebrick; font-size:large">
-                            Processing error: @ex.Message
-                        </p>
-                    </div>
-                }
+                <div class="col-12 text-center">
+                    <p style="color:firebrick; font-size:large">
+                        Processing error: @ex.Message
+                    </p>
+                </div>
             }
+            
 
         }
 
