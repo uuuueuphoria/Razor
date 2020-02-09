@@ -20,24 +20,24 @@
     var thebutton = Request.Form["theButton"];
 
     if (IsPost)
+    {
+        //discontinued is a checkbox
+        //the possible values from the check box is null (not checked) or "on" (checked)
+        //the acceptable sql values for a bit are 0 and 1
+        if (discontinued == null)
         {
-            //discontinued is a checkbox
-            //the possible values from the check box is null (not checked) or "on" (checked)
-            //the acceptable sql values for a bit are 0 and 1
-            if (discontinued == null)
-            {
-                discontinued = "0";
-            }
-            else
-            {
-                discontinued = "1";
-            }
+            discontinued = "0";
         }
         else
         {
-            productid = pid;
-            discontinued = "0";
+            discontinued = "1";
         }
+    }
+    else
+    {
+        productid = pid;
+        discontinued = "0";
+    }
     var db = Database.Open("NWDB");
     var supplierStatement = "SELECT SupplierID, CompanyName "
                        + "FROM Suppliers "
@@ -162,7 +162,33 @@
         }
         else if (thebutton.Equals("delete"))
         {
-
+            var deleteStatement = "Delete Products WHERE ProductID = @0";
+            try
+            {
+                var rows = db.Execute(deleteStatement, productid);
+                if (rows == 1)
+                {
+                    <p>Successful deletion of product information.</p>
+                }
+                else
+                {
+                    <p>Delete failed. Record is not on file.</p>
+                }
+                productid = "";
+                productname = "";
+                supplierid = "0";
+                categoryid = "0";
+                quantityperunit = "";
+                unitprice = "";
+                unitsinstock = "";
+                unitsonorder = "";
+                reorderlevel = "";
+                discontinued = "0";
+            }
+            catch (Exception ex)
+            {
+                <p>Error: Unable to delete exception is: @ex.Message</p>
+            }
         }
     }
 }
@@ -309,4 +335,8 @@ else //for IsPost=false
         }
     </script>
 </form>
-@Html.ValidationSummary()
+<div class="row">
+    <div class="col-6 text-right">
+        @Html.ValidationSummary()
+    </div>
+</div>
