@@ -8,7 +8,7 @@
     var partialsearchstring = "%" + productsearch + "%";
 
     var queryStatement = "SELECT ProductID, ProductName Name, "
-                        + "CategoryID, UnitPrice, UnitsInStock "
+                        + "CategoryID, UnitPrice, UnitsInStock, Discontinued "
                         + "FROM Products "
                         + "WHERE ProductName like @0 "
                         + "ORDER BY ProductName";
@@ -50,6 +50,7 @@
                 grid.Column(columnName: "CategoryID", header: "Cat"),
                 grid.Column(columnName: "UnitPrice", header: "$"),
                 grid.Column(columnName: "UnitsInStock", header: "UiS"),
+                grid.Column(columnName: "Discontinued", header: "Discontinued"),
                 grid.Column(header:"", format:@<text><a href="~/SamplePages/ProductEdit.cshtml?pid=@item.ProductID">Edit</a></text>)
                 ));
             }
