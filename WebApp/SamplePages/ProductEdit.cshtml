@@ -2,8 +2,6 @@
     Layout = "~/_Layout.cshtml";
     Page.Title = string.Format("Razor - {0}", "CRUD - Update/Delete");
 
-
-
     var pid = Request.QueryString["pid"];
     if (pid.IsEmpty())
     {
@@ -22,24 +20,24 @@
     var thebutton = Request.Form["theButton"];
 
     if (IsPost)
-    {
-        //discontinued is a checkbox
-        //the possible values from the check box is null (not checked) or "on" (checked)
-        //the acceptable sql values for a bit are 0 and 1
-        if (discontinued == null)
         {
-            discontinued = "0";
+            //discontinued is a checkbox
+            //the possible values from the check box is null (not checked) or "on" (checked)
+            //the acceptable sql values for a bit are 0 and 1
+            if (discontinued == null)
+            {
+                discontinued = "0";
+            }
+            else
+            {
+                discontinued = "1";
+            }
         }
         else
         {
-            discontinued = "1";
+            productid = pid;
+            discontinued = "0";
         }
-    }
-    else
-    {
-        productid = pid;
-        discontinued = "0";
-    }
     var db = Database.Open("NWDB");
     var supplierStatement = "SELECT SupplierID, CompanyName "
                        + "FROM Suppliers "
@@ -65,7 +63,7 @@
 @if (IsPost)
 {
     if (Validation.IsValid())
-        { 
+    {
         if (thebutton.Equals("backtosearch"))
         {
             Response.Redirect("ProductSearch.cshtml");
@@ -77,16 +75,16 @@
                 var sqlcommand = "UPDATE Products SET "
                                 + "Discontinued = 1 "
                                 + "WHERE ProductID = @0";
-                var rowsaffected = db.Execute(sqlcommand,  productid);
+                var rowsaffected = db.Execute(sqlcommand, productid);
                 if (rowsaffected > 0)
                 {
                     discontinued = "1";
                     //productid = "";
-                        <div class="col-12 text-center">
-                            <p style="color:green">
-                                Product has been discontinued
-                            </p>
-                        </div>
+                    <div class="col-12 text-center">
+                        <p style="color:green">
+                            Product has been discontinued
+                        </p>
+                    </div>
                 }
                 else
                 {
@@ -99,7 +97,6 @@
                         </p>
                     </div>
                 }
-
             }
             catch (Exception ex)
             {
@@ -109,7 +106,6 @@
                     </p>
                 </div>
             }
-           
         }
         else if (thebutton.Equals("update"))
         {
@@ -154,7 +150,6 @@
                         </p>
                     </div>
                 }
-
             }
             catch (Exception ex)
             {
@@ -173,8 +168,6 @@
 }
 else //for IsPost=false
 {
-    queryProducts = db.QuerySingle(queryStatement, pid);
-
     productid = queryProducts.ProductID.ToString();
     productname = queryProducts.ProductName;
     supplierid = queryProducts.SupplierID == null ? "0" : queryProducts.SupplierID.ToString();
@@ -187,132 +180,133 @@ else //for IsPost=false
     discontinued = queryProducts.Discontinued.ToString();
 }
 
-
-<div class="form-group">
-
-    <form id="theForm" action="" method="post">
-        <div class="row">
-            <div class="col-6 text-right">
-                <label id="lblProductID" for="ProductID">Product ID</label>
-            </div>
-            <div class="col-6 text-left">
-                <input type="text" name="ProductID" value="@productid" readonly />
-            </div><br />
-            <div class="col-6 text-right">
-                <label id="lblProductName" for="ProductName">Product Name</label>
-            </div>
-            <div class="col-6 text-left">
-                <input type="text" name="ProductName" value="@productname" />
-            </div><br />
-            <div class="col-6 text-right">
-                <label id="lblSupplierList" for="SupplierList">Supplier</label>
-            </div>
-            <div class="col-6 text-left">
-                <select name="SupplierList">
-                    <option value="0">select...</option>
-                    @foreach (var acollectionrow in querySuppliers)
-                    {
-                        if (acollectionrow.SupplierID.ToString() == supplierid)
-                        {
-                            <option value="@acollectionrow[0]" selected>@acollectionrow[1]</option>
-                        }
-                        else
-                        {
-                            <option value="@acollectionrow[0]">@acollectionrow[1]</option>
-                        }
-                    }
-                </select>
-            </div><br />
-            <div class="col-6 text-right">
-                <label id="lblCategoryList" for="CatgoryList">Category</label>
-            </div>
-            <div class="col-6 text-left">
-                <select name="CategoryList">
-                    <option value="0">select...</option>
-                    @foreach (var acollectionrow in queryCategories)
-                    {
-                        if (acollectionrow.CategoryID.ToString() == categoryid)
-                        {
-                            <option value="@acollectionrow[0]" selected>@acollectionrow[1]</option>
-                        }
-                        else
-                        {
-                            <option value="@acollectionrow[0]">@acollectionrow[1]</option>
-                        }
-                    }
-                </select>
-            </div><br />
-            <div class="col-6 text-right">
-                <label id="lblQuantityPerUnit" for="QuasntityPerUnit">Quantity Per Unit</label>
-            </div>
-            <div class="col-6 text-left">
-                <input type="text" name="QuantityPerUnit" value="@quantityperunit" />
-            </div><br />
-            <div class="col-6 text-right">
-                <label id="lblUnitPrice" for="UnitPrice">Unit Price</label>
-            </div>
-            <div class="col-6 text-left">
-                <input type="number" name="UnitPrice" value="@unitprice" min="0.00" step="0.01" />
-            </div><br />
-            <div class="col-6 text-right">
-                <label id="lblUnitsInStock" for="UnitsInStock">Units In Stock</label>
-            </div>
-            <div class="col-6 text-left">
-                <input type="number" name="UnitsInStock" value="@unitsinstock" min="0.00" step="0.01" />
-            </div><br />
-            <div class="col-6 text-right">
-                <label id="lblUnitsOnOrder" for="UnitsOnOrder">Units On Order</label>
-            </div>
-            <div class="col-6 text-left">
-                <input type="number" name="UnitsOnOrder" value="@unitsonorder" min="0" max="32767" step="1" /><br />
-            </div><br />
-            <div class="col-6 text-right">
-                <label id="lblReorderLevel" for="ReorderLevel">ReorderLevel</label>
-            </div>
-            <div class="col-6 text-left">
-                <input type="number" name="ReorderLevel" value="@reorderlevel" min="0" max="32767" step="1" />
-            </div><br />
-            <div class="col-6 text-right">
-                <label id="lblDiscontinued" for="Discontinued">Discontinued</label>
-            </div>
-            <div class="col-6 text-left">
-                @if (discontinued.Equals("True") || (discontinued == "1"))
-                {
-                    <input type="checkbox" name="Discontinued" checked value="1" />
-                }
-                else
-                {
-                    <input type="checkbox" name="Discontinued" value="0" />
-                }
-            </div><br />
-
-
-
-            
+<form id="theForm" action="" method="post">
+    <div class="row">
+        <div class="col-6 text-right">
+            <label id="lblProductID" for="ProductID">Product ID</label>
         </div>
-        <div class="row">
-            <div class="col-12 text-center">
-                <button type="submit" name="theButton" id="theUpdate" class="btn btn-primary" 
-                        value="update">Update</button>&nbsp;&nbsp;&nbsp;
-                <button type="submit" name="theButton" id="theDiscontinue" class="btn btn-primary"  formnovalidate
-                        value="discontinue">Discontinue</button>&nbsp;&nbsp;&nbsp;
-                <button type="submit" name="theButton" id="theDelete" class="btn btn-primary"  formnovalidate
-                        value="delete">Delete Record</button>&nbsp;&nbsp;&nbsp;
-                <button type="submit" name="theButton" id="theCancel" class="btn btn-primary" formnovalidate 
-                        value="backtosearch">Back to Search</button>
-            </div>
+        <div class="col-6 text-left">
+            <input type="text" name="ProductID" value="@productid" readonly />
+        </div><br />
+        <div class="col-6 text-right">
+            <label id="lblProductName" for="ProductName">Product Name</label>
         </div>
-        @* confirmation can be done on a button click using javascript
-            we will ask the user to confirm the discontinuing of a product*@
-        <script type="text/javascript">
-            document.getElementById("theDiscontinue").onclick = ConfirmDiscontinue;
-            function ConfirmDiscontinue() {
-                return confirm("Are you sure you want to DISCONTINUE @productname?");
+        <div class="col-6 text-left">
+            <input type="text" name="ProductName" value="@productname" />
+        </div><br />
+        <div class="col-6 text-right">
+            <label id="lblSupplierList" for="SupplierList">Supplier</label>
+        </div>
+        <div class="col-6 text-left">
+            <select name="SupplierList">
+                <option value="0">select...</option>
+                @foreach (var acollectionrow in querySuppliers)
+                {
+                    if (acollectionrow.SupplierID.ToString() == supplierid)
+                    {
+                        <option value="@acollectionrow[0]" selected>@acollectionrow[1]</option>
+                    }
+                    else
+                    {
+                        <option value="@acollectionrow[0]">@acollectionrow[1]</option>
+                    }
+                }
+            </select>
+        </div><br />
+        <div class="col-6 text-right">
+            <label id="lblCategoryList" for="CatgoryList">Category</label>
+        </div>
+        <div class="col-6 text-left">
+            <select name="CategoryList">
+                <option value="0">select...</option>
+                @foreach (var acollectionrow in queryCategories)
+                {
+                    if (acollectionrow.CategoryID.ToString() == categoryid)
+                    {
+                        <option value="@acollectionrow[0]" selected>@acollectionrow[1]</option>
+                    }
+                    else
+                    {
+                        <option value="@acollectionrow[0]">@acollectionrow[1]</option>
+                    }
+                }
+            </select>
+        </div><br />
+        <div class="col-6 text-right">
+            <label id="lblQuantityPerUnit" for="QuasntityPerUnit">Quantity Per Unit</label>
+        </div>
+        <div class="col-6 text-left">
+            <input type="text" name="QuantityPerUnit" value="@quantityperunit" />
+        </div><br />
+        <div class="col-6 text-right">
+            <label id="lblUnitPrice" for="UnitPrice">Unit Price</label>
+        </div>
+        <div class="col-6 text-left">
+            <input type="number" name="UnitPrice" value="@unitprice" min="0.00" step="0.01" />
+        </div><br />
+        <div class="col-6 text-right">
+            <label id="lblUnitsInStock" for="UnitsInStock">Units In Stock</label>
+        </div>
+        <div class="col-6 text-left">
+            <input type="number" name="UnitsInStock" value="@unitsinstock" min="0" max="32767" step="1" />
+        </div><br />
+        <div class="col-6 text-right">
+            <label id="lblUnitsOnOrder" for="UnitsOnOrder">Units On Order</label>
+        </div>
+        <div class="col-6 text-left">
+            <input type="number" name="UnitsOnOrder" value="@unitsonorder" min="0" max="32767" step="1" /><br />
+        </div><br />
+        <div class="col-6 text-right">
+            <label id="lblReorderLevel" for="ReorderLevel">ReorderLevel</label>
+        </div>
+        <div class="col-6 text-left">
+            <input type="number" name="ReorderLevel" value="@reorderlevel" min="0" max="32767" step="1" />
+        </div><br />
+        <div class="col-6 text-right">
+            <label id="lblDiscontinued" for="Discontinued">Discontinued</label>
+        </div>
+        <div class="col-6 text-left">
+            @if (discontinued.Equals("True") || (discontinued == "1"))
+            {
+                <input type="checkbox" name="Discontinued" checked value="1" />
             }
-            document.getElementById("theDelete").onclick = ConfirmDelete;
-            function ConfirmDelete() {
-                return confirm("Are you sure you want to DELETE @productname?");
+            else
+            {
+                <input type="checkbox" name="Discontinued" value="0" />
             }
-        </script>
-    </form>
-</div>
+        </div><br />
+    </div>
+    <div class="row">
+        <div class="col-12 text-center">
+            <button type="submit" name="theButton" id="theUpdate" class="btn btn-primary"
+                    value="update">
+                Update
+            </button>&nbsp;&nbsp;&nbsp;
+            <button type="submit" name="theButton" id="theDiscontinue" class="btn btn-primary" formnovalidate
+                    value="discontinue">
+                Discontinue
+            </button>&nbsp;&nbsp;&nbsp;
+            <button type="submit" name="theButton" id="theDelete" class="btn btn-primary" formnovalidate
+                    value="delete">
+                Delete Record
+            </button>&nbsp;&nbsp;&nbsp;
+            <button type="submit" name="theButton" id="theCancel" class="btn btn-primary" formnovalidate
+                    value="backtosearch">
+                Back to Search
+            </button>
+        </div>
+    </div>
+    @* confirmation can be done on a button click using javascript
+        we will ask the user to confirm the discontinuing of a product*@
+    <script type="text/javascript">
+        document.getElementById("theDiscontinue").onclick = ConfirmDiscontinue;
+        function ConfirmDiscontinue() {
+            return confirm("Are you sure you want to DISCONTINUE @productname?");
+        }
+        document.getElementById("theDelete").onclick = ConfirmDelete;
+        function ConfirmDelete() {
+            return confirm("Are you sure you want to DELETE @productname?");
+        }
+    </script>
+</form>
+@Html.ValidationSummary()

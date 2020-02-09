@@ -100,10 +100,11 @@ Order by CategoryName";
         {
             try
             {
-                var inscommand = @"INSERT INTO Products (ProductName, SupplierID, CategoryID,
-        QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder,
-        ReorderLevel, Discontinued)
-        VALUES(@0, @1, @2, @3, @4, @5, @6, @7, 0)";
+                var inscommand = "INSERT INTO Products "
+                    + "(ProductName, SupplierID, CategoryID, "
+                    + "QuantityPerUnit, UnitPrice, UnitsInStock, "
+                    + "UnitsOnOrder, ReorderLevel, Discontinued) "
+                    + "VALUES(@0, @1, @2, @3, @4, @5, @6, @7, 0)";
                 db.Execute(inscommand, productname,
                     supplierid.Equals("0") ? null : supplierid,
                     categoryid.Equals("0") ? null : categoryid,
@@ -134,78 +135,95 @@ else
 
 }
 
-<form id="theform" method="post">
-    <div class="row offset-1">
-        <input type="text" value="@productname"
-               id="ProductName" name="ProductName" />
-        &nbsp;&nbsp;<label for="ProductName">Name</label>
-    </div>
-    <div class="row offset-1">
-        <select id="SupplierList" name="SupplierList">
-            <option value="0">select supplier...</option>
-            @foreach (var item in supplierlist)
-            {
-
-                if (supplierid == item.SupplierID.ToString())
+<form id="theForm" action="" method="post">
+    <div class="row">
+        <div class="col-6 text-right">
+            <label id="lblProductName" for="ProductName">Product Name</label>
+        </div>
+        <div class="col-6 text-left">
+            <input type="text" name="ProductName" value="@productname" />
+        </div><br />
+        <div class="col-6 text-right">
+            <label id="lblSupplierList" for="SupplierList">Supplier</label>
+        </div>
+        <div class="col-6 text-left">
+            <select name="SupplierList">
+                <option value="0">select...</option>
+                @foreach (var acollectionrow in supplierlist)
                 {
-                    <option value="@item.SupplierID" selected>@item.CompanyName</option>
+                    if (acollectionrow.SupplierID.ToString() == supplierid)
+                    {
+                        <option value="@acollectionrow[0]" selected>@acollectionrow[1]</option>
+                    }
+                    else
+                    {
+                        <option value="@acollectionrow[0]">@acollectionrow[1]</option>
+                    }
                 }
-                else
+            </select>
+        </div><br />
+        <div class="col-6 text-right">
+            <label id="lblCategoryList" for="CatgoryList">Category</label>
+        </div>
+        <div class="col-6 text-left">
+            <select name="CategoryList">
+                <option value="0">select...</option>
+                @foreach (var acollectionrow in categorylist)
                 {
-                    <option value="@item.SupplierID">@item.CompanyName</option>
+                    if (acollectionrow.CategoryID.ToString() == categoryid)
+                    {
+                        <option value="@acollectionrow[0]" selected>@acollectionrow[1]</option>
+                    }
+                    else
+                    {
+                        <option value="@acollectionrow[0]">@acollectionrow[1]</option>
+                    }
                 }
-
-            }
-        </select>
-        &nbsp;&nbsp;<label for="SupplierID">Supplier</label>
+            </select>
+        </div><br />
+        <div class="col-6 text-right">
+            <label id="lblQuantityPerUnit" for="QuasntityPerUnit">Quantity Per Unit</label>
+        </div>
+        <div class="col-6 text-left">
+            <input type="text" name="QuantityPerUnit" value="@quantityperunit" />
+        </div><br />
+        <div class="col-6 text-right">
+            <label id="lblUnitPrice" for="UnitPrice">Unit Price</label>
+        </div>
+        <div class="col-6 text-left">
+            <input type="number" name="UnitPrice" value="@unitprice" min="0.00" step="0.01" />
+        </div><br />
+        <div class="col-6 text-right">
+            <label id="lblUnitsInStock" for="UnitsInStock">Units In Stock</label>
+        </div>
+        <div class="col-6 text-left">
+            <input type="number" name="UnitsInStock" value="@unitsinstock" min="0" max="32767" step="1" />
+        </div><br />
+        <div class="col-6 text-right">
+            <label id="lblUnitsOnOrder" for="UnitsOnOrder">Units On Order</label>
+        </div>
+        <div class="col-6 text-left">
+            <input type="number" name="UnitsOnOrder" value="@unitsonorder" min="0" max="32767" step="1" /><br />
+        </div><br />
+        <div class="col-6 text-right">
+            <label id="lblReorderLevel" for="ReorderLevel">ReorderLevel</label>
+        </div>
+        <div class="col-6 text-left">
+            <input type="number" name="ReorderLevel" value="@reorderlevel" min="0" max="32767" step="1" />
+        </div><br />
     </div>
-    <div class="row offset-1">
-        <select id="CategoryList" name="CategoryList">
-            <option value="0">select category...</option>
-            @foreach (var item in categorylist)
-            {
-                if (categoryid == item.CategoryID.ToString())
-                {
-                    <option value="@item.CategoryID" selected>@item.CategoryName</option>
-                }
-                else
-                {
-                    <option value="@item.CategoryID">@item.CategoryName</option>
-                }
-            }
-        </select>
-        &nbsp;&nbsp;<label for="CategoryID">Catgeory</label>
-    </div>
-    <div class="row offset-1">
-        <input type="text" id="QuantityPerUnit" name="QuantityPerUnit"
-               value="@quantityperunit" />
-        &nbsp;&nbsp;<label for="QuantityPerUnit">Qty/Unit</label>
-    </div>
-    <div class="row offset-1">
-        <input type="text" id="UnitPrice" name="UnitPrice"
-               value="@unitprice" min="0.00" max="99.0" step="0.01" />
-        &nbsp;&nbsp;<label for="UnitPrice">Price</label>
-    </div>
-    <div class="row offset-1">
-        <input type="text" id="UnitsInStock" name="UnitsInStock"
-               value="@unitsinstock" />
-        &nbsp;&nbsp;<label for="UnitsInStock">QoH</label>
-    </div>
-    <div class="row offset-1">
-        <input type="text" id="UnitsOnOrder" name="UnitsOnOrder"
-               value="@unitsonorder" />
-        &nbsp;&nbsp;<label for="UnitsOnOrder">QoO</label>
-    </div>
-    <div class="row offset-1">
-        <input type="text" id="ReorderLevel" name="ReorderLevel"
-               value="@reorderlevel" />
-        &nbsp;&nbsp;<label for="ReorderLevel">RoL</label>
-    </div>
-    <div class="row offset-1">
-        <input type="submit" id="FormButton" name="FormButton"
-               class="btn btn-primary" value="Add" />
-        <input type="submit" id="FormButton" name="FormButton" formnovalidate
-               class="btn" value="Clear" />
+    <div class="row">
+        <div class="col-12 text-center">
+            <input type="submit" id="FormButton" name="FormButton"
+                   class="btn btn-primary" value="Add" />
+            <input type="submit" id="FormButton" name="FormButton" formnovalidate
+                   class="btn" value="Clear" />
+        </div>
     </div>
 </form>
-@Html.ValidationSummary()
+
+<div class="row">
+    <div class="col-6 text-right">
+        @Html.ValidationSummary()
+    </div>
+</div>
