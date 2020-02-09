@@ -82,7 +82,7 @@
                     //productid = "";
                     <div class="col-12 text-center">
                         <p style="color:green">
-                            Product has been discontinued
+                            Product has been DISCONTINUED
                         </p>
                     </div>
                 }
@@ -135,7 +135,7 @@
                 {
                     <div class="col-12 text-center">
                         <p style="color:green">
-                            Product has been updated
+                            Product has been UPDATED
                         </p>
                     </div>
                 }
@@ -168,7 +168,11 @@
                 var rows = db.Execute(deleteStatement, productid);
                 if (rows == 1)
                 {
-                    <p>Successful deletion of product information.</p>
+                    <div class="col-12 text-center">
+                        <p style="color:green">
+                            Product has been DELETED
+                        </p>
+                    </div>
                 }
                 else
                 {
