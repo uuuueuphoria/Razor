@@ -12,14 +12,13 @@
     var unitsonorder = "";
     var reorderlevel = "";
 
-    //obtain two lists: SupplierList and CategoryList
     var db = Database.Open("NWDB");
-    var supplierquery = @"SELECT SupplierID, CompanyName
-FROM Suppliers
-Order by CompanyName";
-    var categoryquery = @"SELECT CategoryID, CategoryName
-FROM Categories
-Order by CategoryName";
+    var supplierquery = "SELECT SupplierID, CompanyName "
+            + "FROM Suppliers "
+            + "Order by CompanyName";
+    var categoryquery = @"SELECT CategoryID, CategoryName "
+            + "FROM Categories "
+            + "Order by CategoryName";
     var supplierlist = db.Query(supplierquery);
     var categorylist = db.Query(categoryquery);
 
@@ -32,7 +31,6 @@ Order by CategoryName";
     Validation.Add("CategoryList",
          Validator.Range(1, 9, "Category is required"));
 
-    //QuantityPerUnit is nullable which means 0 required characters
     Validation.Add("QuantityPerUnit",
  Validator.StringLength(40, 0, "Quantity per unit is limited to 40 characters"));
 
