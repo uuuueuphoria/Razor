@@ -140,6 +140,7 @@
     <Content Include="03-Ex01-04.docx" />
     <Content Include="SamplePages\SimpleQueryLikePage2.cshtml" />
     <Content Include="SamplePages\CRUDPage1 - Copy.cshtml" />
+    <Content Include="SamplePages\ProductWebGridDisplay.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

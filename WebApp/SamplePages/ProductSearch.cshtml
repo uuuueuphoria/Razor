@@ -12,15 +12,16 @@
                         + "FROM Products "
                         + "WHERE ProductName like @0 "
                         + "ORDER BY ProductName";
-   
+    var queryProducts = db.Query(queryStatement, partialsearchstring);
+    var grid = new WebGrid(queryProducts, rowsPerPage:5);
 }
 @section banner{<h1>@Page.Title</h1>}
- 
+
 <form id="theForm" action="" method="post">
     <div class="col-sm-3">
-        <label id="forProductSearch">Product Name</label><br/>
-        <input type="text" name="ProductSearch" value="@productsearch"><br/><br/>
-        <button type="submit" class="btn btn-primary" name="Search" id="theSearch">Search</button>        
+        <label id="forProductSearch">Product Name</label><br />
+        <input type="text" name="ProductSearch" value="@productsearch"><br /><br />
+        <button type="submit" class="btn btn-primary" name="Search" id="theSearch">Search</button>
     </div><br />
 </form>
 <div class="col-sm-8">
@@ -32,28 +33,19 @@
         }
         else
         {
-            var queryProducts = db.Query(queryStatement, partialsearchstring);
+            
             if (queryProducts.Count() == 0)
             {
                 <p><strong><span style="color:firebrick">Nothing found for search argument.</span></strong></p>
             }
             else
             {
-                var grid = new WebGrid(queryProducts, rowsPerPage:5);
-                @grid.GetHtml("table table-bordered table-striped table-hover",
-                mode: WebGridPagerModes.All,
-                lastText: "Last",
-                firstText: "First",
-                columns: grid.Columns(
-                grid.Column(columnName: "ProductID", header: "ID"),
-                grid.Column(columnName: "Name"),
-                grid.Column(columnName: "CategoryID", header: "Cat"),
-                grid.Column(columnName: "UnitPrice", header: "$"),
-                grid.Column(columnName: "UnitsInStock", header: "UiS"),
-                grid.Column(columnName: "Discontinued", header: "Discontinued"),
-                grid.Column(header:"", format:@<text><a href="~/SamplePages/ProductEdit.cshtml?pid=@item.ProductID">Edit</a></text>)
-                ));
+                Response.Redirect("ProductWebGridDisplay.cshtml?cid=" + productsearch);
             }
         }
     }
+</div>
+
+<div>
+
 </div>

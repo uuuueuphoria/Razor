@@ -2,10 +2,6 @@
     Layout = "~/_Layout.cshtml";
     Page.Title = string.Format("Razor - {0}", "Partial Name Query with SQL LIKE Page 1");
 
-    //output variables
-    string artistid = "";
-    string artistname = "";
-
     //input variables for web controls
     var artistarg = Request.Form["artistArg"];
     var thebutton = Request.Form["theButton"];
@@ -30,7 +26,7 @@
     {
         <p style="color:darkblue">The Reset Button was just Pressed</p>
         artistarg = "";
-        artistid = "";
+        
     }
     else  //user must have pressed the submit
     {
@@ -61,7 +57,7 @@
         {
             <p style="color:firebrick">There was no record returned from the Data Base</p>
             artistarg = "";
-            artistid = "";
+            
         }
         else
         {
