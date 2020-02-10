@@ -26,7 +26,7 @@
 
     Validation.Add("ProductName",
          Validator.Required("Product name is required"),
-          Validator.StringLength(16, 1, "Product name is limited to 16 characters"));
+          Validator.StringLength(160, 1, "Product name is limited to 160 characters"));
 
     Validation.Add("CategoryList",
          Validator.Range(1, 9, "Category is required"));
@@ -40,15 +40,15 @@
 
     Validation.Add("UnitsInStock",
         Validator.Integer("Units in stock must be a number."),
-        Validator.Range(0.00, 32767.0, "Units in stock must be between 0.00 and 32767"));
+        Validator.Range(0, 32767, "Units in stock must be between 0 and 32767"));
 
     Validation.Add("UnitsOnOrder",
         Validator.Integer("Units on order must be a number."),
-        Validator.Range(0.00, 32767.0, "Units on order must be between 0.00 and 32767"));
+        Validator.Range(0, 32767, "Units on order must be between 0 and 32767"));
 
     Validation.Add("ReorderLevel",
         Validator.Integer("Reorder level must be a number."),
-        Validator.Range(0.00, 32767.0, "Reorder level must be between 0.00 and 32767"));
+        Validator.Range(0, 32767, "Reorder level must be between 0 and 32767"));
 
     //compare two fields together (ie password)
     //Validation.Add("ConfirmPassword",
@@ -62,7 +62,7 @@
     //     "Postal Code format invalid (T7T7T7"));
 }
 @section head{
-    <link href="~/Content/MySpacing.css" rel="stylesheet" />
+    @*<link href="~/Content/MyCssCopy.css" rel="stylesheet" />*@
 }
 
 @section banner{
@@ -81,7 +81,7 @@
     reorderlevel = Request.Form["ReorderLevel"];
     var thebutton = Request.Form["FormButton"];
 
-    if (thebutton.Equals("Clear"))
+    if (thebutton.Equals("Clear")) //pressed the CLEAR button
     {
         productname = "";
         supplierid = "0";
@@ -189,25 +189,25 @@ else
             <label id="lblUnitPrice" for="UnitPrice">Unit Price</label>
         </div>
         <div class="col text-left">
-            <input type="number" name="UnitPrice" value="@unitprice" min="0.00" step="0.01" />
+            <input type="number" name="UnitPrice" value="@unitprice" step="0.01" />
         </div><br />
         <div class="col text-right">
             <label id="lblUnitsInStock" for="UnitsInStock">Units In Stock</label>
         </div>
         <div class="col text-left">
-            <input type="number" name="UnitsInStock" value="@unitsinstock"  min="0" max="32767" step="1"/>
+            <input type="number" name="UnitsInStock" value="@unitsinstock" step="1"/>
         </div><br />
         <div class="col text-right">
             <label id="lblUnitsOnOrder" for="UnitsOnOrder">Units On Order</label>
         </div>
         <div class="col text-left">
-            <input type="number" name="UnitsOnOrder" value="@unitsonorder" min="0" max="32767" step="1" /><br />
+            <input type="number" name="UnitsOnOrder" value="@unitsonorder" step="1" /><br />
         </div><br />
         <div class="col text-right">
             <label id="lblReorderLevel" for="ReorderLevel">ReorderLevel</label>
         </div>
         <div class="col text-left">
-            <input type="number" name="ReorderLevel" value="@reorderlevel" min="0" max="32767" step="1" />
+            <input type="number" name="ReorderLevel" value="@reorderlevel" step="1" />
         </div><br />
     </div>
     <div class="row">
