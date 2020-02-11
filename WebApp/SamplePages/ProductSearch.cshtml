@@ -13,7 +13,6 @@
                         + "WHERE ProductName like @0 "
                         + "ORDER BY ProductName";
     var queryProducts = db.Query(queryStatement, partialsearchstring);
-    var grid = new WebGrid(queryProducts, rowsPerPage:5);
 }
 @section banner{<h1>@Page.Title</h1>}
 
