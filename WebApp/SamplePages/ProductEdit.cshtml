@@ -19,6 +19,8 @@
     var discontinued = Request.Form["Discontinued"];
     var thebutton = Request.Form["theButton"];
 
+    var message = "";
+
     //these are validator controls execute on the server side
 
     Validation.Add("ProductName",
@@ -93,14 +95,15 @@
 @if (IsPost)
 {
     if (thebutton.Equals("backtosearch"))
-        {
-            Response.Redirect("ProductSearch.cshtml");
-        }
+    {
+        Response.Redirect("ProductSearch.cshtml");
+    }
+
     if (Validation.IsValid())
     {
-        if (thebutton.Equals("discontinue"))
+        try
         {
-            try
+            if (thebutton.Equals("discontinue"))
             {
                 var sqlcommand = "UPDATE Products SET "
                                 + "Discontinued = 1 "
@@ -109,37 +112,14 @@
                 if (rowsaffected > 0)
                 {
                     discontinued = "1";
-                    //productid = "";
-                    <div class="col-12 text-center">
-                        <p style="color:green">
-                            Product has been DISCONTINUED
-                        </p>
-                    </div>
+                    message = "Product has been DISCONTINUED";
                 }
                 else
                 {
-                    <div class="col-12 text-center">
-                        <p>
-                            <span style="color:brown">
-                                Product not found on file. Discontinued not done. Return to product search for new product.
-                            </span>
-                            <a href="~/SamplePages/ProductSearch.cshtml"> go to search ....</a>
-                        </p>
-                    </div>
+                    message = "Product NOT found";
                 }
             }
-            catch (Exception ex)
-            {
-                <div class="col-12 text-center">
-                    <p style="color:firebrick; font-size:large">
-                        Processing error: @ex.Message
-                    </p>
-                </div>
-            }
-        }
-        else if (thebutton.Equals("update"))
-        {
-            try
+            else if (thebutton.Equals("update"))
             {
                 var sqlcommand = "UPDATE Products SET "
                                 + "ProductName = @0, "
@@ -163,50 +143,25 @@
                     discontinued, productid);
                 if (rowsaffected > 0)
                 {
-                    <div class="col-12 text-center">
-                        <p style="color:green">
-                            Product has been UPDATED
-                        </p>
-                    </div>
+                    message = "Product has been UPDATED";
                 }
                 else
                 {
-                    <div class="col-12 text-center">
-                        <p>
-                            <span style="color:brown">
-                                Product not found on file. Update not done. Return to product search for new product.
-                            </span>
-                            <a href="~/SamplePages/ProductSearch.cshtml"> go to search ....</a>
-                        </p>
-                    </div>
+                    message = "Product NOT found";
                 }
             }
-            catch (Exception ex)
+            else if (thebutton.Equals("delete"))
             {
-                <div class="col-12 text-center">
-                    <p style="color:firebrick; font-size:large">
-                        Processing error: @ex.Message
-                    </p>
-                </div>
-            }
-        }
-        else if (thebutton.Equals("delete"))
-        {
-            var deleteStatement = "Delete Products WHERE ProductID = @0";
-            try
-            {
+                var deleteStatement = "Delete Products WHERE ProductID = @0";
+                
                 var rows = db.Execute(deleteStatement, productid);
                 if (rows == 1)
                 {
-                    <div class="col-12 text-center">
-                        <p style="color:green">
-                            Product has been DELETED
-                        </p>
-                    </div>
+                    message = "Product has been DELETED";
                 }
                 else
                 {
-                    <p>Delete failed. Record is not on file.</p>
+                    message = "Product NOT found";
                 }
                 productid = "";
                 productname = "";
@@ -219,10 +174,14 @@
                 reorderlevel = "";
                 discontinued = "0";
             }
-            catch (Exception ex)
-            {
-                <p>Error: Unable to delete exception is: @ex.Message</p>
-            }
+        }
+        catch (Exception ex)
+        {
+            <div class="col-12 text-center">
+                <p style="color:firebrick; font-size:large">
+                    Processing error: @ex.Message
+                </p>
+            </div>
         }
     }
 }
@@ -240,6 +199,12 @@ else //IsPost=false
     discontinued = queryProducts.Discontinued.ToString();
 }
 @Html.ValidationSummary()
+
+<div class="col-12 text-center">
+    <p style="color:green">
+        @message
+    </p>
+</div>
 <form id="theForm" action="" method="post">
     <div class="row row-cols-2">
         <div class="col text-right">
@@ -308,19 +273,19 @@ else //IsPost=false
             <label id="lblUnitsInStock" for="UnitsInStock">Units In Stock</label>
         </div>
         <div class="col text-left">
-            <input type="number" name="UnitsInStock" value="@unitsinstock"  />
+            <input type="number" name="UnitsInStock" value="@unitsinstock" />
         </div><br />
         <div class="col text-right">
             <label id="lblUnitsOnOrder" for="UnitsOnOrder">Units On Order</label>
         </div>
         <div class="col text-left">
-            <input type="number" name="UnitsOnOrder" value="@unitsonorder"  /><br />
+            <input type="number" name="UnitsOnOrder" value="@unitsonorder" /><br />
         </div><br />
         <div class="col text-right">
             <label id="lblReorderLevel" for="ReorderLevel">ReorderLevel</label>
         </div>
         <div class="col text-left">
-            <input type="number" name="ReorderLevel" value="@reorderlevel"  />
+            <input type="number" name="ReorderLevel" value="@reorderlevel" />
         </div><br />
         <div class="col text-right">
             <label id="lblDiscontinued" for="Discontinued">Discontinued</label>
