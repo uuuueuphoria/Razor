@@ -195,7 +195,7 @@ else
             <label id="lblUnitsInStock" for="UnitsInStock">Units In Stock</label>
         </div>
         <div class="col text-left">
-            <input type="number" name="UnitsInStock" value="@unitsinstock" step="1"/>
+            <input type="number" name="UnitsInStock" value="@unitsinstock" step="1" />
         </div><br />
         <div class="col text-right">
             <label id="lblUnitsOnOrder" for="UnitsOnOrder">Units On Order</label>
@@ -212,10 +212,18 @@ else
     </div>
     <div class="row">
         <div class="col-12 text-center">
-            <input type="submit" id="FormButton" name="FormButton"
+            <input type="submit" id="theAdd" name="FormButton"
                    class="btn btn-primary" value="Add" />
-            <input type="submit" id="FormButton" name="FormButton" formnovalidate
+            <input type="submit" id="theClear" name="FormButton" formnovalidate
                    class="btn" value="Clear" />
         </div>
     </div>
+    @* confirmation can be done on a button click using javascript
+        we will ask the user to confirm the insertion of a product*@
+    <script type="text/javascript">
+        document.getElementById("theAdd").onclick = ConfirmAdd;
+        function ConfirmAdd() {
+            return confirm("Are you sure you want to ADD @productname?");
+        }
+    </script>
 </form>
