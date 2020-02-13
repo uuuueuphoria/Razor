@@ -2,27 +2,22 @@
     Layout = "~/_Layout.cshtml";
     Page.Title = string.Format("Razor - {0}", "CRUD - WebGrid Display");
 
-    var cid = Request.QueryString["cid"];
-    <p>A search was done with the following partial string for ProductName: @cid</p>
+    var pid = Request.QueryString["pid"];
+    <p>A search was done with the following partial string for ProductName: @pid</p>
 
-    if (string.IsNullOrEmpty(cid))
+    if (string.IsNullOrEmpty(pid))
     {
         Response.Redirect("ProductSearch.cshtml");
     }
 
     var db = Database.Open("NWDB");
-    var partialstring = "%" + cid + "%";
+    var partialstring = "%" + pid + "%";
     var prodquery = @"SELECT ProductID, ProductName, "
                 + "CategoryID, UnitPrice, UnitsInStock, Discontinued "
                 + "FROM Products "
                 + "WHERE ProductName LIKE @0 "
                 + "ORDER BY ProductName";
     var prodinfo = db.Query(prodquery, partialstring);
-
-    //var catquery = @"SELECT CategoryName
-    //        FROM Categories
-    //        WHERE CategoryID = @0";
-    //var catname = db.QueryValue(catquery, cid);
 
     var grid = new WebGrid(prodinfo, rowsPerPage: 5);
 }
