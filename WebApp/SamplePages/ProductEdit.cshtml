@@ -83,6 +83,10 @@
                         + "FROM Products "
                         + "WHERE ProductID = @0";
     var queryProducts = db.QuerySingle(queryStatement, pid);
+    if(queryProducts == null)
+    {
+        message = "Product NOT found";
+    }
 }
 
 @section head{
@@ -187,16 +191,20 @@
 }
 else //IsPost=false
 {
-    productid = queryProducts.ProductID.ToString();
-    productname = queryProducts.ProductName;
-    supplierid = queryProducts.SupplierID == null ? "0" : queryProducts.SupplierID.ToString();
-    categoryid = queryProducts.CategoryID == null ? "0" : queryProducts.CategoryID.ToString();
-    quantityperunit = queryProducts.QuantityPerUnit;
-    unitprice = queryProducts.UnitPrice == null ? "" : queryProducts.UnitPrice.ToString();
-    unitsinstock = queryProducts.UnitsInStock == null ? "" : queryProducts.UnitsInStock.ToString();
-    unitsonorder = queryProducts.UnitsOnOrder == null ? "" : queryProducts.UnitsOnOrder.ToString();
-    reorderlevel = queryProducts.ReorderLevel == null ? "" : queryProducts.ReorderLevel.ToString();
-    discontinued = queryProducts.Discontinued.ToString();
+    if(message != "Product NOT found")
+    {
+        productid = queryProducts.ProductID.ToString();
+        productname = queryProducts.ProductName;
+        supplierid = queryProducts.SupplierID == null ? "0" : queryProducts.SupplierID.ToString();
+        categoryid = queryProducts.CategoryID == null ? "0" : queryProducts.CategoryID.ToString();
+        quantityperunit = queryProducts.QuantityPerUnit;
+        unitprice = queryProducts.UnitPrice == null ? "" : queryProducts.UnitPrice.ToString();
+        unitsinstock = queryProducts.UnitsInStock == null ? "" : queryProducts.UnitsInStock.ToString();
+        unitsonorder = queryProducts.UnitsOnOrder == null ? "" : queryProducts.UnitsOnOrder.ToString();
+        reorderlevel = queryProducts.ReorderLevel == null ? "" : queryProducts.ReorderLevel.ToString();
+        discontinued = queryProducts.Discontinued.ToString();
+    }
+    
 }
 @Html.ValidationSummary()
 
