@@ -16,23 +16,23 @@
     var supplierquery = "SELECT SupplierID, CompanyName "
             + "FROM Suppliers "
             + "Order by CompanyName";
+    var supplierlist = db.Query(supplierquery);
     var categoryquery = @"SELECT CategoryID, CategoryName "
             + "FROM Categories "
             + "Order by CategoryName";
-    var supplierlist = db.Query(supplierquery);
     var categorylist = db.Query(categoryquery);
 
     //these are validator controls execute on the server side
 
     Validation.Add("ProductName",
          Validator.Required("Product name is required"),
-          Validator.StringLength(160, 1, "Product name is limited to 160 characters"));
+          Validator.StringLength(40, 1, "Product name is limited to 40 characters"));
 
     Validation.Add("CategoryList",
          Validator.Range(1, 9, "Category is required"));
 
     Validation.Add("QuantityPerUnit",
- Validator.StringLength(40, 0, "Quantity per unit is limited to 40 characters"));
+ Validator.StringLength(20, 0, "Quantity per unit is limited to 20 characters"));
 
     Validation.Add("UnitPrice",
         Validator.Decimal("Unit price is a money field."),
