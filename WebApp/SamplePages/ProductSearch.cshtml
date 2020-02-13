@@ -7,7 +7,7 @@
     var db = Database.Open("NWDB");
     var partialsearchstring = "%" + productsearch + "%";
 
-    var queryStatement = "SELECT ProductID, ProductName Name, "
+    var queryStatement = "SELECT ProductID, ProductName, "
                         + "CategoryID, UnitPrice, UnitsInStock, Discontinued "
                         + "FROM Products "
                         + "WHERE ProductName like @0 "
