@@ -1,83 +1,19 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
-    Page.Title = string.Format("Razor - {0}", "10Test1");
-    using System;
+    Page.Title = string.Format("Razor - {0}", "10Test1");  
 }
 
 @section banner{
     <h1>@Page.Title</h1>
 }
-
-
-
     
 @if(IsPost)
 { 
-    Label2.InnerHtml = "";   
-    Label2.InnerHtml += "IsPostBack = False";
-    string ConnectString = "server=localhost;database=Northwind_CPSC1517;integrated security=SSPI";
-    string QueryString = "select * from Products";
-    SqlConnection myConnection = new SqlConnection(ConnectString);
-    SqlDataAdapter myCommand = new SqlDataAdapter(QueryString, myConnection);
-    DataSet ds = new DataSet();
-    myCommand.Fill(ds, "Products");
-    Select1.DataSource = ds;
-    Select1.DataTextField = "ProductName";
-    Select1.DataValueField = "ProductID";
-    Select1.DataBind();
-    ListItem myitem = new ListItem();
-    myitem.Value = "0";
-    myitem.Text = "select...";
-    Select1.Items.Insert(0, myitem);
-
-    var numrows = ds.Tables[0].Rows.Count;
-    var numcols = ds.Tables[0].Columns.Count;
-    var temp = label1.Parent;
-    HtmlTable mytable = new HtmlTable();
-    mytable.Attributes.Add("class", "table table-striped");
-    mytable.Attributes.Add("cellspacing", "0");
-    mytable.Attributes.Add("border", "1");
-    mytable.Attributes.Add("rules", "rows");
-    mytable.Attributes.Add("style", "border-style:none; border-collapse:collapse");
-    temp.Controls.Add(mytable);
-    for (int i = 0; i < numrows; i++)
-    {
-        HtmlTableRow tr = new HtmlTableRow();
-        for (int j = 0; j < numcols; j++)
-        {
-            HtmlTableCell tc = new HtmlTableCell();
-            tc.InnerText = ds.Tables[0].Rows[i][j].ToString();
-            tr.Cells.Add(tc);
-        }
-        mytable.Rows.Add(tr);
-    }
-                
-                
+    
 }
-            @*void Button_Click(Object sender, EventArgs e)
-            {
-                Label2.InnerHtml += "<br /> You selected:";
-                Label2.InnerHtml += "<br /> &nbsp;&nbsp; SelectedIndex = "
-                                    + Select1.SelectedIndex;
-                Label2.InnerHtml += "<br /> &nbsp;&nbsp; SelectedValue = "
-                                    + Select1.Value;
-
-
-                for (int i = 0; i <= Select1.Items.Count - 1; i++)
-                {
-                    if (Select1.Items[i].Selected)
-                    {
-                        Label2.InnerHtml += "<br /> &nbsp;&nbsp; Item Text = "
-                                    + Select1.Items[i].Text;
-                        Label2.InnerHtml += "<br /> &nbsp;&nbsp; Item Value = "
-                                    + Select1.Items[i].Value;
-                    }
-                }
-            }
-}*@
     <form method="post">
         <Label id="label1"
-               runat="server" />
+                />
         <h3>HtmlSelect Example </h3>
 
         Select item from the list.
@@ -86,19 +22,19 @@
 
         <select id="Select1"
                 
-                runat="server" required />
+                 required />
         <br />
         <br />
         <input type="button"
                onserverclick="Button_Click"
-               runat="server"
+               
                value="Click Me!">
         <br />
         <br />
         <label ID="Label2"
-               runat="server" />
+                />
         <br />
         <br />
         <table id="Table1"
-               runat="server" />
+                />
     </form>
