@@ -30,18 +30,18 @@
         //the Press Me button was pressed
         if (string.IsNullOrEmpty(myname))
         {
-            <p style="color:firebrick">You don't have a name?</p>
+            <p style="color:firebrick">Enter a name</p>
         }
         else
         {
-            <p>Hello there @myname</p>
+            <p style="color:green">Hello there @myname</p>
         }
     }
     else
     {
         //the Reset button was pressed
         myname = "";
-        <p>You pressed the Reset button</p>
+        <p style="color:green">Reset button pressed</p>
     }
 }
 else
