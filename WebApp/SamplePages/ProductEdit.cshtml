@@ -11,15 +11,12 @@
     var productname = Request.Form["ProductName"];
     var supplierid = Request.Form["SupplierList"];
     var categoryid = Request.Form["CategoryList"];
-    //var quantityperunit = Request.Form["QuantityPerUnit"];
     var unitprice = Request.Form["UnitPrice"];
-    //var unitsinstock = Request.Form["UnitsInStock"];
-    //var unitsonorder = Request.Form["UnitsOnOrder"];
-    //var reorderlevel = Request.Form["ReorderLevel"];
     var discontinued = Request.Form["Discontinued"];
     var thebutton = Request.Form["theButton"];
 
     var message = "";
+    var color = "";
 
     //these are validator controls execute on the server side
 
@@ -30,24 +27,9 @@
     Validation.Add("CategoryList",
          Validator.Range(1, 9, "Category is required"));
 
-    //Validation.Add("QuantityPerUnit",
-    //     Validator.StringLength(20, 0, "Quantity per unit is limited to 20 characters"));
-
     Validation.Add("UnitPrice",
         Validator.Decimal("Unit price is a money field."),
         Validator.Range(0.00, 99.00, "Unit price must be 0.00 or more"));
-
-    //Validation.Add("UnitsInStock",
-    //    Validator.Integer("Units in stock must be a number."),
-    //    Validator.Range(0, 32767, "Units in stock must be between 0 and 32767"));
-
-    //Validation.Add("UnitsOnOrder",
-    //    Validator.Integer("Units on order must be a number."),
-    //    Validator.Range(0, 32767, "Units on order must be between 0 and 32767"));
-
-    //Validation.Add("ReorderLevel",
-    //    Validator.Integer("Reorder level must be a number."),
-    //    Validator.Range(0, 32767, "Reorder level must be between 0 and 32767"));
 
     if (IsPost)
     {
@@ -85,7 +67,8 @@
     var queryProducts = db.QuerySingle(queryStatement, pid);
     if (queryProducts == null)
     {
-        message = "Product NOT found";
+        message = "Record NOT found";
+        color = "color:firebrick";
     }
 }
 
@@ -107,7 +90,7 @@
     {
         try
         {
-            if (thebutton.Equals("clear")) //pressed the CLEAR button
+            if (thebutton.Equals("clear"))
             {
                 productid = "";
                 productname = "";
@@ -115,7 +98,7 @@
                 categoryid = "0";
                 unitprice = "";
                 discontinued = "0";
-                
+
             }
             else if (thebutton.Equals("add"))
             {
@@ -124,17 +107,21 @@
                     + "UnitPrice, "
                     + "Discontinued) "
                     + "VALUES(@0, @1, @2, @3, @4)";
-                var newid = db.Execute(inscommand, productname,
+                var rowsaffected = db.Execute(inscommand, productname,
                     supplierid.Equals("0") ? null : supplierid,
                     categoryid.Equals("0") ? null : categoryid,
                     string.IsNullOrEmpty(unitprice) ? null : unitprice,
                     discontinued);
-                productid = newid.ToString();
-                <div class="col-12 text-center">
-                    <p style="color:green">
-                        Product has been ADDED
-                    </p>
-                </div>
+                if (rowsaffected > 0)
+                {
+                    message = "Record ADDED";
+                    color = "color:green";
+                }
+                else
+                {
+                    message = "Record NOT found";
+                    color = "color:firebrick";
+                }
             }
             else if (thebutton.Equals("update"))
             {
@@ -152,47 +139,49 @@
                     discontinued, productid);
                 if (rowsaffected > 0)
                 {
-                    message = "Product has been UPDATED";
+                    message = "Record UPDATED";
+                    color = "color:green";
                 }
                 else
                 {
-                    message = "Product NOT found";
+                    message = "Record NOT found";
+                    color = "color:firebrick";
                 }
             }
             else if (thebutton.Equals("delete"))
             {
                 var deleteStatement = "Delete Products WHERE ProductID = @0";
 
-                var rows = db.Execute(deleteStatement, productid);
-                if (rows == 1)
+                var rowsaffected = db.Execute(deleteStatement, productid);
+                if (rowsaffected > 0)
                 {
-                    message = "Product has been DELETED";
+                    message = "Record DELETED";
+                    color = "color:green";
+                    productid = "";
+                    productname = "";
+                    supplierid = "0";
+                    categoryid = "0";
+                    unitprice = "";
+                    discontinued = "0";
                 }
                 else
                 {
-                    message = "Product NOT found";
+                    message = "Record NOT found";
+                    color = "color:firebrick";
                 }
-                productid = "";
-                productname = "";
-                supplierid = "0";
-                categoryid = "0";
-                unitprice = "";
-                discontinued = "0";
+
             }
         }
         catch (Exception ex)
         {
-            <div class="col-12 text-center">
-                <p style="color:firebrick; font-size:large">
-                    Processing error: @ex.Message
-                </p>
-            </div>
+            message = "Processing error:" + @ex.Message;
+            color = "color:firebrick";
         }
     }
 }
 else //IsPost=false
 {
-    if (message != "Product NOT found")
+    if (message != "Record NOT found")
     {
         productid = queryProducts.ProductID.ToString();
         productname = queryProducts.ProductName;
@@ -205,11 +194,7 @@ else //IsPost=false
 }
 @Html.ValidationSummary()
 
-<div class="col-12 text-center">
-    <p style="color:green">
-        @message
-    </p>
-</div>
+
 <form id="theForm" action="" method="post">
     <div class="row row-cols-2">
         <div class="col text-right">
@@ -262,36 +247,12 @@ else //IsPost=false
                 }
             </select>
         </div><br />
-        @*<div class="col text-right">
-                <label id="lblQuantityPerUnit" for="QuasntityPerUnit">Quantity Per Unit</label>
-            </div>
-            <div class="col text-left">
-                <input type="text" name="QuantityPerUnit" value="@quantityperunit" />
-            </div><br />*@
         <div class="col text-right">
             <label id="lblUnitPrice" for="UnitPrice">Unit Price</label>
         </div>
         <div class="col text-left">
             <input type="number" name="UnitPrice" value="@unitprice" step="0.01" />
         </div><br />
-        @*<div class="col text-right">
-                <label id="lblUnitsInStock" for="UnitsInStock">Units In Stock</label>
-            </div>
-            <div class="col text-left">
-                <input type="number" name="UnitsInStock" value="@unitsinstock" />
-            </div><br />
-            <div class="col text-right">
-                <label id="lblUnitsOnOrder" for="UnitsOnOrder">Units On Order</label>
-            </div>
-            <div class="col text-left">
-                <input type="number" name="UnitsOnOrder" value="@unitsonorder" /><br />
-            </div><br />
-            <div class="col text-right">
-                <label id="lblReorderLevel" for="ReorderLevel">ReorderLevel</label>
-            </div>
-            <div class="col text-left">
-                <input type="number" name="ReorderLevel" value="@reorderlevel" />
-            </div><br />*@
         <div class="col text-right">
             <label id="lblDiscontinued" for="Discontinued">Discontinued</label>
         </div>
@@ -324,10 +285,6 @@ else //IsPost=false
                     value="update">
                 Update
             </button>&nbsp;&nbsp;
-            @*<button type="submit" name="theButton" id="theDiscontinue" class="btn btn-primary" formnovalidate
-                value="discontinue">
-            Discontinue
-        </button>&nbsp;&nbsp;&nbsp;*@
             <button type="submit" name="theButton" id="theDelete" class="btn btn-primary" formnovalidate
                     value="delete">
                 Delete
@@ -336,15 +293,17 @@ else //IsPost=false
         </div>
     </div>
     @* confirmation can be done on a button click using javascript
-        we will ask the user to confirm the discontinuing of a product*@
+        we will ask the user to confirm the Deletion of the record*@
     <script type="text/javascript">
-        @*document.getElementById("theDiscontinue").onclick = ConfirmDiscontinue;
-        function ConfirmDiscontinue() {
-            return confirm("Are you sure you want to DISCONTINUE @productname?");
-        }*@
         document.getElementById("theDelete").onclick = ConfirmDelete;
         function ConfirmDelete() {
             return confirm("Are you sure you want to DELETE @productname?");
         }
     </script>
 </form>
+<br/><br/>
+<div class="col-12 text-center">
+    <p style=@color>
+        @message
+    </p>
+</div>
