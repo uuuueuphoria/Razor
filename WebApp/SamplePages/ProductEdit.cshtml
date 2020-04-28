@@ -14,7 +14,7 @@
     var unitprice = Request.Form["UnitPrice"];
     var discontinued = Request.Form["Discontinued"];
     var thebutton = Request.Form["theButton"];
-
+    bool deleteEnabled = true;
     var message = "";
     var color = "";
 
@@ -68,12 +68,8 @@
     if (queryProducts == null)
     {
         message = "Record NOT found";
-        color = "color:firebrick";
+        color = "color:blue";
     }
-}
-
-@section head{
-    @*<link href="~/Content/MyCssCopy.css" rel="stylesheet" />*@
 }
 
 @section banner{
@@ -114,6 +110,8 @@
                     discontinued);
                 if (rowsaffected > 0)
                 {
+                    decimal newid = db.GetLastInsertId();
+                    productid = newid.ToString();
                     message = "Record ADDED";
                     color = "color:green";
                 }
@@ -163,6 +161,9 @@
                     categoryid = "0";
                     unitprice = "";
                     discontinued = "0";
+                    deleteEnabled = false;
+
+
                 }
                 else
                 {
@@ -285,7 +286,7 @@ else //IsPost=false
                     value="update">
                 Update
             </button>&nbsp;&nbsp;
-            <button type="submit" name="theButton" id="theDelete" class="btn btn-primary" formnovalidate
+            <button type="submit" name="theButton" id="theDelete" class="btn btn-primary" @(deleteEnabled ? "":"disabled") formnovalidate
                     value="delete">
                 Delete
             </button>&nbsp;&nbsp;
