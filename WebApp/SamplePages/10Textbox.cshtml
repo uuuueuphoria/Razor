@@ -2,26 +2,23 @@
     Layout = "~/_Layout.cshtml";
     Page.Title = string.Format("Razor - {0}", "Form with Text Box");
 
-    //retreive the data entered into the input controls
-    //var datatype: resolves at execution time
-    //to access a control of your page use: Request.Form["control parameter name"]
-    //the data returned comes in as a STRING
-    var myname = Request.Form["dataentry"];
-    var thebutton = Request.Form["theButton"];
-    //any other additional processing such as database access
+    var myname = "";
+    var thebutton = "";
 }
 
 @section banner {
     <h1>@Page.Title</h1>
 }
 
-<!-- determine if the page is a postback or not-->
 @if (IsPost)
 {
     <p>IsPost = true</p>
-    //this true path is done IF this page is returning
-    //from the previous sending
 
+    //to access a control of your page use: Request.Form["control parameter name"]
+    //the data returned comes in as a STRING
+    myname = Request.Form["dataentry"];
+    thebutton = Request.Form["theButton"];
+    
     //IF you have multiple buttons on your form, you SHOULD
     //determine which button was pressed; thus; dictating WHICH
     //logic is to be EXECUTED
@@ -30,18 +27,18 @@
         //the Press Me button was pressed
         if (string.IsNullOrEmpty(myname))
         {
-            <p style="color:firebrick">Enter a name</p>
+            <p style="color:firebrick">Enter a Name</p>
         }
         else
         {
-            <p style="color:green">Hello there @myname</p>
+            <p style="color:green">Entered Name:  @myname</p>
         }
     }
     else
     {
         //the Reset button was pressed
         myname = "";
-        <p style="color:green">Reset button pressed</p>
+        <p style="color:green">Reset Button Pressed</p>
     }
 }
 else
@@ -54,7 +51,7 @@ else
 <form id="theform" method="post">
     <div class="row">
         <div class="offset-1">
-            <label id="label1" for="dataentry">Enter your full name:</label>&nbsp;&nbsp;
+            <label id="label1" for="dataentry">Enter a Name:</label>&nbsp;&nbsp;
             <input type="text" id="dataentry" name="dataentry" value="@myname" />
             <br /><br />
             <button type="submit" id="theButton" name="theButton"
