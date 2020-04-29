@@ -2,6 +2,8 @@
     Layout = "~/_Layout.cshtml";
     Page.Title = string.Format("Razor - {0}", "CRUD - Search");
 
+    var message = "";
+    var color = "";
     var productsearch = Request.Form["ProductSearch"];
 
     var db = Database.Open("NWDB");
@@ -14,33 +16,44 @@
                         + "ORDER BY ProductName";
     var queryProducts = db.Query(queryStatement, partialsearchstring);
 }
-@section banner{<h1>@Page.Title</h1>}
 
-<form id="theForm" action="" method="post">
-    <div class="col-sm-3">
-        <label id="forProductSearch">Product Name</label><br />
-        <input type="text" name="ProductSearch" value="@productsearch"><br /><br />
-        <button type="submit" class="btn btn-primary" name="Search" id="theSearch">Search</button>
-    </div><br />
-</form>
-<div class="col-sm-8">
-    @if (IsPost)
+@if (IsPost)
+{
+    if (productsearch.IsEmpty())
     {
-        if (productsearch.IsEmpty())
+        message = "Enter a product name (or partial name).";
+        color = "color:firebrick";
+    }
+    else
+    {
+
+        if (queryProducts.Count() == 0)
         {
-            <p><strong><span style="color:firebrick">Enter a product name (or partial name).</span></strong></p>
+            message = "Nothing found for search argument.";
+            color = "color:firebrick";
         }
         else
         {
-            
-            if (queryProducts.Count() == 0)
-            {
-                <p><strong><span style="color:firebrick">Nothing found for search argument.</span></strong></p>
-            }
-            else
-            {
-                Response.Redirect("ProductWebGridDisplay.cshtml?pid=" + productsearch);
-            }
+            Response.Redirect("ProductWebGridDisplay.cshtml?pid=" + productsearch);
         }
     }
+}
+
+@section banner{<h1>@Page.Title</h1>}
+
+<form id="theForm" action="" method="post">
+    <div class="row">
+        <div class="col-12">
+            <label id="forProductSearch">Product Name</label><br />
+            <input type="text" name="ProductSearch" value="@productsearch"><br /><br />
+            <button type="submit" class="btn btn-primary" name="Search" id="theSearch">Search</button>
+        </div>
+    </div>
+</form>
+<div class="row">
+    <div class="col-12 text-center">
+        <p style=@color>
+            @message
+        </p>
+    </div>
 </div>
