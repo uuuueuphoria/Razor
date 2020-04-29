@@ -14,24 +14,10 @@
     var unitprice = Request.Form["UnitPrice"];
     var discontinued = Request.Form["Discontinued"];
     var thebutton = Request.Form["theButton"];
-    bool deleteEnabled = true;
+    bool updateDeleteEnabled = true;
     var message = "";
     var color = "";
-
-    //these are validator controls execute on the server side
-
-    Validation.Add("ProductName",
-         Validator.Required("Product name is required"),
-         Validator.StringLength(40, 1, "Product name is limited to 40 characters"));
-
-    Validation.Add("CategoryList",
-         Validator.Range(1, 9, "Category is required"));
-
-    Validation.Add("UnitPrice",
-        Validator.Decimal("Unit price is a money field."),
-        Validator.Range(0.00, 99.00, "Unit price must be 0.00 or more"));
-
-    if (IsPost)
+    if (IsPost) //Buttons Pressed
     {
         //discontinued is a checkbox
         //the possible values from the check box is null (not checked) or "on" (checked)
@@ -52,23 +38,35 @@
     }
     var db = Database.Open("NWDB");
     var supplierStatement = "SELECT SupplierID, CompanyName "
-                        + "FROM Suppliers "
-                        + "ORDER BY CompanyName";
+                            + "FROM Suppliers "
+                            + "ORDER BY CompanyName";
     var querySuppliers = db.Query(supplierStatement);
     var categoryStatement = "SELECT CategoryID, CategoryName "
                         + "FROM Categories "
                         + "ORDER BY CategoryName";
     var queryCategories = db.Query(categoryStatement);
-    var queryStatement = "SELECT ProductID, ProductName, SupplierID, "
-                        + "CategoryID, UnitPrice, "
-                        + "Discontinued "
-                        + "FROM Products "
-                        + "WHERE ProductID = @0";
-    var queryProducts = db.QuerySingle(queryStatement, pid);
-    if (queryProducts == null)
+    if (!IsPost) //No Buttons Pressed
     {
-        message = "Record NOT found";
-        color = "color:blue";
+        var queryStatement = "SELECT ProductID, ProductName, SupplierID, "
+                            + "CategoryID, UnitPrice, "
+                            + "Discontinued "
+                            + "FROM Products "
+                            + "WHERE ProductID = @0";
+        var queryProducts = db.QuerySingle(queryStatement, pid);
+        if (queryProducts != null)
+        {
+            productid = queryProducts.ProductID.ToString();
+            productname = queryProducts.ProductName;
+            supplierid = queryProducts.SupplierID == null ? "0" : queryProducts.SupplierID.ToString();
+            categoryid = queryProducts.CategoryID == null ? "0" : queryProducts.CategoryID.ToString();
+            unitprice = queryProducts.UnitPrice == null ? "" : queryProducts.UnitPrice.ToString();
+            discontinued = queryProducts.Discontinued.ToString();
+        }
+        else
+        {
+            message = "Record NOT found";
+            color = "color:firebrick";
+        }
     }
 }
 
@@ -77,26 +75,43 @@
 }
 @if (IsPost)
 {
-    if (thebutton.Equals("back"))
+    try
     {
-        Response.Redirect("ProductSearch.cshtml");
-    }
-
-    if (Validation.IsValid())
-    {
-        try
+        if (thebutton.Equals("back"))
         {
-            if (thebutton.Equals("clear"))
+            Response.Redirect("ProductSearch.cshtml");
+        }
+        else if (thebutton.Equals("clear"))
+        {
+            productid = "";
+            productname = "";
+            supplierid = "0";
+            categoryid = "0";
+            unitprice = "";
+            discontinued = "0";
+            updateDeleteEnabled = false;
+        }
+        else if (thebutton.Equals("add"))
+        {
+            if (productname == "")
             {
-                productid = "";
-                productname = "";
-                supplierid = "0";
-                categoryid = "0";
-                unitprice = "";
-                discontinued = "0";
-
+                message = "Product Name is required";
+                color = "color:firebrick";
+                updateDeleteEnabled = false;
             }
-            else if (thebutton.Equals("add"))
+            else if (categoryid == "0")
+            {
+                message = "Category is required";
+                color = "color:firebrick";
+                updateDeleteEnabled = false;
+            }
+            else if (unitprice == "")
+            {
+                message = "Unit Price is required";
+                color = "color:firebrick";
+                updateDeleteEnabled = false;
+            }
+            else
             {
                 var inscommand = "INSERT INTO Products "
                     + "(ProductName, SupplierID, CategoryID, "
@@ -114,6 +129,7 @@
                     productid = newid.ToString();
                     message = "Record ADDED";
                     color = "color:green";
+                    updateDeleteEnabled = true;
                 }
                 else
                 {
@@ -121,15 +137,33 @@
                     color = "color:firebrick";
                 }
             }
-            else if (thebutton.Equals("update"))
+        }
+        else if (thebutton.Equals("update"))
+        {
+            if (productname == "")
+            {
+                message = "Product Name is required";
+                color = "color:firebrick";
+            }
+            else if (categoryid == "0")
+            {
+                message = "Category is required";
+                color = "color:firebrick";
+            }
+            else if (unitprice == "")
+            {
+                message = "Unit Price is required";
+                color = "color:firebrick";
+            }
+            else
             {
                 var sqlcommand = "UPDATE Products SET "
-                                + "ProductName = @0, "
-                                + "SupplierID = @1, "
-                                + "CategoryID = @2, "
-                                + "UnitPrice = @3, "
-                                + "Discontinued = @4 "
-                                + "WHERE ProductID = @5";
+                    + "ProductName = @0, "
+                    + "SupplierID = @1, "
+                    + "CategoryID = @2, "
+                    + "UnitPrice = @3, "
+                    + "Discontinued = @4 "
+                    + "WHERE ProductID = @5";
                 var rowsaffected = db.Execute(sqlcommand, productname,
                     supplierid.Equals("0") ? null : supplierid,
                     categoryid.Equals("0") ? null : categoryid,
@@ -146,55 +180,37 @@
                     color = "color:firebrick";
                 }
             }
-            else if (thebutton.Equals("delete"))
+        }
+        else if (thebutton.Equals("delete"))
+        {
+            var deleteStatement = "Delete Products WHERE ProductID = @0";
+
+            var rowsaffected = db.Execute(deleteStatement, productid);
+            if (rowsaffected > 0)
             {
-                var deleteStatement = "Delete Products WHERE ProductID = @0";
-
-                var rowsaffected = db.Execute(deleteStatement, productid);
-                if (rowsaffected > 0)
-                {
-                    message = "Record DELETED";
-                    color = "color:green";
-                    productid = "";
-                    productname = "";
-                    supplierid = "0";
-                    categoryid = "0";
-                    unitprice = "";
-                    discontinued = "0";
-                    deleteEnabled = false;
-
-
-                }
-                else
-                {
-                    message = "Record NOT found";
-                    color = "color:firebrick";
-                }
-
+                message = "Record DELETED";
+                color = "color:green";
+                productid = "";
+                productname = "";
+                supplierid = "0";
+                categoryid = "0";
+                unitprice = "";
+                discontinued = "0";
+                updateDeleteEnabled = false;
+            }
+            else
+            {
+                message = "Record NOT found";
+                color = "color:firebrick";
             }
         }
-        catch (Exception ex)
-        {
-            message = "Processing error:" + @ex.Message;
-            color = "color:firebrick";
-        }
     }
-}
-else //IsPost=false
-{
-    if (message != "Record NOT found")
+    catch (Exception ex)
     {
-        productid = queryProducts.ProductID.ToString();
-        productname = queryProducts.ProductName;
-        supplierid = queryProducts.SupplierID == null ? "0" : queryProducts.SupplierID.ToString();
-        categoryid = queryProducts.CategoryID == null ? "0" : queryProducts.CategoryID.ToString();
-        unitprice = queryProducts.UnitPrice == null ? "" : queryProducts.UnitPrice.ToString();
-        discontinued = queryProducts.Discontinued.ToString();
+        message = "Processing error:" + @ex.Message;
+        color = "color:firebrick";
     }
-
 }
-@Html.ValidationSummary()
-
 
 <form id="theForm" action="" method="post">
     <div class="row row-cols-2">
@@ -283,18 +299,17 @@ else //IsPost=false
                 Add
             </button>&nbsp;&nbsp;
             <button type="submit" name="theButton" id="theUpdate" class="btn btn-primary"
-                    value="update">
+                    @(updateDeleteEnabled ? "":"disabled") value="update">
                 Update
             </button>&nbsp;&nbsp;
-            <button type="submit" name="theButton" id="theDelete" class="btn btn-primary" @(deleteEnabled ? "":"disabled") formnovalidate
+            <button type="submit" name="theButton" id="theDelete" class="btn btn-primary" 
+                    @(updateDeleteEnabled ? "":"disabled") formnovalidate
                     value="delete">
                 Delete
             </button>&nbsp;&nbsp;
 
         </div>
     </div>
-    @* confirmation can be done on a button click using javascript
-        we will ask the user to confirm the Deletion of the record*@
     <script type="text/javascript">
         document.getElementById("theDelete").onclick = ConfirmDelete;
         function ConfirmDelete() {
