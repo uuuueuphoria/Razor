@@ -31,7 +31,7 @@
             discontinued = "1";
         }
     }
-    else
+    else //No Buttons Pressed
     {
         productid = pid;
         discontinued = "0";
@@ -73,7 +73,7 @@
 @section banner{
     <h1>@Page.Title</h1>
 }
-@if (IsPost)
+@if (IsPost) // Buttons Pressed
 {
     try
     {
@@ -184,7 +184,6 @@
         else if (thebutton.Equals("delete"))
         {
             var deleteStatement = "Delete Products WHERE ProductID = @0";
-
             var rowsaffected = db.Execute(deleteStatement, productid);
             if (rowsaffected > 0)
             {
