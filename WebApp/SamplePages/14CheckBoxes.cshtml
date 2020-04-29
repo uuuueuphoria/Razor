@@ -4,6 +4,8 @@
 
     string choices = "";
     var thebutton = "";
+    var message = "";
+    var color = "";
 }
 
 @section banner {
@@ -12,49 +14,41 @@
 
 @if (IsPost)
 {
-    <p>IsPost = true</p>
     choices = Request.Form["GameGroup"];
     thebutton = Request.Form["theButton"];
     if (thebutton.Equals("submit"))
     {
         if (choices.IsEmpty())
         {
-            <p style="color:firebrick">You don't like to play games?</p>
+            message = "You don't like to play games? ";
+            color = "color:firebrick";
             choices = "";
         }
         else
         {
-            <p>@choices</p>
             var choicesarray = choices.Split(',');
             for (int i = 0; i < choicesarray.Length; i++)
             {
-                <p>Choice @i: @choicesarray[i]</p>
+                message += "Choice " + i + ": " + @choicesarray[i] + ". ";
+                color = "color:green";
             }
             //for a checkbox list, your choices will be a set of strings
             //separated by a delimiter (in this case is a comma)
             //to divide up this set of strings use the .Split(delimiter) method
-            //to process the collection of strings in choices, consider using foreach
-            <p>
-                You use the following platforms:
-                <ul>
-                    @foreach (var platform in choices.Split(','))
-                    {
-                        <li>@platform</li>
-                    }
-                </ul>
-            </p>
+            //to process the collection of strings in choices
         }
     }
     else if (thebutton.Equals("reset"))
     {
-        <p>Reset button pressed</p >
+        message = "Reset button pressed";
+        color = "color:green";
         choices = "";
     }
 }
 else
 {
-    <p>IsPost = false</p>
-    choices = "";
+    message = "IsPost = false";
+    color = "color:green";
 }
 
 
@@ -73,7 +67,7 @@ else
             <input type="checkbox" id="GameGroup" name="GameGroup" value="Wii"
                    @(Array.IndexOf(choices.Split(','), "Wii") >= 0 ? "checked" : "") />Wii<br /><br />
             @*<input type="checkbox" id="GameGroup" name="GameGroup" value="Wii" checked
-                   @(Array.IndexOf(choices.Split(','), "Wii") >= 0 ? "checked" : "") />Wii<br /><br />*@
+                @(Array.IndexOf(choices.Split(','), "Wii") >= 0 ? "checked" : "") />Wii<br /><br />*@
         </div>
     </div>
     <div class="row">
@@ -89,3 +83,11 @@ else
         </div>
     </div>
 </form>
+<br />
+<div class="row">
+    <div class="offset-1 text-center">
+        <p style=@color>
+            @message
+        </p>
+    </div>
+</div>

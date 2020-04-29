@@ -4,6 +4,8 @@
 
     var myname = "";
     var thebutton = "";
+    var message = "";
+    var color = "";
 }
 
 @section banner {
@@ -12,13 +14,11 @@
 
 @if (IsPost)
 {
-    <p>IsPost = true</p>
-
     //to access a control of your page use: Request.Form["control parameter name"]
     //the data returned comes in as a STRING
     myname = Request.Form["dataentry"];
     thebutton = Request.Form["theButton"];
-    
+
     //IF you have multiple buttons on your form, you SHOULD
     //determine which button was pressed; thus; dictating WHICH
     //logic is to be EXECUTED
@@ -26,24 +26,26 @@
     {
         if (string.IsNullOrEmpty(myname))
         {
-            <p style="color:firebrick">Enter a Name</p>
+            message = "Please enter a name";
+            color = "color:firebrick";
         }
         else
         {
-            <p style="color:green">Entered Name:  @myname</p>
+            message = "Entered Name: " + @myname;
+            color = "color:green";
         }
     }
     else if (thebutton.Equals("reset"))
     {
         myname = "";
-        <p style="color:green">Reset button pressed</p>
+        message = "Reset button pressed";
+        color = "color:green";
     }
 }
 else
 {
-    // use to initialize items on your form BEFORE it is sent
-    // to the user for the FIRST time.
-    <p>IsPost = false</p>
+    message = "IsPost = false";
+    color = "color:green";
 }
 
 <form id="theform" method="post">
@@ -63,3 +65,11 @@ else
         </div>
     </div>
 </form>
+<br />
+<div class="row">
+    <div class="offset-1 text-center">
+        <p style=@color>
+            @message
+        </p>
+    </div>
+</div>

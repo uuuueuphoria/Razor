@@ -1,6 +1,9 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
     Page.Title = string.Format("Razor - {0}", "Form with Dropdown List");
+
+    var message = "";
+    var color = "";
 }
 
 @section banner {
@@ -10,30 +13,27 @@
 @if (IsPost)
 {
     var choice = Request.Form["CodingSamples"];
-    switch(choice.ToUpper())
+    switch (choice.ToUpper())
     {
         case "TEXTBOX":
             {
-                //we will use the .Redirect("pagename") method of the outgoing object Response
-                //   to redirect us to a new page
-                //relative addressing is needed for the page
-                Response.Redirect("BasicForm.cshtml");
+                Response.Redirect("10Textbox.cshtml");
                 break;
             }
-            case "RADIOBUTTON":
+        case "RADIOBUTTON":
             {
-                Response.Redirect("RadioButtons.cshtml");
+                Response.Redirect("12RadioButtons.cshtml");
                 break;
             }
-             case "CHECKBOX":
+        case "CHECKBOX":
             {
-                Response.Redirect("CheckBoxes.cshtml");
+                Response.Redirect("14CheckBoxes.cshtml");
                 break;
             }
         default:
             {
-                //if the user did not make a selection (select .... which is the prompt line)
-                <p style="color:firebrick">Make a selection.</p>
+                message = "Select something";
+                color = "color:firebrick";
                 break;
             }
     }
@@ -54,7 +54,17 @@ else
                 <option value="CheckBox">CheckBoxes</option>
             </select>&nbsp;&nbsp;
             <button type="submit" id="theButton" name="theButton" value="submit"
-                    class="btn btn-primary">Go To ...</button>
+                    class="btn btn-primary">
+                Go To ...
+            </button>
         </div>
     </div>
 </form>
+<br />
+<div class="row">
+    <div class="offset-1 text-center">
+        <p style=@color>
+            @message
+        </p>
+    </div>
+</div>
