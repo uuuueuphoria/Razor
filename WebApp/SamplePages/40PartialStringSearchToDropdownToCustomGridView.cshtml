@@ -33,7 +33,7 @@
         //connect to the database
         //use the name attribute off your web connection string
 
-        var db = Database.Open("CHINOOK");
+        var db = Database.Open("CHINOOKDB");
 
         //create the sql command to be executed on the database
         //input parameters will be represented by the use of placeholders
@@ -70,7 +70,7 @@
             // separate data pairs with an  &
             // sample syntax    Response.Redirect(page.ext?lbl=value[&lbl=value ...])
             //WARNING: value are passed in plain text on Url
-            Response.Redirect("SimpleQueryLikePage2.cshtml?cid=" + artistarg);
+            Response.Redirect("42DropdownToCustomGridView.cshtml?cid=" + artistarg);
             
         }
     }

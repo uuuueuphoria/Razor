@@ -106,9 +106,9 @@
     <Content Include="SamplePages\12RadioButtons.cshtml" />
     <Content Include="SamplePages\14CheckBoxes.cshtml" />
     <Content Include="SamplePages\16DropdownList.cshtml" />
-    <Content Include="SamplePages\SimpleQuery.cshtml" />
-    <Content Include="SamplePages\MultiRecordQuery.cshtml" />
-    <Content Include="SamplePages\WebGridDisplay.cshtml" />
+    <Content Include="SamplePages\20SingleRecordQuery.cshtml" />
+    <Content Include="SamplePages\30MultiRecordDropdownToCustomGridView.cshtml" />
+    <Content Include="SamplePages\32CustomGridView.cshtml" />
     <Content Include="SamplePages\WebGridDestination.cshtml" />
     <Content Include="SamplePages\CRUDPage.cshtml" />
     <Content Include="SamplePages\ProductEdit.cshtml" />
@@ -136,9 +136,9 @@
     <Content Include="Content\bootstrap-reboot.css.map" />
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
-    <Content Include="SamplePages\SimpleQueryLikePage1.cshtml" />
+    <Content Include="SamplePages\40PartialStringSearchToDropdownToCustomGridView.cshtml" />
     <Content Include="03-Ex01-04.docx" />
-    <Content Include="SamplePages\SimpleQueryLikePage2.cshtml" />
+    <Content Include="SamplePages\42DropdownToCustomGridView.cshtml" />
     <Content Include="SamplePages\ProductWebGridDisplay.cshtml" />
     <Content Include="ExercisePages\Ex01.cshtml" />
     <Content Include="ExercisePages\Ex02P1.cshtml" />
@@ -146,6 +146,7 @@
     <Content Include="ExercisePages\Ex02P3.cshtml" />
     <Content Include="ExercisePages\Ex03.cshtml" />
     <Content Include="ExercisePages\Ex04.cshtml" />
+    <Content Include="SamplePages\44CustomGridView.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

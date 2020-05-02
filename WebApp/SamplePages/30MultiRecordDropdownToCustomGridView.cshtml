@@ -1,6 +1,6 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
-    Page.Title = string.Format("Razor - {0}", "Drop Down List Selection Query");
+    Page.Title = string.Format("Razor - {0}", "MultiRecord Drop Down to Custom GridView");
 
     var choice = Request.Form["CategoryList"];
 
@@ -34,7 +34,7 @@
         }
         else
         {  
-            Response.Redirect("WebGridDisplay.cshtml?cid=" + choice);
+            Response.Redirect("32CustomGridView.cshtml?cid=" + choice);
         }
     }
 }

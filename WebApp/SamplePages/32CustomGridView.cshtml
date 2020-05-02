@@ -1,13 +1,13 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
-    Page.Title = string.Format("Razor - {0}", "WebGrid Display");
+    Page.Title = string.Format("Razor - {0}", "Custom Grid View");
 
     var cid = Request.QueryString["cid"];
     <p>Your choice was: @cid</p>
     
     if (string.IsNullOrEmpty(cid))
     {
-        Response.Redirect("MultiRecordQuery.cshtml");
+        Response.Redirect("30MultiRecordDropdownToCustomGridView.cshtml");
     }
 
     var db = Database.Open("NWDB");

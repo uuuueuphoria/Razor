@@ -1,6 +1,6 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
-    Page.Title = string.Format("Razor - {0}", "Exercise 2 Page 2");
+    Page.Title = string.Format("Razor - {0}", "Partial Name Query with SQL LIKE Page 2");
 
     //output variable
     string artistid = "";
@@ -15,7 +15,7 @@
     //check that you actually retreived data
     if (string.IsNullOrEmpty(cid))
     {
-        Response.Redirect("Ex02P1.cshtml");
+        Response.Redirect("SimpleQueryLikePage1.cshtml");
     }
 
     //this page will access the database when the submit button is pressed
@@ -76,6 +76,3 @@
         }
     </tbody>
 </table>
-
-
-
