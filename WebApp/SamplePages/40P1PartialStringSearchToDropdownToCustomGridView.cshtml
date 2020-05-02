@@ -1,6 +1,6 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
-    Page.Title = string.Format("Razor - {0}", "Partial Name Query with SQL LIKE Page 1");
+    Page.Title = string.Format("Razor - {0}", "Page1 Partial String Search to Dropdown to Custom GridView (Ex02)");
 
     //input variables for web controls
     var artistarg = Request.Form["artistArg"];
@@ -70,7 +70,7 @@
             // separate data pairs with an  &
             // sample syntax    Response.Redirect(page.ext?lbl=value[&lbl=value ...])
             //WARNING: value are passed in plain text on Url
-            Response.Redirect("42DropdownToCustomGridView.cshtml?cid=" + artistarg);
+            Response.Redirect("40P2PartialStringSearchToDropdownToCustomGridView.cshtml?cid=" + artistarg);
             
         }
     }
