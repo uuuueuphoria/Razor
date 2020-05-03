@@ -143,10 +143,10 @@
     <Content Include="ExercisePages\Ex01.cshtml" />
     <Content Include="ExercisePages\Ex02P1.cshtml" />
     <Content Include="ExercisePages\Ex02P2.cshtml" />
-    <Content Include="ExercisePages\Ex02P3.cshtml" />
     <Content Include="ExercisePages\Ex03.cshtml" />
-    <Content Include="ExercisePages\Ex04.cshtml" />
+    <Content Include="ExercisePages\Ex04P1.cshtml" />
     <Content Include="SamplePages\40P3PartialStringSearchToDropdownToCustomGridView.cshtml" />
+    <Content Include="ExercisePages\Ex04P2.cshtml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />
