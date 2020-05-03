@@ -4,56 +4,41 @@
 
     var message = "";
     var color = "";
-    string artistid = "";
     string artistname = "";
-    IEnumerable<dynamic> albumresults = null;
-    //reteive the passed data value
-    //to retreive the passed data use .QueryString["label"]
-    //data is returned as a string
+
     var cid = Request.QueryString["cid"];
-    WebGrid gridinstance = new WebGrid(albumresults, rowsPerPage: 5);
+
     var buildgridview = false;
 
-    //good practice
-    //check that you actually retreived data
     if (string.IsNullOrEmpty(cid))
     {
         Response.Redirect("40P1PartialStringSearchToDropdownToCustomGridView.cshtml");
     }
-
-    //this page will access the database when the submit button is pressed
-    //the project needs access to 2 more NuGet packages
-    //Microsoft.Aspnet.WebPages.Data
-    //Microsoft.Aspnet.Webpages.WebData
-
-    //connect to the database
-    //use the name attribute off your web connection string
-
     var db = Database.Open("CHINOOKDB");
-
-    //create the sql command to be executed on the database
-    //input parameters will be represented by the use of placeholders
-    //placeholders are indexes (0, 1, 2,...)
-    //your command can use multiple placeholders
-
-    //how to use the LIKE command in SQL
-    //WHERE Name LIKE 'a%'	Finds any values that start with "a"
-    //WHERE Name LIKE '%a'	Finds any values that end with "a"
-    //WHERE Name LIKE '%or%'	Finds any values that have "or" in any position
-    //WHERE Name LIKE '_r%'	Finds any values that have "r" in the second position
-    //WHERE Name LIKE 'a__%'	Finds any values that start with "a" and are at least 3 characters in length
-    //WHERE Name LIKE 'a%o'	Finds any values that start with "a" and ends with "o"
-
-    string sqlcommand1 = "SELECT ArtistId, Name FROM Artists WHERE Name LIKE @0 ORDER BY Name";
-    var partialstring = "%" + cid + "%";
-    var results = db.Query(sqlcommand1, partialstring);
-    if (results.Count() == 0)
+    var artistquery = "SELECT ArtistID, Name "
+        + "FROM Artists "
+        + "WHERE ArtistID = @0";
+    var artistresults = db.QuerySingle(artistquery, cid);
+    var albumquery = "SELECT AlbumID, Title, ArtistID, ReleaseYear, ReleaseLabel "
+        + "FROM Albums "
+        + "WHERE ArtistID = @0 "
+        + "ORDER BY Title";
+    var albumresults = db.Query(albumquery, cid);
+    WebGrid gridinstance = new WebGrid(albumresults, rowsPerPage: 5);
+    if (artistresults == null)
     {
-        <p style="color:firebrick">There was no record returned from the Data Base</p>
+        message = "Artist NOT found";
+        color = "color:firebrick";
+    }
+    else if (albumresults.Count() == 0)
+    {
+        message = "There are no albums for this artist";
+        color = "color:firebrick";
+        buildgridview = false;
     }
     else
     {
-        <p style="color:darkgreen">There was @results.Count() record/s returned from the Data Base</p>
+
     }
 }
 
@@ -64,24 +49,25 @@
 <div class="offset-1">
     <h3>Albums for Artist:</h3>
     <div class="col-11">
-        @if (buildgridview)
-        {
-            gridinstance.GetHtml(
+        @gridinstance.GetHtml(
             tableStyle: "table table-striped table-bordered table-hover",
             mode: WebGridPagerModes.All,
             firstText: "Start",
             lastText: "End",
             columns: gridinstance.Columns(
-               gridinstance.Column(columnName: "AlbumID", header: "ID"),
-               gridinstance.Column(columnName: "Title", header: "Album Title"),
-               gridinstance.Column(columnName: "ArtistID", header: "ArtistvID"),
-               gridinstance.Column(columnName: "ReleaseYear", header: "RleasevYear"),
-               gridinstance.Column(columnName: "ReleaseLabel", header: "ReleaseLabel")));
-        }
-        else
-        {
-            <h3>Not working</h3>
-        }
+                gridinstance.Column(columnName: "AlbumID", header: "ID"),
+                gridinstance.Column(columnName: "Title", header: "Album Title"),
+                gridinstance.Column(columnName: "ArtistID", header: "ArtistvID"),
+                gridinstance.Column(columnName: "ReleaseYear", header: "RleasevYear"),
+                gridinstance.Column(columnName: "ReleaseLabel", header: "ReleaseLabel")))
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-md-12 text-center">
+        <p style=@color>
+            @message
+        </p>
     </div>
 </div>
 

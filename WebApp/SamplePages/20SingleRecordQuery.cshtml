@@ -30,9 +30,9 @@
     //placeholders are indexes (0, 1, 2,...)
     //your command can use multiple placeholders
 
-    var sqlcommand = @"SELECT CategoryID, CategoryName
-        FROM Categories
-        WHERE CategoryID = @0";
+    var sqlcommand = "SELECT CategoryID, CategoryName "
+        + "FROM Categories "
+        + "WHERE CategoryID = @0";
 
     //execute command
     //there is 3 ways to execute a query DEPENDING on your expected results
@@ -93,7 +93,7 @@
             //data returned has a datatype that matches the Property
             //regionid = results[0].ToString();
             //regiondescription = results[1];
-            id = (results.CategoryID).ToString();
+            id = results.CategoryID.ToString();
             name = results.CategoryName;
         }
     }
