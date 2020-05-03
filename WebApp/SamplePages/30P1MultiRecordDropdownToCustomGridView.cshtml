@@ -1,13 +1,14 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
     Page.Title = string.Format("Razor - {0}", "Page 1 MultiRecord Drop Down to Custom GridView");
-
+    var message = "";
+    var color = "";
     var choice = Request.Form["CategoryList"];
 
     var db = Database.Open("NWDB");
     var categoryquery = @"SELECT CategoryID, CategoryName
-            FROM Categories
-            ORDER BY CategoryName";
+    FROM Categories
+    ORDER BY CategoryName";
     var categoryrecords = db.Query(categoryquery);
 }
 
@@ -15,25 +16,27 @@
 
 @if (IsPost)
 {
-    
-    
+
+
     if (choice.Equals("0"))
     {
-        <p style="color:firebrick">Select a product category to view:</p>
+        message = "Select a Category.";
+        color = "color:firebrick";
     }
     else
     {
-        var productquery = @"SELECT ProductID
-                FROM Products
-                WHERE CategoryID = @0";
+        var productquery = @"SELECT ProductID "
+                + "FROM Products "
+                + "WHERE CategoryID = @0";
         var productinfo = db.Query(productquery, choice);
-        
+
         if (productinfo.Count() == 0)
         {
-            <p style="color:firebrick">There are no products for the selected category.</p>
+            message = "There are no products for the selected category.";
+            color = "color:firebrick";
         }
         else
-        {  
+        {
             Response.Redirect("30P2MultiRecordDropdownToCustomGridView.cshtml?cid=" + choice);
         }
     }
@@ -42,36 +45,56 @@ else
 {
     if (categoryrecords.Count() == 0)
     {
-        <p style="color:firebrick">There are no categories on file.</p>
+        message = "There are no categories on file.";
+        color = "color:firebrick";
     }
 }
 
 <form id="theform" method="post">
-    <div class="row offset-1">
-        <label class="label" for="CategoryList">Category:  </label>&nbsp;&nbsp;
-        <select id="CategoryList" name="CategoryList">
-            <option value="0">select category...</option>
-            @foreach (var item in categoryrecords)
-            {
-                //for the select control, the default display on an event
+    <div class="row">
+        <div class="col-md-4 text-right">
+            <label class="label" for="CategoryList">Category:  </label>&nbsp;&nbsp;
+        </div>
+        <div class="col-md-4 text-left">
+            <select id="CategoryList" name="CategoryList">
+                <option value="0">select ...</option>
+                @foreach (var item in categoryrecords)
+                {
+                    //for the select control, the default display on an event
                     //is the 1st option tag
                     //to retain the option selected between posts, you need to
                     //set the selected option using the attribute selected
-                if (choice == item.CategoryID.ToString())
-                {
-                    <option value="@item.CategoryID" selected>@item.CategoryName</option>
+                    if (choice == item.CategoryID.ToString())
+                    {
+                        <option value="@item.CategoryID" selected>@item.CategoryName</option>
+                    }
+                    else
+                    {
+                        <option value="@item.CategoryID">@item.CategoryName</option>
+                    }
                 }
-                else
-                {
-                    <option value="@item.CategoryID">@item.CategoryName</option>
-                }
-            }
-        </select>
-    </div><br />
-    <div class="row offset-1">
-        <button type="submit" id="theButton" name="theButton" value="submit"
-                class="btn btn-primary">
-            View Category Products ...
-        </button>
+            </select>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-4">
+        </div>
+        <div class="col-md-6">
+            <button type="submit" id="theButton" name="theButton" value="submit"
+                    class="btn btn-primary">
+                Fetch
+            </button>
+        </div>
     </div>
 </form>
+<br />
+<div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-6 text-left">
+        <p style=@color>
+            @message
+        </p>
+    </div>
+</div>

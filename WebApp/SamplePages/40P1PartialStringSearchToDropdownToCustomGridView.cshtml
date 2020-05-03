@@ -1,7 +1,9 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
     Page.Title = string.Format("Razor - {0}", "Page1 Partial String Search to Dropdown to Custom GridView (Ex02)");
-
+    
+    var message = "";
+    var color = "";
     //input variables for web controls
     var artistarg = Request.Form["artistArg"];
     var thebutton = Request.Form["theButton"];
@@ -26,7 +28,7 @@
     {
         <p style="color:darkblue">The Reset Button was just Pressed</p>
         artistarg = "";
-        
+
     }
     else  //user must have pressed the submit
     {
@@ -57,7 +59,7 @@
         {
             <p style="color:firebrick">There was no record returned from the Data Base</p>
             artistarg = "";
-            
+
         }
         else
         {
@@ -71,7 +73,7 @@
             // sample syntax    Response.Redirect(page.ext?lbl=value[&lbl=value ...])
             //WARNING: value are passed in plain text on Url
             Response.Redirect("40P2PartialStringSearchToDropdownToCustomGridView.cshtml?cid=" + artistarg);
-            
+
         }
     }
 }
@@ -99,6 +101,16 @@ else
                     Reset
                 </button>
             </div>
-        </div>  
+        </div>
     </div>
 </form>
+<br />
+<div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-6 text-left">
+        <p style=@color>
+            @message
+        </p>
+    </div>
+</div>

@@ -10,7 +10,7 @@
     }
 
     var db = Database.Open("NWDB");
-    var prodquery = @"SELECT ProductID, ProductName, UnitPrice, UnitsInStock, Discontinued
+    var prodquery = @"SELECT ProductID, ProductName, UnitPrice, Discontinued
                 FROM Products
                 WHERE CategoryID = @0
                 ORDER BY ProductName";
@@ -37,7 +37,7 @@
             columns: gridinstance.Columns(
                gridinstance.Column(columnName: "ProductID", header: "ID"),
                gridinstance.Column(columnName: "ProductName", header: "Name"),
-               gridinstance.Column(columnName: "UnitPrice", header: "$", canSort: false),
-               gridinstance.Column(columnName: "UnitsInStock", header: "QiS", canSort: false)))
+               gridinstance.Column(columnName: "UnitPrice", header: "Unit Price", canSort: false),
+               gridinstance.Column(columnName: "Discontinued", header: "Discontinued", canSort: false)))
     </div>
 </div>
