@@ -1,18 +1,14 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
-    Page.Title = string.Format("Razor - {0}", "Exercise 02 Page 1 Partial String Search");
+    Page.Title = string.Format("Razor - {0}", "Exercise 2 Page1");
 
-    //input variables for web controls
-    var artistarg = Request.Form["artistArg"];
+    var message = "";
+    var color = "";
+    IEnumerable<dynamic> partialstringartistresults = null;
+    IEnumerable<dynamic> albumresults = null;
+    var partialstring = Request.Form["partialString"];
+    var choice = Request.Form["dropdown"];
     var thebutton = Request.Form["theButton"];
-
-    //remember the 1st time the page is called
-    //input variables will be null
-
-    //this page will access the database when the submit button is pressed
-    //the project needs access to 2 more NuGet packages
-    //Microsoft.Aspnet.WebPages.Data
-    //Microsoft.Aspnet.Webpages.WebData
 }
 
 @section banner {
@@ -21,18 +17,14 @@
 
 @if (IsPost)
 {
-    <p>IsPost = true</p>
-    if (thebutton.Equals("reset"))
+    if (thebutton.Equals("clear"))
     {
-        <p style="color:darkblue">The Reset Button was just Pressed</p>
-        artistarg = "";
-
+        message = "Clear button pressed";
+        color = "color:green";
+        partialstring = "";
     }
-    else  //user must have pressed the submit
+    else if (thebutton.Equals("submit"))
     {
-        //connect to the database
-        //use the name attribute off your web connection string
-
         var db = Database.Open("CHINOOKDB");
 
         //create the sql command to be executed on the database
@@ -49,59 +41,98 @@
         //WHERE Name LIKE 'a%o'	Finds any values that start with "a" and ends with "o"
 
         string sqlcommand1 = "SELECT ArtistId, Name FROM Artists WHERE Name LIKE @0 ORDER BY Name";
-        var partialstring = "%" + artistarg + "%";
-        var results = db.Query(sqlcommand1, partialstring);
+        var partialstringforquery = "%" + partialstring + "%";
+        partialstringartistresults = db.Query(sqlcommand1, partialstringforquery);
         //always check if you even have results
 
-        if (results.Count() == 0)
+        if (partialstringartistresults.Count() == 0)
         {
-            <p style="color:firebrick">There was no record returned from the Data Base</p>
-            artistarg = "";
-
+            message = "No artists found that match string";
+            color = "color:firebrick";
+            partialstring = "";
+        }
+    }
+    else if (thebutton.Equals("fetch"))
+    {
+        var db = Database.Open("CHINOOKDB");
+        //var db = Database.Open("NWDB");
+        var albumquery = "SELECT AlbumID, Title, ArtistID, ReleaseYear, ReleaseLabel "
+            + "FROM Albums "
+            + "WHERE ArtistID = @0 "
+            + "ORDER BY Title";
+        albumresults = db.Query(albumquery, choice);
+        if (albumresults.Count() == 0)
+        {
+            message = "This artist has NO albums";
+            color = "color:firebrick";
         }
         else
         {
-            //yes products:
-            //pass ddl value (CategoryID) to next page
-            // to go to another page use Response.Redirect(pagename) (GET method)
-            // to pass data along with the page
-            // add a ? after the name
-            // add for each parameter a coded pair of    label = value
-            // separate data pairs with an  &
-            // sample syntax    Response.Redirect(page.ext?lbl=value[&lbl=value ...])
-            //WARNING: value are passed in plain text on Url
-            Response.Redirect("Ex02P2.cshtml?cid=" + artistarg);
-
+            Response.Redirect("Ex02P2.cshtml?cid=" + choice);
         }
     }
 }
 else
 {
-    <p>IsPost = false</p>
-    <p style="color:darkblue">The Data Base has NOT been queried</p>
-    artistarg = "";
+    message = "IsPost = false";
+    color = "color:green";
+    partialstring = "";
 }
 
 <form id="theform" method="post">
     <div class="row">
-        <div class="col-3">
-            <div class="offset-1">
-                <label id="lblartistArg" for="artistArg">Enter a partial artist name:</label>&nbsp;&nbsp;
-                <input type="text" id="artistArg" name="artistArg"
-                       value="@artistarg" placeholder="partial artist name" />
-                <br /><br />
-                <button type="submit" id="theButton" name="theButton"
-                        value="submit" class="btn btn-primary">
-                    Fetch
-                </button>&nbsp;&nbsp;
-                <button type="submit" id="theButton" name="theButton"
-                        value="reset" class="btn btn-light">
-                    Reset
-                </button>
-            </div>
+        <div class="col-4 text-right">
+            <label id="lblartistArg" for="artistArg">Enter a partial artist name:</label>
+        </div>
+        <div class="col-8 text-left">
+            <input type="text" id="partialString" name="partialString"
+                   value="@partialstring" placeholder="partial string ..." />&nbsp;&nbsp;
+            <button type="submit" id="theButton" name="theButton"
+                    value="submit" class="btn btn-light">
+                Fetch
+            </button>&nbsp;&nbsp;
+            <button type="submit" id="theButton" name="theButton"
+                    value="clear" class="btn btn-light">
+                Reset
+            </button>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-4 text-right">
+            <label class="label" for="CategoryList">Choose an artist:</label>&nbsp;&nbsp;
+        </div>
+        <div class="col-md-8 text-left">
+            <select id="dropdown" name="dropdown">
+                <option value="0">select ...</option>
+                @if (partialstringartistresults != null)
+                {
+                    foreach (var item in partialstringartistresults)
+                    {
+                        if (choice == item.ArtistID.ToString())
+                        {
+                            <option value="@item.ArtistID" selected>@item.Name</option>
+                        }
+                        else
+                        {
+                            <option value="@item.ArtistID">@item.Name</option>
+                        }
+                    }
+                }
+            </select>&nbsp;&nbsp;
+            <button type="submit" id="theButton" name="theButton" value="fetch"
+                    class="btn btn-light">
+                Fetch
+            </button>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <p style=@color>
+                @message
+            </p>
         </div>
     </div>
 </form>
-
-
 
