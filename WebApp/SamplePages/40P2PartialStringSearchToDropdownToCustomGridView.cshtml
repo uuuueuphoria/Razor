@@ -13,8 +13,8 @@
     }
     var db = Database.Open("NWDB");
     var productnamequery = "SELECT ProductName "
-            + "FROM Products "
-            + "WHERE ProductID = @0";
+        + "FROM Products "
+        + "WHERE ProductID = @0";
     var productname = db.QuerySingle(productnamequery, cid);
     var productquery = "SELECT ProductID, ProductName, UnitPrice, Discontinued "
         + "FROM Products "

@@ -11,16 +11,14 @@
 
     var db = Database.Open("NWDB");
     var categoryquery = "SELECT CategoryName "
-            + "FROM Categories "
-            + "WHERE CategoryID = @0";
+        + "FROM Categories "
+        + "WHERE CategoryID = @0";
     var categoryname = db.QuerySingle(categoryquery, cid);
     var productquery = "SELECT ProductID, ProductName, UnitPrice, Discontinued "
         + "FROM Products "
         + "WHERE CategoryID = @0 "
         + "ORDER BY ProductName";
     var productinfo = db.Query(productquery, cid);
-
-
 
     var gridinstance = new WebGrid(productinfo, rowsPerPage: 5);
 }
