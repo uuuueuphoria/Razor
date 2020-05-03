@@ -9,9 +9,6 @@
     var partialstring = Request.Form["partialString"];
     var choice = Request.Form["dropdown"];
     var thebutton = Request.Form["theButton"];
-    WebGrid gridinstance = new WebGrid(albumresults, rowsPerPage: 5);
-    var buildgridview = false;
-    //var gridinstance = new WebGrid(albumresults, rowsPerPage: 5);
 }
 
 @section banner {
@@ -25,7 +22,6 @@
         message = "Clear button pressed";
         color = "color:green";
         partialstring = "";
-
     }
     else if (thebutton.Equals("submit"))
     {
@@ -51,14 +47,9 @@
 
         if (partialstringartistresults.Count() == 0)
         {
-            message = "Record NOT found";
+            message = "No records found that match string";
             color = "color:firebrick";
             partialstring = "";
-
-        }
-        else
-        {
-
         }
     }
     else if (thebutton.Equals("fetch"))
@@ -72,18 +63,13 @@
         albumresults = db.Query(albumquery, choice);
         if (albumresults.Count() == 0)
         {
-            message = "Record NOT found";
+            message = "This artist has NO albums";
             color = "color:firebrick";
-            buildgridview = false;
-
         }
         else
         {
             Response.Redirect("40P2PartialStringSearchToDropdownToCustomGridView.cshtml?cid=" + choice);
         }
-
-
-
     }
 }
 else
@@ -119,17 +105,6 @@ else
         <div class="col-md-8 text-left">
             <select id="dropdown" name="dropdown">
                 <option value="0">select ...</option>
-                @*@foreach (var item in partialstringartistresults)
-                    {
-                    if (choice == item.ArtistID.ToString())
-                    {
-                        <option value="@item.ArtistID" selected>@item.Name</option>
-                    }
-                    else
-                    {
-                        <option value="@item.ArtistID">@item.Name</option>
-                    }
-                }*@
                 @if (partialstringartistresults != null)
                 {
                     foreach (var item in partialstringartistresults)
@@ -143,10 +118,6 @@ else
                             <option value="@item.ArtistID">@item.Name</option>
                         }
                     }
-                }
-                else
-                {
-
                 }
             </select>&nbsp;&nbsp;
             <button type="submit" id="theButton" name="theButton" value="fetch"
