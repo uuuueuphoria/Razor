@@ -27,19 +27,6 @@
     {
         var db = Database.Open("CHINOOKDB");
 
-        //create the sql command to be executed on the database
-        //input parameters will be represented by the use of placeholders
-        //placeholders are indexes (0, 1, 2,...)
-        //your command can use multiple placeholders
-
-        //how to use the LIKE command in SQL
-        //WHERE Name LIKE 'a%'	Finds any values that start with "a"
-        //WHERE Name LIKE '%a'	Finds any values that end with "a"
-        //WHERE Name LIKE '%or%'	Finds any values that have "or" in any position
-        //WHERE Name LIKE '_r%'	Finds any values that have "r" in the second position
-        //WHERE Name LIKE 'a__%'	Finds any values that start with "a" and are at least 3 characters in length
-        //WHERE Name LIKE 'a%o'	Finds any values that start with "a" and ends with "o"
-
         string sqlcommand1 = "SELECT ArtistId, Name FROM Artists WHERE Name LIKE @0 ORDER BY Name";
         var partialstringforquery = "%" + partialstring + "%";
         partialstringartistresults = db.Query(sqlcommand1, partialstringforquery);

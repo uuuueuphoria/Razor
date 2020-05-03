@@ -4,8 +4,6 @@
 
     var message = "";
     var color = "";
-    string artistname = "";
-
     var cid = Request.QueryString["cid"];
 
     if (string.IsNullOrEmpty(cid))
@@ -30,7 +28,7 @@
     }
     else if (albumresults.Count() == 0)
     {
-        message = "There are no albums for this artist";
+        message = "This artist has NO albums";
         color = "color:firebrick";
     }
 }
