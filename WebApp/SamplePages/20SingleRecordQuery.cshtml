@@ -5,6 +5,8 @@
     //output variable
     string id = "";
     string name = "";
+    var message = "";
+    var color = "";
 
     //input variables for web controls
     var arg = Request.Form["Arg"];
@@ -52,7 +54,8 @@
 {
     if (thebutton.Equals("clear"))
     {
-        <p style="color:darkblue">The Reset Button was just Pressed</p>
+        message = "Reset button pressed";
+        color = "color:green";
         arg = "";
         id = "";
         name = "";
@@ -69,14 +72,16 @@
 
         if (results == null)
         {
-            <p style="color:firebrick">There was no record returned from the Data Base</p>
+            message = "Record NOT found";
+            color = "color:firebrick";
             arg = "";
             id = "";
             name = "";
         }
         else
         {
-            <p style="color:darkgreen">There was a record returned from the Data Base</p>
+            message = "Record found";
+            color = "color:green";
 
             //accessing the data out of your results
             //there is 2 ways to access data on a result row
@@ -95,37 +100,62 @@
 }
 else
 {
-    <p style="color:darkblue">The Data Base has NOT been queried</p>
+    message = "IsPost = false";
+    color = "color:green";
     arg = "";
 }
 
 <form id="theform" method="post">
-    <dic class="row">
-        <div class="col-3">
-            <div class="offset-1">
-                <label id="lblArg" for="Arg">Enter a Category ID:</label>&nbsp;&nbsp;
-                <input type="number" step="1" min="1" id="Arg" name="Arg"
-                       value="@arg" placeholder="category id" />
-                <br /><br />
-                <button type="submit" id="theButton" name="theButton"
-                        value="submit" class="btn btn-primary">
-                    Fetch
-                </button>&nbsp;&nbsp;
-                <button type="submit" id="theButton" name="theButton"
-                        value="clear" class="btn btn-light">
-                    Clear
-                </button>
-            </div>
+    <div class="row">
+        <div class="col-md-4 text-right">
+            <label id="lblArg" for="Arg">Enter a Category ID:</label>&nbsp;&nbsp;
         </div>
-        <div class="col-3">
-            <div class="offset-1">
-                <label id="lblID">Category ID:</label>&nbsp;&nbsp;
-                <label id="ID">@id</label>
-                <br /><br />
-                <label id="lblDescription">Category Name:</label>&nbsp;&nbsp;
-                <input type="text" id="Description" name="Description"
-                       value="@name" readonly />
-            </div>
+        <div class="col-md-4 text-left">
+            <input type="number" step="1" min="1" id="Arg" name="Arg"
+                   value="@arg" placeholder="category id" />
         </div>
-    </dic>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-4">
+        </div>
+        <div class="col-md-6">
+            <button type="submit" id="theButton" name="theButton"
+                    value="submit" class="btn btn-primary">
+                Fetch
+            </button>&nbsp;&nbsp;
+            <button type="submit" id="theButton" name="theButton"
+                    value="clear" class="btn btn-light">
+                Clear
+            </button>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-4 text-right">
+            <label id="lblID">Category ID:</label>&nbsp;&nbsp;
+        </div>
+        <div class="col-md-4 text-left">
+            <label id="ID">@id</label>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 text-right">
+            <label id="lblDescription">Category Name:</label>&nbsp;&nbsp;
+        </div>
+        <div class="col-md-4 text-left">
+            <input type="text" id="Description" name="Description"
+                   value="@name" readonly />
+        </div>
+    </div>
 </form>
+<br />
+<div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-6 text-left">
+        <p style=@color>
+            @message
+        </p>
+    </div>
+</div>

@@ -3,7 +3,6 @@
     Page.Title = string.Format("Razor - {0}", "Page 2 MultiRecord Drop Down to Custom GridView");
 
     var cid = Request.QueryString["cid"];
-    <p>Your choice was: @cid</p>
     
     if (string.IsNullOrEmpty(cid))
     {
@@ -24,7 +23,9 @@
 
     var gridinstance = new WebGrid(prodinfo, rowsPerPage: 5);
 }
-@section banner {<h1>WebGrid Display</h1>}
+@section banner {<h1>@Page.Title</h1>
+}
+
 <div class="offset-1">
     <h3>Products for Category: @catname</h3>
     <div class="col-11">
@@ -32,7 +33,7 @@
             tableStyle: "table table-striped table-bordered table-hover",
             mode: WebGridPagerModes.All,
             firstText: "Start",
-            lastText: "Ends",
+            lastText: "End",
             columns: gridinstance.Columns(
                gridinstance.Column(columnName: "ProductID", header: "ID"),
                gridinstance.Column(columnName: "ProductName", header: "Name"),
