@@ -4,7 +4,7 @@
 
     var message = "";
     var color = "";
-    IEnumerable<dynamic> partialstringartistresults = null;
+    IEnumerable<dynamic> partialstringproductresults = null;
     IEnumerable<dynamic> albumresults = null;
     var partialstring = Request.Form["partialString"];
     var choice = Request.Form["dropdown"];
@@ -25,7 +25,7 @@
     }
     else if (thebutton.Equals("submit"))
     {
-        var db = Database.Open("CHINOOKDB");
+        var db = Database.Open("NWDB");
 
         //create the sql command to be executed on the database
         //input parameters will be represented by the use of placeholders
@@ -40,30 +40,30 @@
         //WHERE Name LIKE 'a__%'	Finds any values that start with "a" and are at least 3 characters in length
         //WHERE Name LIKE 'a%o'	Finds any values that start with "a" and ends with "o"
 
-        string sqlcommand1 = "SELECT ArtistId, Name FROM Artists WHERE Name LIKE @0 ORDER BY Name";
+        string sqlcommand1 = "SELECT ProductId, ProductName "
+            + "FROM Products "
+            + "WHERE ProductName LIKE @0 "
+            + "ORDER BY ProductName";
         var partialstringforquery = "%" + partialstring + "%";
-        partialstringartistresults = db.Query(sqlcommand1, partialstringforquery);
-        //always check if you even have results
+        partialstringproductresults = db.Query(sqlcommand1, partialstringforquery);
 
-        if (partialstringartistresults.Count() == 0)
+        if (partialstringproductresults.Count() == 0)
         {
-            message = "No records found that match string";
+            message = "No products found that match string";
             color = "color:firebrick";
             partialstring = "";
         }
     }
     else if (thebutton.Equals("fetch"))
     {
-        var db = Database.Open("CHINOOKDB");
-        //var db = Database.Open("NWDB");
-        var albumquery = "SELECT AlbumID, Title, ArtistID, ReleaseYear, ReleaseLabel "
-            + "FROM Albums "
-            + "WHERE ArtistID = @0 "
-            + "ORDER BY Title";
+        var db = Database.Open("NWDB");
+        var albumquery = "SELECT ProductID, ProductName "
+            + "FROM Products "
+            + "WHERE ProductID = @0";
         albumresults = db.Query(albumquery, choice);
         if (albumresults.Count() == 0)
         {
-            message = "This artist has NO albums";
+            message = "No product was returned";
             color = "color:firebrick";
         }
         else
@@ -105,17 +105,17 @@ else
         <div class="col-md-8 text-left">
             <select id="dropdown" name="dropdown">
                 <option value="0">select ...</option>
-                @if (partialstringartistresults != null)
+                @if (partialstringproductresults != null)
                 {
-                    foreach (var item in partialstringartistresults)
+                    foreach (var item in partialstringproductresults)
                     {
-                        if (choice == item.ArtistID.ToString())
+                        if (choice == item.ProductID.ToString())
                         {
-                            <option value="@item.ArtistID" selected>@item.Name</option>
+                            <option value="@item.ProductID" selected>@item.ProductName</option>
                         }
                         else
                         {
-                            <option value="@item.ArtistID">@item.Name</option>
+                            <option value="@item.ProductID">@item.ProductName</option>
                         }
                     }
                 }

@@ -10,15 +10,15 @@
     }
 
     var db = Database.Open("NWDB");
-    var prodquery = @"SELECT ProductID, ProductName, UnitPrice, Discontinued
-                FROM Products
-                WHERE CategoryID = @0
-                ORDER BY ProductName";
+    var prodquery = "SELECT ProductID, ProductName, UnitPrice, Discontinued "
+                + "FROM Products "
+                + "WHERE CategoryID = @0 "
+                + "ORDER BY ProductName";
     var prodinfo = db.Query(prodquery, cid);
 
-    var catquery = @"SELECT CategoryName
-            FROM Categories
-            WHERE CategoryID = @0";
+    var catquery = "SELECT CategoryName "
+            + "FROM Categories "
+            + "WHERE CategoryID = @0";
     var catname = db.QueryValue(catquery, cid);
 
     var gridinstance = new WebGrid(prodinfo, rowsPerPage: 5);
