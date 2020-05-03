@@ -3,31 +3,32 @@
     Page.Title = string.Format("Razor - {0}", "Page 2 MultiRecord Drop Down to Custom GridView");
 
     var cid = Request.QueryString["cid"];
-    
+
     if (string.IsNullOrEmpty(cid))
     {
         Response.Redirect("30P1MultiRecordDropdownToCustomGridView.cshtml");
     }
 
     var db = Database.Open("NWDB");
-    var prodquery = "SELECT ProductID, ProductName, UnitPrice, Discontinued "
-                + "FROM Products "
-                + "WHERE CategoryID = @0 "
-                + "ORDER BY ProductName";
-    var prodinfo = db.Query(prodquery, cid);
-
-    var catquery = "SELECT CategoryName "
+    var categoryquery = "SELECT CategoryName "
             + "FROM Categories "
             + "WHERE CategoryID = @0";
-    var catname = db.QueryValue(catquery, cid);
+    var categoryname = db.QuerySingle(categoryquery, cid);
+    var productquery = "SELECT ProductID, ProductName, UnitPrice, Discontinued "
+        + "FROM Products "
+        + "WHERE CategoryID = @0 "
+        + "ORDER BY ProductName";
+    var productinfo = db.Query(productquery, cid);
 
-    var gridinstance = new WebGrid(prodinfo, rowsPerPage: 5);
+
+
+    var gridinstance = new WebGrid(productinfo, rowsPerPage: 5);
 }
 @section banner {<h1>@Page.Title</h1>
 }
 
 <div class="offset-1">
-    <h3>Products for Category: @catname</h3>
+    <h3>Products for Category: @categoryname.CategoryName</h3>
     <div class="col-11">
         @gridinstance.GetHtml(
             tableStyle: "table table-striped table-bordered table-hover",
