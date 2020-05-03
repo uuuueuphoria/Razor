@@ -2,14 +2,17 @@
     Layout = "~/_Layout.cshtml";
     Page.Title = string.Format("Razor - {0}", "Page2 Partial String Search to Dropdown to Custom GridView (Ex02)");
 
-    //output variable
+    var message = "";
+    var color = "";
     string artistid = "";
     string artistname = "";
-
+    IEnumerable<dynamic> albumresults = null;
     //reteive the passed data value
     //to retreive the passed data use .QueryString["label"]
     //data is returned as a string
     var cid = Request.QueryString["cid"];
+    WebGrid gridinstance = new WebGrid(albumresults, rowsPerPage: 5);
+    var buildgridview = false;
 
     //good practice
     //check that you actually retreived data
@@ -58,21 +61,27 @@
     <h1>@Page.Title</h1>
 }
 
-<table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Artist Name</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var row in results)
+<div class="offset-1">
+    <h3>Albums for Artist:</h3>
+    <div class="col-11">
+        @if (buildgridview)
         {
-            <tr>
-                <td>@row.ArtistId</td>
-                <td>@row.Name</td>
-            </tr>
+            gridinstance.GetHtml(
+            tableStyle: "table table-striped table-bordered table-hover",
+            mode: WebGridPagerModes.All,
+            firstText: "Start",
+            lastText: "End",
+            columns: gridinstance.Columns(
+               gridinstance.Column(columnName: "AlbumID", header: "ID"),
+               gridinstance.Column(columnName: "Title", header: "Album Title"),
+               gridinstance.Column(columnName: "ArtistID", header: "ArtistvID"),
+               gridinstance.Column(columnName: "ReleaseYear", header: "RleasevYear"),
+               gridinstance.Column(columnName: "ReleaseLabel", header: "ReleaseLabel")));
         }
-    </tbody>
-</table>
+        else
+        {
+            <h3>Not working</h3>
+        }
+    </div>
+</div>
+

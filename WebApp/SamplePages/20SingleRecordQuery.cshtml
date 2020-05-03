@@ -54,7 +54,7 @@
 {
     if (thebutton.Equals("clear"))
     {
-        message = "Reset button pressed";
+        message = "Clear button pressed";
         color = "color:green";
         arg = "";
         id = "";
@@ -107,21 +107,19 @@ else
 
 <form id="theform" method="post">
     <div class="row">
-        <div class="col-md-4 text-right">
-            <label id="lblArg" for="Arg">Enter a Category ID:</label>&nbsp;&nbsp;
+        <div class="col-md-6 text-right">
+            <label id="lblArg" for="Arg">Enter a Category ID:</label>
         </div>
-        <div class="col-md-4 text-left">
+        <div class="col-md-6 text-left">
             <input type="number" step="1" min="1" id="Arg" name="Arg"
                    value="@arg" placeholder="category id" />
         </div>
     </div>
     <br />
     <div class="row">
-        <div class="col-md-4">
-        </div>
-        <div class="col-md-6">
+        <div class="col-md-12 text-center">
             <button type="submit" id="theButton" name="theButton"
-                    value="submit" class="btn btn-primary">
+                    value="submit" class="btn btn-light">
                 Fetch
             </button>&nbsp;&nbsp;
             <button type="submit" id="theButton" name="theButton"
@@ -132,30 +130,28 @@ else
     </div>
     <br />
     <div class="row">
-        <div class="col-md-4 text-right">
-            <label id="lblID">Category ID:</label>&nbsp;&nbsp;
+        <div class="col-md-6 text-right">
+            <label id="lblID">Category ID:</label>
         </div>
-        <div class="col-md-4 text-left">
+        <div class="col-md-6 text-left">
             <label id="ID">@id</label>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-4 text-right">
-            <label id="lblDescription">Category Name:</label>&nbsp;&nbsp;
+        <div class="col-md-6 text-right">
+            <label id="lblDescription">Category Name:</label>
         </div>
-        <div class="col-md-4 text-left">
+        <div class="col-md-6 text-left">
             <input type="text" id="Description" name="Description"
                    value="@name" readonly />
         </div>
     </div>
+    <br />
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <p style=@color>
+                @message
+            </p>
+        </div>
+    </div>
 </form>
-<br />
-<div class="row">
-    <div class="col-md-4">
-    </div>
-    <div class="col-md-6 text-left">
-        <p style=@color>
-            @message
-        </p>
-    </div>
-</div>

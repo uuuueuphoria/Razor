@@ -16,8 +16,6 @@
 
 @if (IsPost)
 {
-
-
     if (choice.Equals("0"))
     {
         message = "Select a Category.";
@@ -52,10 +50,10 @@ else
 
 <form id="theform" method="post">
     <div class="row">
-        <div class="col-md-4 text-right">
+        <div class="col-md-6 text-right">
             <label class="label" for="CategoryList">Category:  </label>&nbsp;&nbsp;
         </div>
-        <div class="col-md-4 text-left">
+        <div class="col-md-6 text-left">
             <select id="CategoryList" name="CategoryList">
                 <option value="0">select ...</option>
                 @foreach (var item in categoryrecords)
@@ -73,28 +71,19 @@ else
                         <option value="@item.CategoryID">@item.CategoryName</option>
                     }
                 }
-            </select>
-        </div>
-    </div>
-    <br />
-    <div class="row">
-        <div class="col-md-4">
-        </div>
-        <div class="col-md-6">
+            </select>&nbsp;&nbsp;
             <button type="submit" id="theButton" name="theButton" value="submit"
-                    class="btn btn-primary">
+                    class="btn btn-light">
                 Fetch
             </button>
         </div>
     </div>
+    <br />
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <p style=@color>
+                @message
+            </p>
+        </div>
+    </div>
 </form>
-<br />
-<div class="row">
-    <div class="col-md-4">
-    </div>
-    <div class="col-md-6 text-left">
-        <p style=@color>
-            @message
-        </p>
-    </div>
-</div>
