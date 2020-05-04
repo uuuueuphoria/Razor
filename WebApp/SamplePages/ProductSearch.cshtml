@@ -29,7 +29,7 @@
 
         if (queryProducts.Count() == 0)
         {
-            message = "Nothing found for search argument.";
+            message = "No products found with search string.";
             color = "color:firebrick";
         }
         else
@@ -43,17 +43,22 @@
 
 <form id="theForm" action="" method="post">
     <div class="row">
-        <div class="col-12">
+        <div class="col-4 text-right">
             <label id="forProductSearch">Product Name</label><br />
-            <input type="text" name="ProductSearch" value="@productsearch"><br /><br />
+        </div>
+        <div class="col-8 text-left">
+            <input type="text" name="ProductSearch" value="@productsearch">&nbsp;&nbsp;
             <button type="submit" class="btn btn-primary" name="Search" id="theSearch">Search</button>
         </div>
     </div>
 </form>
+<br/>
 <div class="row">
-    <div class="col-12 text-center">
+    <div class="col-4 text-right">
+    </div>
+    <div class="col-8 text-left">
         <p style=@color>
             @message
         </p>
     </div>
-</div>
+    </div>

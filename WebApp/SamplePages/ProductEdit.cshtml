@@ -212,23 +212,27 @@
 }
 
 <form id="theForm" action="" method="post">
-    <div class="row row-cols-2">
-        <div class="col text-right">
+    <div class="row">
+        <div class="col-4 text-right">
             <label id="lblProductID" for="ProductID">Product ID</label>
         </div>
-        <div class="col text-left">
+        <div class="col-8 text-left">
             <input type="text" name="ProductID" value="@productid" readonly />
-        </div><br />
-        <div class="col text-right">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4 text-right">
             <label id="lblProductName" for="ProductName">Product Name</label>
         </div>
-        <div class="col text-left">
+        <div class="col-8 text-left">
             <input type="text" name="ProductName" value="@productname" />
-        </div><br />
-        <div class="col text-right">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4 text-right">
             <label id="lblSupplierList" for="SupplierList">Supplier</label>
         </div>
-        <div class="col text-left">
+        <div class="col-8 text-left">
             <select name="SupplierList">
                 <option value="0">select...</option>
                 @foreach (var acollectionrow in querySuppliers)
@@ -243,11 +247,13 @@
                     }
                 }
             </select>
-        </div><br />
-        <div class="col text-right">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4 text-right">
             <label id="lblCategoryList" for="CatgoryList">Category</label>
         </div>
-        <div class="col text-left">
+        <div class="col-8 text-left">
             <select name="CategoryList">
                 <option value="0">select...</option>
                 @foreach (var acollectionrow in queryCategories)
@@ -262,17 +268,21 @@
                     }
                 }
             </select>
-        </div><br />
-        <div class="col text-right">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4 text-right">
             <label id="lblUnitPrice" for="UnitPrice">Unit Price</label>
         </div>
-        <div class="col text-left">
+        <div class="col-8 text-left">
             <input type="number" name="UnitPrice" value="@unitprice" step="0.01" />
-        </div><br />
-        <div class="col text-right">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4 text-right">
             <label id="lblDiscontinued" for="Discontinued">Discontinued</label>
         </div>
-        <div class="col text-left">
+        <div class="col-8 text-left">
             @if (discontinued.Equals("True") || (discontinued == "1"))
             {
                 <input type="checkbox" name="Discontinued" checked value="1" />
@@ -281,8 +291,9 @@
             {
                 <input type="checkbox" name="Discontinued" value="0" />
             }
-        </div><br />
+        </div>
     </div>
+    <br />
     <div class="row">
         <div class="col-12 text-center">
             <button type="submit" name="theButton" id="theCancel" class="btn btn-primary" formnovalidate
@@ -298,11 +309,11 @@
                 Add
             </button>&nbsp;&nbsp;
             <button type="submit" name="theButton" id="theUpdate" class="btn btn-primary"
-                    @(updateDeleteEnabled ? "":"disabled") value="update">
+                    @(updateDeleteEnabled ? "" : "disabled") value="update">
                 Update
             </button>&nbsp;&nbsp;
-            <button type="submit" name="theButton" id="theDelete" class="btn btn-primary" 
-                    @(updateDeleteEnabled ? "":"disabled") formnovalidate
+            <button type="submit" name="theButton" id="theDelete" class="btn btn-primary"
+                    @(updateDeleteEnabled ? "" : "disabled") formnovalidate
                     value="delete">
                 Delete
             </button>&nbsp;&nbsp;
