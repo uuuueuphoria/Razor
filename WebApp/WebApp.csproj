@@ -109,7 +109,6 @@
     <Content Include="SamplePages\20SingleRecordQuery.cshtml" />
     <Content Include="SamplePages\30P1MultiRecordDropdownToCustomGridView.cshtml" />
     <Content Include="SamplePages\30P2MultiRecordDropdownToCustomGridView.cshtml" />
-    <Content Include="SamplePages\WebGridDestination.cshtml" />
     <Content Include="SamplePages\CRUDPage.cshtml" />
     <Content Include="SamplePages\ProductEdit.cshtml" />
     <Content Include="SamplePages\ProductSearch.cshtml" />
