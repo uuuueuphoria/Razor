@@ -7,6 +7,8 @@
     {
         Response.Redirect("ProductSearch.cshtml");
     }
+    var message = "";
+    var color = "";
     var productid = Request.Form["ProductID"];
     var productname = Request.Form["ProductName"];
     var supplierid = Request.Form["SupplierList"];
@@ -15,8 +17,7 @@
     var discontinued = Request.Form["Discontinued"];
     var thebutton = Request.Form["theButton"];
     bool updateDeleteEnabled = true;
-    var message = "";
-    var color = "";
+
     if (IsPost) //Buttons Pressed
     {
         //discontinued is a checkbox
@@ -53,7 +54,12 @@
                             + "FROM Products "
                             + "WHERE ProductID = @0";
         var queryProducts = db.QuerySingle(queryStatement, pid);
-        if (queryProducts != null)
+        if (queryProducts == null)
+        {
+            message = "Record NOT found";
+            color = "color:firebrick";
+        }
+        else
         {
             productid = queryProducts.ProductID.ToString();
             productname = queryProducts.ProductName;
@@ -62,17 +68,11 @@
             unitprice = queryProducts.UnitPrice == null ? "" : queryProducts.UnitPrice.ToString();
             discontinued = queryProducts.Discontinued.ToString();
         }
-        else
-        {
-            message = "Record NOT found";
-            color = "color:firebrick";
-        }
     }
 }
 
-@section banner{
-    <h1>@Page.Title</h1>
-}
+@section banner{<h1>@Page.Title</h1>}
+
 @if (IsPost) // Buttons Pressed
 {
     try
@@ -120,8 +120,8 @@
                     + "VALUES(@0, @1, @2, @3, @4)";
                 var rowsaffected = db.Execute(inscommand, productname,
                     supplierid.Equals("0") ? null : supplierid,
-                    categoryid.Equals("0") ? null : categoryid,
-                    string.IsNullOrEmpty(unitprice) ? null : unitprice,
+                    categoryid,
+                    unitprice,
                     discontinued);
                 if (rowsaffected > 0)
                 {
@@ -166,9 +166,10 @@
                     + "WHERE ProductID = @5";
                 var rowsaffected = db.Execute(sqlcommand, productname,
                     supplierid.Equals("0") ? null : supplierid,
-                    categoryid.Equals("0") ? null : categoryid,
-                    string.IsNullOrEmpty(unitprice) ? null : unitprice,
-                    discontinued, productid);
+                    categoryid,
+                    unitprice,
+                    discontinued,
+                    productid);
                 if (rowsaffected > 0)
                 {
                     message = "Record UPDATED";
@@ -295,29 +296,29 @@
     </div>
     <br />
     <div class="row">
-        <div class="col-12 text-center">
-            <button type="submit" name="theButton" id="theCancel" class="btn btn-primary" formnovalidate
+        <div class="col-4">
+        </div>
+        <div class="col-8 text-left">
+            <button type="submit" name="theButton" id="theCancel" class="btn btn-light" formnovalidate
                     value="back">
                 Back
-            </button>&nbsp;&nbsp;
-            <button type="submit" name="theButton" id="theClear" class="btn btn-primary"
+            </button>&nbsp;
+            <button type="submit" name="theButton" id="theClear" class="btn btn-light"
                     value="clear">
                 Clear
-            </button>&nbsp;&nbsp;
-            <button type="submit" name="theButton" id="theAdd" class="btn btn-primary"
+            </button>&nbsp;
+            <button type="submit" name="theButton" id="theAdd" class="btn btn-light"
                     value="add">
                 Add
-            </button>&nbsp;&nbsp;
-            <button type="submit" name="theButton" id="theUpdate" class="btn btn-primary"
+            </button>&nbsp;
+            <button type="submit" name="theButton" id="theUpdate" class="btn btn-light"
                     @(updateDeleteEnabled ? "" : "disabled") value="update">
                 Update
-            </button>&nbsp;&nbsp;
-            <button type="submit" name="theButton" id="theDelete" class="btn btn-primary"
-                    @(updateDeleteEnabled ? "" : "disabled") formnovalidate
-                    value="delete">
+            </button>&nbsp;
+            <button type="submit" name="theButton" id="theDelete" class="btn btn-light"
+                    @(updateDeleteEnabled ? "" : "disabled") value="delete">
                 Delete
-            </button>&nbsp;&nbsp;
-
+            </button>
         </div>
     </div>
     <script type="text/javascript">
@@ -327,9 +328,13 @@
         }
     </script>
 </form>
-<br/><br/>
-<div class="col-12 text-center">
-    <p style=@color>
-        @message
-    </p>
+<br/>
+<div class="row">
+     <div class="col-4">
+     </div>
+    <div class="col-8 text-left">
+        <p style=@color>
+            @message
+        </p>
+    </div>
 </div>
