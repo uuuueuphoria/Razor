@@ -17,8 +17,47 @@
     var discontinued = Request.Form["Discontinued"];
     var thebutton = Request.Form["theButton"];
     bool updateDeleteEnabled = true;
+    var db = Database.Open("NWDB");
+    var supplierStatement = "SELECT SupplierID, CompanyName "
+                            + "FROM Suppliers "
+                            + "ORDER BY CompanyName";
+    var querySuppliers = db.Query(supplierStatement);
+    var categoryStatement = "SELECT CategoryID, CategoryName "
+                        + "FROM Categories "
+                        + "ORDER BY CategoryName";
+    var queryCategories = db.Query(categoryStatement);
+}
 
-    if (IsPost) //Buttons Pressed
+@section banner{<h1>@Page.Title</h1>}
+
+@if (!IsPost) // NO Buttons Pressed
+{
+    productid = pid;
+    discontinued = "0";
+    var queryStatement = "SELECT ProductID, ProductName, SupplierID, "
+                            + "CategoryID, UnitPrice, "
+                            + "Discontinued "
+                            + "FROM Products "
+                            + "WHERE ProductID = @0";
+    var queryProducts = db.QuerySingle(queryStatement, pid);
+    if (queryProducts == null)
+    {
+        message = "Record NOT found";
+        color = "color:firebrick";
+    }
+    else
+    {
+        productid = queryProducts.ProductID.ToString();
+        productname = queryProducts.ProductName;
+        supplierid = queryProducts.SupplierID == null ? "0" : queryProducts.SupplierID.ToString();
+        categoryid = queryProducts.CategoryID == null ? "0" : queryProducts.CategoryID.ToString();
+        unitprice = queryProducts.UnitPrice == null ? "" : queryProducts.UnitPrice.ToString();
+        discontinued = queryProducts.Discontinued.ToString();
+    }
+}
+else // Buttons Pressed
+{
+    try
     {
         //discontinued is a checkbox
         //the possible values from the check box is null (not checked) or "on" (checked)
@@ -31,52 +70,6 @@
         {
             discontinued = "1";
         }
-    }
-    else //No Buttons Pressed
-    {
-        productid = pid;
-        discontinued = "0";
-    }
-    var db = Database.Open("NWDB");
-    var supplierStatement = "SELECT SupplierID, CompanyName "
-                            + "FROM Suppliers "
-                            + "ORDER BY CompanyName";
-    var querySuppliers = db.Query(supplierStatement);
-    var categoryStatement = "SELECT CategoryID, CategoryName "
-                        + "FROM Categories "
-                        + "ORDER BY CategoryName";
-    var queryCategories = db.Query(categoryStatement);
-    if (!IsPost) //No Buttons Pressed
-    {
-        var queryStatement = "SELECT ProductID, ProductName, SupplierID, "
-                            + "CategoryID, UnitPrice, "
-                            + "Discontinued "
-                            + "FROM Products "
-                            + "WHERE ProductID = @0";
-        var queryProducts = db.QuerySingle(queryStatement, pid);
-        if (queryProducts == null)
-        {
-            message = "Record NOT found";
-            color = "color:firebrick";
-        }
-        else
-        {
-            productid = queryProducts.ProductID.ToString();
-            productname = queryProducts.ProductName;
-            supplierid = queryProducts.SupplierID == null ? "0" : queryProducts.SupplierID.ToString();
-            categoryid = queryProducts.CategoryID == null ? "0" : queryProducts.CategoryID.ToString();
-            unitprice = queryProducts.UnitPrice == null ? "" : queryProducts.UnitPrice.ToString();
-            discontinued = queryProducts.Discontinued.ToString();
-        }
-    }
-}
-
-@section banner{<h1>@Page.Title</h1>}
-
-@if (IsPost) // Buttons Pressed
-{
-    try
-    {
         if (thebutton.Equals("back"))
         {
             Response.Redirect("ProductSearch.cshtml");
