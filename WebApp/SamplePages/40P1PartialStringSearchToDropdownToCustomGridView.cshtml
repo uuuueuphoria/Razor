@@ -11,11 +11,15 @@
     var thebutton = Request.Form["theButton"];
 }
 
-@section banner {
-    <h1>@Page.Title</h1>
-}
+@section banner {<h1>@Page.Title</h1>}
 
-@if (IsPost)
+@if (!IsPost) // NO Buttons Pressed
+{
+    message = "IsPost = false";
+    color = "color:green";
+    partialstring = "";
+}
+else // Buttons Pressed
 {
     if (thebutton.Equals("clear"))
     {
@@ -72,12 +76,6 @@
         }
     }
 }
-else
-{
-    message = "IsPost = false";
-    color = "color:green";
-    partialstring = "";
-}
 
 <form id="theform" method="post">
     <div class="row">
@@ -99,10 +97,10 @@ else
     </div>
     <br />
     <div class="row">
-        <div class="col-md-4 text-right">
+        <div class="col-4 text-right">
             <label class="label" for="CategoryList">Choose a product:</label>&nbsp;&nbsp;
         </div>
-        <div class="col-md-8 text-left">
+        <div class="col-8 text-left">
             <select id="dropdown" name="dropdown">
                 <option value="0">select ...</option>
                 @if (partialstringproductresults != null)
@@ -128,7 +126,9 @@ else
     </div>
     <br />
     <div class="row">
-        <div class="col-md-12 text-center">
+        <div class="col-4">
+        </div>
+        <div class="col-8 text-left">
             <p style=@color>
                 @message
             </p>

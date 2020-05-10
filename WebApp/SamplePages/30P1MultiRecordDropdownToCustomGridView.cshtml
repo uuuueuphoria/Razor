@@ -6,15 +6,23 @@
     var choice = Request.Form["CategoryList"];
 
     var db = Database.Open("NWDB");
-    var categoryquery = @"SELECT CategoryID, CategoryName
-    FROM Categories
-    ORDER BY CategoryName";
+    var categoryquery = "SELECT CategoryID, CategoryName "
+            + "FROM Categories "
+            + "ORDER BY CategoryName";
     var categoryrecords = db.Query(categoryquery);
 }
 
 @section banner {<h1>@Page.Title</h1>}
 
-@if (IsPost)
+@if (!IsPost) // NO Buttons Pressed
+{
+    if (categoryrecords.Count() == 0)
+    {
+        message = "There are no categories on file.";
+        color = "color:firebrick";
+    }
+}
+else // Submit Button Pressed
 {
     if (choice.Equals("0"))
     {
@@ -23,7 +31,7 @@
     }
     else
     {
-        var productquery = @"SELECT ProductID "
+        var productquery = "SELECT ProductID "
                 + "FROM Products "
                 + "WHERE CategoryID = @0";
         var productinfo = db.Query(productquery, choice);
@@ -39,21 +47,13 @@
         }
     }
 }
-else
-{
-    if (categoryrecords.Count() == 0)
-    {
-        message = "There are no categories on file.";
-        color = "color:firebrick";
-    }
-}
 
 <form id="theform" method="post">
     <div class="row">
-        <div class="col-md-6 text-right">
+        <div class="col-4 text-right">
             <label class="label" for="CategoryList">Category:  </label>&nbsp;&nbsp;
         </div>
-        <div class="col-md-6 text-left">
+        <div class="col-8 text-left">
             <select id="CategoryList" name="CategoryList">
                 <option value="0">select ...</option>
                 @foreach (var item in categoryrecords)
@@ -80,7 +80,9 @@ else
     </div>
     <br />
     <div class="row">
-        <div class="col-md-12 text-center">
+        <div class="col-4">
+        </div>
+        <div class="col-8 text-left">
             <p style=@color>
                 @message
             </p>

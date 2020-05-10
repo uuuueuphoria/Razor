@@ -24,11 +24,11 @@
 
 @section banner{<h1>@Page.Title</h1>}
 
-@if (!IsPost)
+@if (!IsPost) // NO Buttons Pressed
 {
 
 }
-else
+else // Buttons Pressed
 {
     productname = Request.Form["ProductName"];
     supplierid = Request.Form["SupplierList"];
@@ -162,7 +162,7 @@ else
         </div>
         <div class="col-8 text-left">
             <input type="submit" id="theAdd" name="FormButton"
-                   class="btn btn-light" value="Add" />
+                   class="btn btn-light" value="Add" />&nbsp;&nbsp;
             <input type="submit" id="theClear" name="FormButton"
                    class="btn btn-light" value="Clear" />
         </div>
