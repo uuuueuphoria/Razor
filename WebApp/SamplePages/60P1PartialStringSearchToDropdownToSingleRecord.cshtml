@@ -79,7 +79,7 @@ else // Buttons Pressed
         }
         else
         {
-            Response.Redirect("40P2PartialStringSearchToDropdownToCustomGridView.cshtml?cid=" + choice);
+            Response.Redirect("60P2PartialStringSearchToDropdownToSingleRecord.cshtml?pid=" + choice);
         }
     }
 }
@@ -87,7 +87,7 @@ else // Buttons Pressed
 <form id="theform" method="post">
     <div class="row">
         <div class="col-4 text-right">
-            <label id="lblartistArg" for="artistArg">Enter a partial product name:</label>
+            <label id="lblpartialString" for="partialString">Product Name (or Partial Name):</label>
         </div>
         <div class="col-8 text-left">
             <input type="text" id="partialString" name="partialString"
@@ -105,7 +105,7 @@ else // Buttons Pressed
     <br />
     <div class="row">
         <div class="col-4 text-right">
-            <label class="label" for="CategoryList">Choose a product:</label>&nbsp;&nbsp;
+            <label class="label" for="CategoryList">Choose a product:</label>
         </div>
         <div class="col-8 text-left">
             <select id="dropdown" name="dropdown">

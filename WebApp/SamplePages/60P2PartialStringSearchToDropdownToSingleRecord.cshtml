@@ -5,7 +5,7 @@
     var pid = Request.QueryString["pid"];
     if (pid.IsEmpty())
     {
-        Response.Redirect("60P1PartialStringSearchToCustomGridViewToSingleRecord.cshtml");
+        Response.Redirect("60P1PartialStringSearchToDropdownToSingleRecord.cshtml");
     }
     var message = "";
     var color = "";
@@ -73,7 +73,7 @@ else // Buttons Pressed
         }
         if (thebutton.Equals("back"))
         {
-            Response.Redirect("60P1PartialStringSearchToCustomGridViewToSingleRecord.cshtml");
+            Response.Redirect("60P1PartialStringSearchToDropdownToSingleRecord.cshtml");
         }
         else if (thebutton.Equals("clear"))
         {
