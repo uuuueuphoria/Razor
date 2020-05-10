@@ -6,7 +6,7 @@
 
     if (string.IsNullOrEmpty(pid))
     {
-        Response.Redirect("ProductSearch.cshtml");
+        Response.Redirect("60P1PartialStringSearchToCustomGridViewToSingleRecord.cshtml");
     }
 
     var db = Database.Open("NWDB");
@@ -30,11 +30,12 @@
         lastText: "Last",
         firstText: "First",
         columns: grid.Columns(
+            grid.Column(header: "", 
+            format: @<text><a href="~/SamplePages/60P3PartialStringSearchToCustomGridViewToSingleRecord.cshtml?pid=@item.ProductID">Edit</a></text>),
             grid.Column(columnName: "ProductID", header: "Product ID"),
             grid.Column(columnName: "ProductName", header: "Product Name"),
             grid.Column(columnName: "CategoryID", header: "Category ID"),
             grid.Column(columnName: "UnitPrice", header: "Unit Price"),
-            grid.Column(columnName: "Discontinued", header: "Discontinued"),
-            grid.Column(header: "", format: @<text><a href="~/SamplePages/ProductEdit.cshtml?pid=@item.ProductID">Edit</a></text>)));
+            grid.Column(columnName: "Discontinued", header: "Discontinued")));
     </div>
 </div>

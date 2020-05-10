@@ -1,0 +1,180 @@
+﻿@{
+    Layout = "~/_Layout.cshtml";
+    Page.Title = string.Format("Razor - {0}", "CRUD - Insert with Validation");
+
+    var message = "";
+    var color = "";
+    var productid = "";
+    var productname = "";
+    var supplierid = "0";
+    var categoryid = "0";
+    var unitprice = "";
+
+    var db = Database.Open("NWDB");
+    var supplierquery = "SELECT SupplierID, CompanyName "
+            + "FROM Suppliers "
+            + "Order by CompanyName";
+    var supplierlist = db.Query(supplierquery);
+    var categoryquery = @"SELECT CategoryID, CategoryName "
+            + "FROM Categories "
+            + "Order by CategoryName";
+    var categorylist = db.Query(categoryquery);
+
+}
+
+@section banner{<h1>@Page.Title</h1>}
+
+@if (!IsPost)
+{
+
+}
+else
+{
+    productname = Request.Form["ProductName"];
+    supplierid = Request.Form["SupplierList"];
+    categoryid = Request.Form["CategoryList"];
+    unitprice = Request.Form["UnitPrice"];
+    var thebutton = Request.Form["FormButton"];
+
+    if (thebutton.Equals("Clear")) //pressed the CLEAR button
+    {
+        productid = "";
+        productname = "";
+        supplierid = "0";
+        categoryid = "0";
+        unitprice = "";
+    }
+    else //pressed the ADD button
+    {
+        if (productname == "")
+        {
+            message = "Product Name is required";
+            color = "color:firebrick";
+        }
+        else if (categoryid == "0")
+        {
+            message = "Category is required";
+            color = "color:firebrick";
+        }
+        else if (unitprice == "")
+        {
+            message = "Unit Price is required";
+            color = "color:firebrick";
+        }
+        else
+        {
+            var inscommand = "INSERT INTO Products "
+                + "(ProductName, SupplierID, CategoryID, "
+                + "UnitPrice, "
+                + "Discontinued) "
+                + "VALUES(@0, @1, @2, @3, @4)";
+            var rowsaffected = db.Execute(inscommand, productname,
+                supplierid.Equals("0") ? null : supplierid,
+                categoryid,
+                unitprice,
+                0);
+            if (rowsaffected > 0)
+            {
+                decimal newid = db.GetLastInsertId();
+                productid = newid.ToString();
+                message = "Record ADDED";
+                color = "color:green";
+            }
+            else
+            {
+                message = "Record NOT found";
+                color = "color:firebrick";
+            }
+        }
+    }
+}
+
+<form id="theForm" action="" method="post">
+    <div class="row">
+        <div class="col-4 text-right">
+            <label id="lblProductID" for="ProductID">Product ID</label>
+        </div>
+        <div class="col-8 text-left">
+            <input type="text" name="ProductID" value="@productid" readonly />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4 text-right">
+            <label id="lblProductName" for="ProductName">Product Name</label>
+        </div>
+        <div class="col-8 text-left">
+            <input type="text" name="ProductName" value="@productname" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4 text-right">
+            <label id="lblSupplierList" for="SupplierList">Supplier</label>
+        </div>
+        <div class="col-8 text-left">
+            <select name="SupplierList">
+                <option value="0">select...</option>
+                @foreach (var acollectionrow in supplierlist)
+                {
+                    if (acollectionrow.SupplierID.ToString() == supplierid)
+                    {
+                        <option value="@acollectionrow[0]" selected>@acollectionrow[1]</option>
+                    }
+                    else
+                    {
+                        <option value="@acollectionrow[0]">@acollectionrow[1]</option>
+                    }
+                }
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4 text-right">
+            <label id="lblCategoryList" for="CatgoryList">Category</label>
+        </div>
+        <div class="col-8 text-left">
+            <select name="CategoryList">
+                <option value="0">select...</option>
+                @foreach (var acollectionrow in categorylist)
+                {
+                    if (acollectionrow.CategoryID.ToString() == categoryid)
+                    {
+                        <option value="@acollectionrow[0]" selected>@acollectionrow[1]</option>
+                    }
+                    else
+                    {
+                        <option value="@acollectionrow[0]">@acollectionrow[1]</option>
+                    }
+                }
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4 text-right">
+            <label id="lblUnitPrice" for="UnitPrice">Unit Price</label>
+        </div>
+        <div class="col-8 text-left">
+            <input type="number" name="UnitPrice" value="@unitprice" step="0.01" />
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-4">
+        </div>
+        <div class="col-8 text-left">
+            <input type="submit" id="theAdd" name="FormButton"
+                   class="btn btn-light" value="Add" />
+            <input type="submit" id="theClear" name="FormButton"
+                   class="btn btn-light" value="Clear" />
+        </div>
+    </div>
+</form>
+<br />
+<div class="row">
+    <div class="col-md-4">
+    </div>
+    <div class="col-md-6 text-left">
+        <p style=@color>
+            @message
+        </p>
+    </div>
+</div>
