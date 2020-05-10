@@ -1,6 +1,6 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
-    Page.Title = string.Format("Razor - {0}", "CRUD - Page 2 WebGrid Display (Ex04)");
+    Page.Title = string.Format("Razor - {0}", "Partial String Search To Custom Grid View To CRUD - Page 2 WebGrid Display");
 
     var message = "";
     var color = "";
@@ -8,7 +8,7 @@
 
     if (string.IsNullOrEmpty(pid))
     {
-        Response.Redirect("60P1PartialStringSearchToCustomGridViewToSingleRecord.cshtml");
+        Response.Redirect("70P1PartialStringSearchToCustomGridViewToSingleRecord.cshtml");
     }
 
     var db = Database.Open("NWDB");
@@ -37,7 +37,7 @@
         firstText: "First",
         columns: grid.Columns(
             grid.Column(header: "", 
-            format: @<text><a href="~/SamplePages/60P3PartialStringSearchToCustomGridViewToSingleRecord.cshtml?pid=@item.ProductID">Edit</a></text>),
+            format: @<text><a href="~/SamplePages/70P3PartialStringSearchToCustomGridViewToSingleRecord.cshtml?pid=@item.ProductID">Edit</a></text>),
             grid.Column(columnName: "ProductID", header: "Product ID"),
             grid.Column(columnName: "ProductName", header: "Product Name"),
             grid.Column(columnName: "CategoryID", header: "Category ID"),

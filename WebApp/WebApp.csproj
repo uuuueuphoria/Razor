@@ -110,8 +110,8 @@
     <Content Include="SamplePages\30P1MultiRecordDropdownToCustomGridView.cshtml" />
     <Content Include="SamplePages\30P2MultiRecordDropdownToCustomGridView.cshtml" />
     <Content Include="SamplePages\50SingleRecordINSERT.cshtml" />
-    <Content Include="SamplePages\60P3PartialStringSearchToCustomGridViewToSingleRecord.cshtml" />
-    <Content Include="SamplePages\60P1PartialStringSearchToCustomGridViewToSingleRecord.cshtml" />
+    <Content Include="SamplePages\70P3PartialStringSearchToCustomGridViewToSingleRecord.cshtml" />
+    <Content Include="SamplePages\70P1PartialStringSearchToCustomGridViewToSingleRecord.cshtml" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -138,13 +138,15 @@
     <Content Include="SamplePages\40P1PartialStringSearchToDropdownToCustomGridView.cshtml" />
     <Content Include="03-Ex01-04.docx" />
     <Content Include="SamplePages\40P2PartialStringSearchToDropdownToCustomGridView.cshtml" />
-    <Content Include="SamplePages\60P2PartialStringSearchToCustomGridViewToSingleRecord.cshtml" />
+    <Content Include="SamplePages\70P2PartialStringSearchToCustomGridViewToSingleRecord.cshtml" />
     <Content Include="ExercisePages\Ex01.cshtml" />
     <Content Include="ExercisePages\Ex02P1.cshtml" />
     <Content Include="ExercisePages\Ex02P2.cshtml" />
     <Content Include="ExercisePages\Ex03.cshtml" />
     <Content Include="ExercisePages\Ex04P1.cshtml" />
     <Content Include="ExercisePages\Ex04P2.cshtml" />
+    <Content Include="SamplePages\60P1PartialStringSearchToDropdownToSingleRecord.cshtml" />
+    <Content Include="SamplePages\60P2PartialStringSearchToDropdownToSingleRecord.cshtml" />
     <None Include="Scripts\jquery-3.5.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.5.0.js" />
     <Content Include="Scripts\jquery-3.5.0.min.js" />
