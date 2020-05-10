@@ -1,6 +1,7 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
     Page.Title = string.Format("Razor - {0}", "Page 1 MultiRecord Drop Down to Custom GridView");
+
     var message = "";
     var color = "";
     var choice = Request.Form["CategoryList"];
@@ -32,11 +33,10 @@ else // Submit Button Pressed
     else
     {
         var productquery = "SELECT ProductID "
-                + "FROM Products "
-                + "WHERE CategoryID = @0";
-        var productinfo = db.Query(productquery, choice);
-
-        if (productinfo.Count() == 0)
+            + "FROM Products "
+            + "WHERE CategoryID = @0";
+        var productrecords = db.Query(productquery, choice);
+        if (productrecords.Count() == 0)
         {
             message = "There are no products for the selected category.";
             color = "color:firebrick";

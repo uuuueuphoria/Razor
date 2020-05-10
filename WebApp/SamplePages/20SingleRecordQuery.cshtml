@@ -18,32 +18,7 @@
     //this page will access the database when the submit button is pressed
     //the project needs access to 2 more NuGet packages
     //Microsoft.Aspnet.WebPages.Data
-    //Microsoft.Aspnet.Webpages.WebData
-
-    //connect to the database
-    //use the name attribute off your web connection string
-
-    var db = Database.Open("NWDB");
-
-    //create the sql command to be executed on the database
-    //input parameters will be represented by the use of placeholders
-    //placeholders are indexes (0, 1, 2,...)
-    //your command can use multiple placeholders
-
-    var sqlcommand = "SELECT CategoryID, CategoryName "
-        + "FROM Categories "
-        + "WHERE CategoryID = @0";
-
-    //execute command
-    //there is 3 ways to execute a query DEPENDING on your expected results
-    //a) a single row   .QuerySingle(command [, list of argments])
-    //b) 0, 1 or more records   .Query(command [, list of argments])
-    //c) a single value   .QueryValue(command [, list of argments])
-    //the list of argments are your positional incoming argment values
-    //primary key lookup
-    //result should  be one record
-
-    var results = db.QuerySingle(sqlcommand, arg);
+    //Microsoft.Aspnet.Webpages.WebData    
 }
 
 @section banner {<h1>@Page.Title</h1>}
@@ -66,6 +41,31 @@ else  // Buttons Pressed
     }
     else // Fetch Button Pressed
     {
+        //connect to the database
+        //use the name attribute off your web connection string
+
+        var db = Database.Open("NWDB");
+
+        //create the sql command to be executed on the database
+        //input parameters will be represented by the use of placeholders
+        //placeholders are indexes (0, 1, 2,...)
+        //your command can use multiple placeholders
+
+        var sqlcommand = "SELECT CategoryID, CategoryName "
+            + "FROM Categories "
+            + "WHERE CategoryID = @0";
+
+        //execute command
+        //there is 3 ways to execute a query DEPENDING on your expected results
+        //a) a single row   .QuerySingle(command [, list of argments])
+        //b) 0, 1 or more records   .Query(command [, list of argments])
+        //c) a single value   .QueryValue(command [, list of argments])
+        //the list of argments are your positional incoming argment values
+        //primary key lookup
+        //result should  be one record
+
+        var results = db.QuerySingle(sqlcommand, arg);
+
         //always check if you even have results
 
         //checking for query results DEPEND on how the query was executed

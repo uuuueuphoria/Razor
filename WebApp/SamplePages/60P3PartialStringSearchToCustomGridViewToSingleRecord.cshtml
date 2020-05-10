@@ -17,6 +17,7 @@
     var discontinued = Request.Form["Discontinued"];
     var thebutton = Request.Form["theButton"];
     bool updateDeleteEnabled = true;
+
     var db = Database.Open("NWDB");
     var supplierStatement = "SELECT SupplierID, CompanyName "
                             + "FROM Suppliers "

@@ -2,6 +2,8 @@
     Layout = "~/_Layout.cshtml";
     Page.Title = string.Format("Razor - {0}", "Page 2 MultiRecord Drop Down to Custom GridView");
 
+    var message = "";
+    var color = "";
     var cid = Request.QueryString["cid"];
 
     if (string.IsNullOrEmpty(cid))
@@ -19,7 +21,11 @@
         + "WHERE CategoryID = @0 "
         + "ORDER BY ProductName";
     var productinfo = db.Query(productquery, cid);
-
+    if (productinfo == null)
+    {
+        message = "Product NOT found";
+        color = "color:firebrick";
+    }
     var gridinstance = new WebGrid(productinfo, rowsPerPage: 5);
 }
 
@@ -38,5 +44,15 @@
                gridinstance.Column(columnName: "ProductName", header: "Name"),
                gridinstance.Column(columnName: "UnitPrice", header: "Unit Price", canSort: false),
                gridinstance.Column(columnName: "Discontinued", header: "Discontinued", canSort: false)))
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-4 text-right">
+    </div>
+    <div class="col-8 text-left">
+        <p style=@color>
+            @message
+        </p>
     </div>
 </div>

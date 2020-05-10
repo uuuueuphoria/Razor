@@ -4,11 +4,10 @@
 
     var message = "";
     var color = "";
-    IEnumerable<dynamic> partialstringproductresults = null;
-    IEnumerable<dynamic> albumresults = null;
     var partialstring = Request.Form["partialString"];
     var choice = Request.Form["dropdown"];
     var thebutton = Request.Form["theButton"];
+    IEnumerable<dynamic> partialstringproductresults = null;
 }
 
 @section banner {<h1>@Page.Title</h1>}
@@ -44,13 +43,12 @@ else // Buttons Pressed
         //WHERE Name LIKE 'a__%'	Finds any values that start with "a" and are at least 3 characters in length
         //WHERE Name LIKE 'a%o'	Finds any values that start with "a" and ends with "o"
 
-        string sqlcommand1 = "SELECT ProductId, ProductName "
+        string partialstringquery = "SELECT ProductId, ProductName "
             + "FROM Products "
             + "WHERE ProductName LIKE @0 "
             + "ORDER BY ProductName";
         var partialstringforquery = "%" + partialstring + "%";
-        partialstringproductresults = db.Query(sqlcommand1, partialstringforquery);
-
+        partialstringproductresults = db.Query(partialstringquery, partialstringforquery);
         if (partialstringproductresults.Count() == 0)
         {
             message = "No products found that match string";
@@ -61,11 +59,11 @@ else // Buttons Pressed
     else if (thebutton.Equals("fetch"))
     {
         var db = Database.Open("NWDB");
-        var albumquery = "SELECT ProductID, ProductName "
+        var productquery = "SELECT ProductID, ProductName "
             + "FROM Products "
             + "WHERE ProductID = @0";
-        albumresults = db.Query(albumquery, choice);
-        if (albumresults.Count() == 0)
+        var productresults = db.Query(productquery, choice);
+        if (productresults.Count() == 0)
         {
             message = "No product was returned";
             color = "color:firebrick";

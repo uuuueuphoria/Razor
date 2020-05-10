@@ -4,21 +4,18 @@
 
     var message = "";
     var color = "";
-    var productsearch = Request.Form["ProductSearch"];
-
-    var db = Database.Open("NWDB");
-    var partialsearchstring = "%" + productsearch + "%";
-
-    var queryStatement = "SELECT ProductID, ProductName, CategoryID, "
-                        + "UnitPrice, UnitsInStock, Discontinued "
-                        + "FROM Products "
-                        + "WHERE ProductName like @0 "
-                        + "ORDER BY ProductName";
-    var queryProducts = db.Query(queryStatement, partialsearchstring);
+    var productsearch = "";
 }
 
-@if (IsPost)
+@section banner{<h1>@Page.Title</h1>}
+
+@if (!IsPost) // NO Buttons Pressed
 {
+
+}
+else // Buttons Pressed
+{
+    productsearch = Request.Form["ProductSearch"];
     if (productsearch.IsEmpty())
     {
         message = "Enter a product name (or partial name).";
@@ -26,7 +23,14 @@
     }
     else
     {
-
+        var db = Database.Open("NWDB");
+        var partialsearchstring = "%" + productsearch + "%";
+        var queryStatement = "SELECT ProductID, ProductName, CategoryID, "
+                            + "UnitPrice, UnitsInStock, Discontinued "
+                            + "FROM Products "
+                            + "WHERE ProductName like @0 "
+                            + "ORDER BY ProductName";
+        var queryProducts = db.Query(queryStatement, partialsearchstring);
         if (queryProducts.Count() == 0)
         {
             message = "No products found with search string.";
@@ -39,8 +43,6 @@
     }
 }
 
-@section banner{<h1>@Page.Title</h1>}
-
 <form id="theForm" action="" method="post">
     <div class="row">
         <div class="col-4 text-right">
@@ -52,7 +54,7 @@
         </div>
     </div>
 </form>
-<br/>
+<br />
 <div class="row">
     <div class="col-4 text-right">
     </div>
@@ -61,4 +63,4 @@
             @message
         </p>
     </div>
-    </div>
+</div>

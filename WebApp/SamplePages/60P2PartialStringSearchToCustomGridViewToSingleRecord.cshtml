@@ -2,6 +2,8 @@
     Layout = "~/_Layout.cshtml";
     Page.Title = string.Format("Razor - {0}", "CRUD - WebGrid Display");
 
+    var message = "";
+    var color = "";
     var pid = Request.QueryString["pid"];
 
     if (string.IsNullOrEmpty(pid))
@@ -16,9 +18,13 @@
                 + "FROM Products "
                 + "WHERE ProductName LIKE @0 "
                 + "ORDER BY ProductName";
-    var prodinfo = db.Query(prodquery, partialstring);
-
-    var grid = new WebGrid(prodinfo, rowsPerPage: 5);
+    var productinfo = db.Query(prodquery, partialstring);
+    if (productinfo == null)
+    {
+        message = "Product NOT found";
+        color = "color:firebrick";
+    }
+    var grid = new WebGrid(productinfo, rowsPerPage: 5);
 }
 
 @section banner {<h1>@Page.Title</h1>}
@@ -37,5 +43,15 @@
             grid.Column(columnName: "CategoryID", header: "Category ID"),
             grid.Column(columnName: "UnitPrice", header: "Unit Price"),
             grid.Column(columnName: "Discontinued", header: "Discontinued")));
+    </div>
+</div>
+<br />
+<div class="row">
+    <div class="col-4 text-right">
+    </div>
+    <div class="col-8 text-left">
+        <p style=@color>
+            @message
+        </p>
     </div>
 </div>

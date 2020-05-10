@@ -19,14 +19,13 @@
             + "FROM Categories "
             + "Order by CategoryName";
     var categorylist = db.Query(categoryquery);
-
 }
 
 @section banner{<h1>@Page.Title</h1>}
 
 @if (!IsPost) // NO Buttons Pressed
 {
-
+    
 }
 else // Buttons Pressed
 {
