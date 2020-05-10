@@ -14,6 +14,7 @@
 
 @if (!IsPost) // NO Buttons Pressed
 {
+
     message = "IsPost = false";
     color = "color:green";
     partialstring = "";
@@ -28,32 +29,40 @@ else // Buttons Pressed
     }
     else if (thebutton.Equals("submit"))
     {
-        var db = Database.Open("NWDB");
-
-        //create the sql command to be executed on the database
-        //input parameters will be represented by the use of placeholders
-        //placeholders are indexes (0, 1, 2,...)
-        //your command can use multiple placeholders
-
-        //how to use the LIKE command in SQL
-        //WHERE Name LIKE 'a%'	Finds any values that start with "a"
-        //WHERE Name LIKE '%a'	Finds any values that end with "a"
-        //WHERE Name LIKE '%or%'	Finds any values that have "or" in any position
-        //WHERE Name LIKE '_r%'	Finds any values that have "r" in the second position
-        //WHERE Name LIKE 'a__%'	Finds any values that start with "a" and are at least 3 characters in length
-        //WHERE Name LIKE 'a%o'	Finds any values that start with "a" and ends with "o"
-
-        string partialstringquery = "SELECT ProductId, ProductName "
-            + "FROM Products "
-            + "WHERE ProductName LIKE @0 "
-            + "ORDER BY ProductName";
-        var partialstringforquery = "%" + partialstring + "%";
-        partialstringproductresults = db.Query(partialstringquery, partialstringforquery);
-        if (partialstringproductresults.Count() == 0)
+        if (partialstring.IsEmpty())
         {
-            message = "No products found that match string";
+            message = "Enter a product name (or partial name).";
             color = "color:firebrick";
-            partialstring = "";
+        }
+        else
+        {
+            var db = Database.Open("NWDB");
+
+            //create the sql command to be executed on the database
+            //input parameters will be represented by the use of placeholders
+            //placeholders are indexes (0, 1, 2,...)
+            //your command can use multiple placeholders
+
+            //how to use the LIKE command in SQL
+            //WHERE Name LIKE 'a%'	Finds any values that start with "a"
+            //WHERE Name LIKE '%a'	Finds any values that end with "a"
+            //WHERE Name LIKE '%or%'	Finds any values that have "or" in any position
+            //WHERE Name LIKE '_r%'	Finds any values that have "r" in the second position
+            //WHERE Name LIKE 'a__%'	Finds any values that start with "a" and are at least 3 characters in length
+            //WHERE Name LIKE 'a%o'	Finds any values that start with "a" and ends with "o"
+
+            string partialstringquery = "SELECT ProductId, ProductName "
+                + "FROM Products "
+                + "WHERE ProductName LIKE @0 "
+                + "ORDER BY ProductName";
+            var partialstringforquery = "%" + partialstring + "%";
+            partialstringproductresults = db.Query(partialstringquery, partialstringforquery);
+            if (partialstringproductresults.Count() == 0)
+            {
+                message = "No products found that match string";
+                color = "color:firebrick";
+                partialstring = "";
+            }
         }
     }
     else if (thebutton.Equals("fetch"))

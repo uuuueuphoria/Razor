@@ -4,7 +4,7 @@
 
     var message = "";
     var color = "";
-    var productsearch = "";
+    var partialstring = "";
 }
 
 @section banner{<h1>@Page.Title</h1>}
@@ -15,8 +15,8 @@
 }
 else // Buttons Pressed
 {
-    productsearch = Request.Form["ProductSearch"];
-    if (productsearch.IsEmpty())
+    partialstring = Request.Form["ProductSearch"];
+    if (partialstring.IsEmpty())
     {
         message = "Enter a product name (or partial name).";
         color = "color:firebrick";
@@ -24,7 +24,7 @@ else // Buttons Pressed
     else
     {
         var db = Database.Open("NWDB");
-        var partialsearchstring = "%" + productsearch + "%";
+        var partialsearchstring = "%" + partialstring + "%";
         var queryStatement = "SELECT ProductID, ProductName, CategoryID, "
                             + "UnitPrice, UnitsInStock, Discontinued "
                             + "FROM Products "
@@ -38,7 +38,7 @@ else // Buttons Pressed
         }
         else
         {
-            Response.Redirect("60P2PartialStringSearchToCustomGridViewToSingleRecord.cshtml?pid=" + productsearch);
+            Response.Redirect("60P2PartialStringSearchToCustomGridViewToSingleRecord.cshtml?pid=" + partialstring);
         }
     }
 }
@@ -49,7 +49,7 @@ else // Buttons Pressed
             <label id="forProductSearch">Product Name (or Partial Name)</label>
         </div>
         <div class="col-8 text-left">
-            <input type="text" name="ProductSearch" value="@productsearch">&nbsp;&nbsp;
+            <input type="text" name="ProductSearch" value="@partialstring">&nbsp;&nbsp;
             <button type="submit" class="btn btn-light" name="Search" id="theSearch">Search</button>
         </div>
     </div>
