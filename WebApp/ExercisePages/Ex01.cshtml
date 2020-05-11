@@ -19,7 +19,7 @@
 else // Buttons Pressed
 {
     myname = Request.Form["dataentry"];
-    choices = Request.Form["Group"];
+    choices = Request.Form["group"];
     thebutton = Request.Form["theButton"];
 
     if (thebutton.Equals("reset"))
@@ -71,11 +71,11 @@ else // Buttons Pressed
     <div class="row">
         <div class="offset-1">
             <label id="lblGameGroup">Menu Items:</label><br />
-            <input type="checkbox" id="Group" name="Group" value="Steak"
+            <input type="checkbox" id="group" name="group" value="Steak"
                    @(Array.IndexOf(choices.Split(','), "Steak") >= 0 ? "checked" : "") />Steak<br />
-            <input type="checkbox" id="Group" name="Group" value="Seafood"
+            <input type="checkbox" id="group" name="group" value="Seafood"
                    @(Array.IndexOf(choices.Split(','), "Seafood") >= 0 ? "checked" : "") />Seafood<br />
-            <input type="checkbox" id="Group" name="Group" value="Vegetables"
+            <input type="checkbox" id="group" name="group" value="Vegetables"
                    @(Array.IndexOf(choices.Split(','), "Vegetables") >= 0 ? "checked" : "") />Vegetables<br />
         </div>
     </div>

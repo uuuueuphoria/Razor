@@ -17,7 +17,7 @@
 }
 else // Buttons Pressed
 {
-    choices = Request.Form["GameGroup"];
+    choices = Request.Form["group"];
     thebutton = Request.Form["theButton"];
 
     if (thebutton.Equals("reset"))
@@ -54,17 +54,17 @@ else // Buttons Pressed
     <div class="row">
         <div class="offset-1">
             <label id="lblGameGroup">Select you favourite gaming platforms:</label><br />
-            <input type="checkbox" id="GameGroup" name="GameGroup" value="PS4"
+            <input type="checkbox" id="group" name="group" value="PS4"
                    @(Array.IndexOf(choices.Split(','), "PS4") >= 0 ? "checked" : "") />PS4<br />
-            <input type="checkbox" id="GameGroup" name="GameGroup" value="Computer"
+            <input type="checkbox" id="group" name="group" value="Computer"
                    @(Array.IndexOf(choices.Split(','), "Computer") >= 0 ? "checked" : "") />Computer<br />
-            <input type="checkbox" id="GameGroup" name="GameGroup" value="XBOX One"
+            <input type="checkbox" id="group" name="group" value="XBOX One"
                    @(Array.IndexOf(choices.Split(','), "XBOX One") >= 0 ? "checked" : "") />XBOX One<br />
-            <input type="checkbox" id="GameGroup" name="GameGroup" value="Switch"
+            <input type="checkbox" id="group" name="group" value="Switch"
                    @(Array.IndexOf(choices.Split(','), "Switch") >= 0 ? "checked" : "") />Switch<br />
-            <input type="checkbox" id="GameGroup" name="GameGroup" value="Wii"
+            <input type="checkbox" id="group" name="group" value="Wii"
                    @(Array.IndexOf(choices.Split(','), "Wii") >= 0 ? "checked" : "") />Wii<br /><br />
-            @*<input type="checkbox" id="GameGroup" name="GameGroup" value="Wii" checked
+            @*<input type="checkbox" id="group" name="group" value="Wii" checked
                 @(Array.IndexOf(choices.Split(','), "Wii") >= 0 ? "checked" : "") />Wii<br /><br />*@
         </div>
     </div>

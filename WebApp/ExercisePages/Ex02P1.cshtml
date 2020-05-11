@@ -38,9 +38,12 @@ else // Buttons Pressed
         {
             var db = Database.Open("CHINOOKDB");
 
-            string sqlcommand1 = "SELECT ArtistId, Name FROM Artists WHERE Name LIKE @0 ORDER BY Name";
+            var artistquery = "SELECT ArtistId, Name "
+                + "FROM Artists "
+                + "WHERE Name LIKE @0 "
+                + "ORDER BY Name";
             var partialstringforquery = "%" + partialstring + "%";
-            partialstringartistresults = db.Query(sqlcommand1, partialstringforquery);
+            partialstringartistresults = db.Query(artistquery, partialstringforquery);
             //always check if you even have results
             if (partialstringartistresults.Count() == 0)
             {
