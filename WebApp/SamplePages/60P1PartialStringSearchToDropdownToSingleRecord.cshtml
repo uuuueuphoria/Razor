@@ -7,7 +7,7 @@
     var partialstring = Request.Form["partialString"];
     var choice = Request.Form["dropdown"];
     var thebutton = Request.Form["theButton"];
-    IEnumerable<dynamic> partialstringproductresults = null;
+    IEnumerable<dynamic> partialstringresults = null;
 }
 
 @section banner {<h1>@Page.Title</h1>}
@@ -39,8 +39,8 @@ else // Buttons Pressed
                 + "WHERE ProductName LIKE @0 "
                 + "ORDER BY ProductName";
             var partialstringforquery = "%" + partialstring + "%";
-            partialstringproductresults = db.Query(partialstringquery, partialstringforquery);
-            if (partialstringproductresults.Count() == 0)
+            partialstringresults = db.Query(partialstringquery, partialstringforquery);
+            if (partialstringresults.Count() == 0)
             {
                 message = "No products found that match string";
                 color = "color:firebrick";
@@ -51,13 +51,13 @@ else // Buttons Pressed
     else if (thebutton.Equals("fetch"))
     {
         var db = Database.Open("NWDB");
-        var productquery = "SELECT ProductID, ProductName "
+        var query = "SELECT ProductID, ProductName "
             + "FROM Products "
             + "WHERE ProductID = @0";
-        var productresults = db.Query(productquery, choice);
-        if (productresults.Count() == 0)
+        var result = db.QuerySingle(query, choice);
+        if (result == null)
         {
-            message = "No product was returned";
+            message = "Product not found";
             color = "color:firebrick";
         }
         else
@@ -93,9 +93,9 @@ else // Buttons Pressed
         <div class="col-8 text-left">
             <select id="dropdown" name="dropdown">
                 <option value="0">select ...</option>
-                @if (partialstringproductresults != null)
+                @if (partialstringresults != null)
                 {
-                    foreach (var item in partialstringproductresults)
+                    foreach (var item in partialstringresults)
                     {
                         if (choice == item.ProductID.ToString())
                         {

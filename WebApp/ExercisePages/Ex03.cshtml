@@ -10,10 +10,7 @@
     var releaseyear = "";
     var releaselabel = "";
 
-
-
     var db = Database.Open("CHINOOKDB");
-
     var artistquery = "SELECT ArtistId, Name "
         + "FROM Artists "
         + "ORDER BY Name";
@@ -36,7 +33,6 @@ else // Buttons Pressed
 
     if (thebutton.Equals("Clear")) //pressed the CLEAR button
     {
-
         albumtitle = "";
         artistid = "0";
         releaseyear = "";
@@ -57,6 +53,11 @@ else // Buttons Pressed
         else if (releaseyear == "")
         {
             message = "Release Year is required";
+            color = "color:firebrick";
+        }
+        else if (int.Parse(releaseyear) < 1950 || int.Parse(releaseyear) >  DateTime.Today.Year)
+        {
+            message = "Release Year must be between 1950 and this year";
             color = "color:firebrick";
         }
         else if (releaselabel == "")
@@ -148,10 +149,10 @@ else // Buttons Pressed
         <div class="col-4">
         </div>
         <div class="col-8 text-left">
-            <input type="submit" id="theAdd" name="FormButton"
-                   class="btn btn-light" value="Add" />&nbsp;&nbsp;
             <input type="submit" id="theClear" name="FormButton"
-                   class="btn btn-light" value="Clear" />
+                   class="btn btn-light" value="Clear" />&nbsp;&nbsp;
+            <input type="submit" id="theAdd" name="FormButton"
+                   class="btn btn-light" value="Add" />
         </div>
     </div>
 </form>

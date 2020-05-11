@@ -4,9 +4,9 @@
 
     var message = "";
     var color = "";
-    var cid = Request.QueryString["cid"];
+    var aid = Request.QueryString["aid"];
 
-    if (string.IsNullOrEmpty(cid))
+    if (string.IsNullOrEmpty(aid))
     {
         Response.Redirect("Ex02P1.cshtml");
     }
@@ -14,21 +14,21 @@
     var artistquery = "SELECT Name "
         + "FROM Artists "
         + "WHERE ArtistID = @0";
-    var artistresults = db.QuerySingle(artistquery, cid);
+    var artistresults = db.QuerySingle(artistquery, aid);
     var albumquery = "SELECT AlbumID, Title, ArtistID, ReleaseYear, ReleaseLabel "
         + "FROM Albums "
         + "WHERE ArtistID = @0 "
         + "ORDER BY Title";
-    var albumresults = db.Query(albumquery, cid);
+    var albumresults = db.Query(albumquery, aid);
     WebGrid gridinstance = new WebGrid(albumresults, rowsPerPage: 5);
     if (artistresults == null)
     {
-        message = "Artist NOT found";
+        message = "Artist not found.";
         color = "color:firebrick";
     }
     else if (albumresults.Count() == 0)
     {
-        message = "This artist has NO albums";
+        message = "No Albums found.";
         color = "color:firebrick";
     }
 }

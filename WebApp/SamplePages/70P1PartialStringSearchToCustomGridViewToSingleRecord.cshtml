@@ -25,13 +25,13 @@ else // Buttons Pressed
     {
         var db = Database.Open("NWDB");
         var partialsearchstring = "%" + partialstring + "%";
-        var queryStatement = "SELECT ProductID, ProductName, CategoryID, "
+        var query = "SELECT ProductID, ProductName, CategoryID, "
                             + "UnitPrice, UnitsInStock, Discontinued "
                             + "FROM Products "
                             + "WHERE ProductName like @0 "
                             + "ORDER BY ProductName";
-        var queryProducts = db.Query(queryStatement, partialsearchstring);
-        if (queryProducts.Count() == 0)
+        var results = db.Query(query, partialsearchstring);
+        if (results.Count() == 0)
         {
             message = "No products found with search string.";
             color = "color:firebrick";
