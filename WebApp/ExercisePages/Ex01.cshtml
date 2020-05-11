@@ -36,18 +36,19 @@ else // Buttons Pressed
             message = "Please enter a name. ";
             color = "color:firebrick";
         }
-        else
-        {
-            message = "Entered Name: " + @myname + ". ";
-            color = "color:green";
-        }
         if (choices.IsEmpty())
         {
             message += "Please enter a meal item. ";
             color = "color:firebrick";
             choices = "";
         }
-        else
+        if (!string.IsNullOrEmpty(myname))
+        {
+            message += "Entered Name: " + @myname + ". ";
+            color = "color:green";
+        }
+        
+        if (!choices.IsEmpty())
         {
             var choicesarray = choices.Split(',');
             for (int i = 0; i < choicesarray.Length; i++)
