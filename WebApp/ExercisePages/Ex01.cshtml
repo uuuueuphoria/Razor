@@ -19,7 +19,7 @@
 else // Buttons Pressed
 {
     myname = Request.Form["dataentry"];
-    choices = Request.Form["GameGroup"];
+    choices = Request.Form["Group"];
     thebutton = Request.Form["theButton"];
 
     if (thebutton.Equals("reset"))
@@ -42,18 +42,18 @@ else // Buttons Pressed
             color = "color:firebrick";
             choices = "";
         }
-        if (!string.IsNullOrEmpty(myname))
+        if ((!string.IsNullOrEmpty(myname)) && (!choices.IsEmpty()))
         {
-            message += "Entered Name: " + @myname + ". ";
+            message += "Customer Name: " + @myname + ". ";
             color = "color:green";
         }
-        
-        if (!choices.IsEmpty())
+        if ((!string.IsNullOrEmpty(myname)) && (!choices.IsEmpty()))
         {
+            message += "Menu Items: ";
             var choicesarray = choices.Split(',');
             for (int i = 0; i < choicesarray.Length; i++)
             {
-                message += "Choice " + i + ": " + @choicesarray[i] + ". ";
+                message += @choicesarray[i] + ", ";
                 color = "color:green";
             }
         }
@@ -63,20 +63,20 @@ else // Buttons Pressed
 <form id="theform" method="post">
     <div class="row">
         <div class="offset-1">
-            <label id="label1" for="dataentry">Enter a Name:</label>&nbsp;&nbsp;
+            <label id="label1" for="dataentry">Customer Name:</label>&nbsp;&nbsp;
             <input type="text" id="dataentry" name="dataentry" value="@myname" />
         </div>
     </div>
     <br />
     <div class="row">
         <div class="offset-1">
-            <label id="lblGameGroup">Select you favourite gaming platforms:</label><br />
-            <input type="checkbox" id="GameGroup" name="GameGroup" value="PS4"
-                   @(Array.IndexOf(choices.Split(','), "PS4") >= 0 ? "checked" : "") />PS4<br />
-            <input type="checkbox" id="GameGroup" name="GameGroup" value="Computer"
-                   @(Array.IndexOf(choices.Split(','), "Computer") >= 0 ? "checked" : "") />Computer<br />
-            <input type="checkbox" id="GameGroup" name="GameGroup" value="XBOX One"
-                   @(Array.IndexOf(choices.Split(','), "XBOX One") >= 0 ? "checked" : "") />XBOX One<br />
+            <label id="lblGameGroup">Menu Items:</label><br />
+            <input type="checkbox" id="Group" name="Group" value="Steak"
+                   @(Array.IndexOf(choices.Split(','), "Steak") >= 0 ? "checked" : "") />Steak<br />
+            <input type="checkbox" id="Group" name="Group" value="Seafood"
+                   @(Array.IndexOf(choices.Split(','), "Seafood") >= 0 ? "checked" : "") />Seafood<br />
+            <input type="checkbox" id="Group" name="Group" value="Vegetables"
+                   @(Array.IndexOf(choices.Split(','), "Vegetables") >= 0 ? "checked" : "") />Vegetables<br />
         </div>
     </div>
     <br />
