@@ -136,7 +136,6 @@
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
     <Content Include="SamplePages\40P1PartialStringSearchToDropdownToCustomGridView.cshtml" />
-    <Content Include="03-Ex01-04.docx" />
     <Content Include="SamplePages\40P2PartialStringSearchToDropdownToCustomGridView.cshtml" />
     <Content Include="SamplePages\70P2PartialStringSearchToCustomGridViewToSingleRecord.cshtml" />
     <Content Include="ExercisePages\Ex01.cshtml" />
