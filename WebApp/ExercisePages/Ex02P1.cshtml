@@ -5,7 +5,7 @@
     var message = "";
     var color = "";
     IEnumerable<dynamic> partialstringartistresults = null;
-    IEnumerable<dynamic> albumresults = null;
+
     var partialstring = Request.Form["partialString"];
     var choice = Request.Form["dropdown"];
     var thebutton = Request.Form["theButton"];
@@ -15,7 +15,11 @@
     <h1>@Page.Title</h1>
 }
 
-@if (IsPost)
+@if (!IsPost) // NO Buttons Pressed
+{
+    partialstring = "";
+}
+else // Buttons Pressed
 {
     if (thebutton.Equals("clear"))
     {
@@ -25,32 +29,38 @@
     }
     else if (thebutton.Equals("submit"))
     {
-        var db = Database.Open("CHINOOKDB");
-
-        string sqlcommand1 = "SELECT ArtistId, Name FROM Artists WHERE Name LIKE @0 ORDER BY Name";
-        var partialstringforquery = "%" + partialstring + "%";
-        partialstringartistresults = db.Query(sqlcommand1, partialstringforquery);
-        //always check if you even have results
-
-        if (partialstringartistresults.Count() == 0)
+        if (partialstring.IsEmpty())
         {
-            message = "No artists found that match string";
+            message = "Enter an artist name (or partial name).";
             color = "color:firebrick";
-            partialstring = "";
+        }
+        else
+        {
+            var db = Database.Open("CHINOOKDB");
+
+            string sqlcommand1 = "SELECT ArtistId, Name FROM Artists WHERE Name LIKE @0 ORDER BY Name";
+            var partialstringforquery = "%" + partialstring + "%";
+            partialstringartistresults = db.Query(sqlcommand1, partialstringforquery);
+            //always check if you even have results
+            if (partialstringartistresults.Count() == 0)
+            {
+                message = "No artists found that match string";
+                color = "color:firebrick";
+                partialstring = "";
+            }
         }
     }
     else if (thebutton.Equals("fetch"))
     {
         var db = Database.Open("CHINOOKDB");
-        //var db = Database.Open("NWDB");
         var albumquery = "SELECT AlbumID, Title, ArtistID, ReleaseYear, ReleaseLabel "
             + "FROM Albums "
             + "WHERE ArtistID = @0 "
             + "ORDER BY Title";
-        albumresults = db.Query(albumquery, choice);
+        var albumresults = db.Query(albumquery, choice);
         if (albumresults.Count() == 0)
         {
-            message = "This artist has NO albums";
+            message = "No albums found";
             color = "color:firebrick";
         }
         else
@@ -58,12 +68,6 @@
             Response.Redirect("Ex02P2.cshtml?cid=" + choice);
         }
     }
-}
-else
-{
-    message = "IsPost = false";
-    color = "color:green";
-    partialstring = "";
 }
 
 <form id="theform" method="post">
@@ -115,7 +119,9 @@ else
     </div>
     <br />
     <div class="row">
-        <div class="col-md-12 text-center">
+        <div class="col-4">
+        </div>
+        <div class="col-8 text-left">
             <p style=@color>
                 @message
             </p>

@@ -1,6 +1,7 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
     Page.Title = string.Format("Razor - {0}", "Form with Radio Buttons");
+
     //if you need to have a variable for the entire page
     //  that variable needs to be declared at a global level
     var languagegroup = "";
@@ -10,16 +11,27 @@
     var color = "";
 }
 
-@section banner {
-    <h1>@Page.Title</h1>
-}
+@section banner {<h1>@Page.Title</h1>}
 
-@if (IsPost)
+@if (!IsPost) // NO Buttons Pressed
+{
+    message = "IsPost = false";
+    color = "color:green";
+}
+else // Buttons Pressed
 {
     languagegroup = Request.Form["LanguageGroup"];
     scriptgroup = Request.Form["ScriptGroup"];
     thebutton = Request.Form["theButton"];
-    if (thebutton.Equals("submit"))
+
+    if (thebutton.Equals("reset"))
+    {
+        languagegroup = "";
+        scriptgroup = "";
+        message = "Reset button pressed";
+        color = "color:green";
+    }
+    else if (thebutton.Equals("submit"))
     {
         if (string.IsNullOrEmpty(languagegroup))
         {
@@ -58,18 +70,6 @@
             }
         }
     }
-    else if (thebutton.Equals("reset"))
-    {
-        languagegroup = "";
-        scriptgroup = "";
-        message = "Reset button pressed";
-        color = "color:green";
-    }
-}
-else
-{
-    message = "IsPost = false";
-    color = "color:green";
 }
 
 <form id="theform" method="post">
@@ -98,7 +98,7 @@ else
     <div class="row">
         <div class="offset-1">
             <button type="submit" id="theButton" name="theButton"
-                    value="submit" class="btn btn-primary">
+                    value="submit" class="btn btn-light">
                 Submit
             </button>&nbsp;&nbsp;
             <button type="submit" id="theButton" name="theButton"

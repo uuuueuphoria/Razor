@@ -6,11 +6,9 @@
     var color = "";
 }
 
-@section banner {
-    <h1>@Page.Title</h1>
-}
+@section banner {<h1>@Page.Title</h1>}
 
-@if (IsPost)
+@if (IsPost) // Buttons Pressed
 {
     var choice = Request.Form["CodingSamples"];
     switch (choice.ToUpper())
@@ -54,7 +52,7 @@ else
                 <option value="CheckBox">CheckBoxes</option>
             </select>&nbsp;&nbsp;
             <button type="submit" id="theButton" name="theButton" value="submit"
-                    class="btn btn-primary">
+                    class="btn btn-light">
                 Go To ...
             </button>
         </div>

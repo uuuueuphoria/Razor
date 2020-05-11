@@ -8,11 +8,14 @@
     var color = "";
 }
 
-@section banner {
-    <h1>@Page.Title</h1>
-}
+@section banner {<h1>@Page.Title</h1>}
 
-@if (IsPost)
+@if (!IsPost) // NO Buttons Pressed
+{
+    message = "IsPost = false";
+    color = "color:green";
+}
+else // Buttons Pressed
 {
     //to access a control of your page use: Request.Form["control parameter name"]
     //the data returned comes in as a STRING
@@ -22,7 +25,14 @@
     //IF you have multiple buttons on your form, you SHOULD
     //determine which button was pressed; thus; dictating WHICH
     //logic is to be EXECUTED
-    if (thebutton.Equals("submit"))
+
+    if (thebutton.Equals("reset"))
+    {
+        myname = "";
+        message = "Reset button pressed";
+        color = "color:green";
+    }
+    else if (thebutton.Equals("submit"))
     {
         if (string.IsNullOrEmpty(myname))
         {
@@ -35,17 +45,6 @@
             color = "color:green";
         }
     }
-    else if (thebutton.Equals("reset"))
-    {
-        myname = "";
-        message = "Reset button pressed";
-        color = "color:green";
-    }
-}
-else
-{
-    message = "IsPost = false";
-    color = "color:green";
 }
 
 <form id="theform" method="post">
@@ -55,7 +54,7 @@ else
             <input type="text" id="dataentry" name="dataentry" value="@myname" />
             <br /><br />
             <button type="submit" id="theButton" name="theButton"
-                    value="submit" class="btn btn-primary">
+                    value="submit" class="btn btn-light">
                 Submit
             </button>&nbsp;&nbsp;
             <button type="submit" id="theButton" name="theButton"

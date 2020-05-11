@@ -14,9 +14,6 @@
 
 @if (!IsPost) // NO Buttons Pressed
 {
-
-    message = "IsPost = false";
-    color = "color:green";
     partialstring = "";
 }
 else // Buttons Pressed
@@ -74,7 +71,7 @@ else // Buttons Pressed
         var productresults = db.Query(productquery, choice);
         if (productresults.Count() == 0)
         {
-            message = "No product was returned";
+            message = "No product found";
             color = "color:firebrick";
         }
         else

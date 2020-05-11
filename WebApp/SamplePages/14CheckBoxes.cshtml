@@ -8,15 +8,25 @@
     var color = "";
 }
 
-@section banner {
-    <h1>@Page.Title</h1>
-}
+@section banner {<h1>@Page.Title</h1>}
 
-@if (IsPost)
+@if (!IsPost) // NO Buttons Pressed
+{
+    message = "IsPost = false";
+    color = "color:green";
+}
+else // Buttons Pressed
 {
     choices = Request.Form["GameGroup"];
     thebutton = Request.Form["theButton"];
-    if (thebutton.Equals("submit"))
+
+    if (thebutton.Equals("reset"))
+    {
+        message = "Reset button pressed";
+        color = "color:green";
+        choices = "";
+    }
+    else if (thebutton.Equals("submit"))
     {
         if (choices.IsEmpty())
         {
@@ -38,19 +48,7 @@
             //to process the collection of strings in choices
         }
     }
-    else if (thebutton.Equals("reset"))
-    {
-        message = "Reset button pressed";
-        color = "color:green";
-        choices = "";
-    }
 }
-else
-{
-    message = "IsPost = false";
-    color = "color:green";
-}
-
 
 <form id="theform" method="post">
     <div class="row">
@@ -73,7 +71,7 @@ else
     <div class="row">
         <div class="offset-1">
             <button type="submit" id="theButton" name="theButton"
-                    value="submit" class="btn btn-primary">
+                    value="submit" class="btn btn-light">
                 Submit
             </button>&nbsp;&nbsp;
             <button type="submit" id="theButton" name="theButton"
