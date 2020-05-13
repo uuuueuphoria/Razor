@@ -1,6 +1,6 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
-    Page.Title = string.Format("Razor - {0}", "Page2 Partial String Search to Dropdown to Custom GridView (Ex02)");
+    Page.Title = string.Format("Razor - {0}", "Page2 Partial Search to Dropdown to CGV (Ex02)");
 
     var message = "";
     var color = "";
@@ -28,7 +28,15 @@
     var gridinstance = new WebGrid(productinfo);
 }
 
-@section banner {<h1>@Page.Title</h1>}
+@section banner {
+    <div class="row">
+        <div class="col-4">
+        </div>
+        <div class="col-8 text-left">
+            <h3>@Page.Title</h3>
+        </div>
+    </div>
+}
 
 <div class="offset-1">
     <h3>Product Information for: @productname.ProductName</h3>

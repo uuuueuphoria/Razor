@@ -1,6 +1,6 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
-    Page.Title = string.Format("Razor - {0}", "Page 2 MultiRecord Drop Down to Custom GridView");
+    Page.Title = string.Format("Razor - {0}", "Page 2 MultiRecord Drop Down to Custom Grid View");
 
     var message = "";
     var color = "";
@@ -29,7 +29,15 @@
     var gridinstance = new WebGrid(productinfo, rowsPerPage: 5);
 }
 
-@section banner {<h1>@Page.Title</h1>}
+@section banner {
+    <div class="row">
+        <div class="col-4">
+        </div>
+        <div class="col-8 text-left">
+            <h3>@Page.Title</h3>
+        </div>
+    </div>
+}
 
 <div class="offset-1">
     <h3>Products for Category: @categoryname.CategoryName</h3>

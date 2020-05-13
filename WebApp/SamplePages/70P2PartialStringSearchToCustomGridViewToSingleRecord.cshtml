@@ -1,6 +1,6 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
-    Page.Title = string.Format("Razor - {0}", "Partial String Search To Custom Grid View To CRUD - Page 2 WebGrid Display");
+    Page.Title = string.Format("Razor - {0}", "Page 2 Partial Search To CGV To CRUD");
 
     var message = "";
     var color = "";
@@ -27,7 +27,15 @@
     var grid = new WebGrid(productinfo, rowsPerPage: 5);
 }
 
-@section banner {<h1>@Page.Title</h1>}
+@section banner {
+    <div class="row">
+        <div class="col-4">
+        </div>
+        <div class="col-8 text-left">
+            <h3>@Page.Title</h3>
+        </div>
+    </div>
+}
 
 <div class="offset-1">
     <div class="col-11">
@@ -36,13 +44,13 @@
         lastText: "Last",
         firstText: "First",
         columns: grid.Columns(
-            grid.Column(header: "", 
+            grid.Column(header: "",
             format: @<text><a href="~/SamplePages/70P3PartialStringSearchToCustomGridViewToSingleRecord.cshtml?pid=@item.ProductID">Edit</a></text>),
-            grid.Column(columnName: "ProductID", header: "Product ID"),
-            grid.Column(columnName: "ProductName", header: "Product Name"),
-            grid.Column(columnName: "CategoryID", header: "Category ID"),
-            grid.Column(columnName: "UnitPrice", header: "Unit Price"),
-            grid.Column(columnName: "Discontinued", header: "Discontinued")));
+grid.Column(columnName: "ProductID", header: "Product ID"),
+grid.Column(columnName: "ProductName", header: "Product Name"),
+grid.Column(columnName: "CategoryID", header: "Category ID"),
+grid.Column(columnName: "UnitPrice", header: "Unit Price"),
+grid.Column(columnName: "Discontinued", header: "Discontinued")));
     </div>
 </div>
 <br />

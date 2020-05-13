@@ -1,7 +1,7 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
-    Page.Title = string.Format("Razor - {0}", 
-        "Exercise 04 Page 01 Partial String Search To Dropdown To CRUD ADD/UPDATE/DELETE");
+    Page.Title = string.Format("Razor - {0}",
+        "Ex04 Page 01");
 
     var message = "";
     var color = "";
@@ -13,7 +13,13 @@
 }
 
 @section banner {
-    <h1>@Page.Title</h1>
+    <div class="row">
+        <div class="col-4">
+        </div>
+        <div class="col-8 text-left">
+            <h3>@Page.Title</h3>
+        </div>
+    </div>
 }
 
 @if (!IsPost) // NO Buttons Pressed

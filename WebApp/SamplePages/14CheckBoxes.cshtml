@@ -1,6 +1,6 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
-    Page.Title = string.Format("Razor - {0}", "Form with Check Boxes");
+    Page.Title = string.Format("Razor - {0}", "Check Boxes");
 
     string choices = "";
     var thebutton = "";
@@ -8,7 +8,15 @@
     var color = "";
 }
 
-@section banner {<h1>@Page.Title</h1>}
+@section banner {
+    <div class="row">
+        <div class="col-4">
+        </div>
+        <div class="col-8 text-left">
+            <h3>@Page.Title</h3>
+        </div>
+    </div>
+}
 
 @if (!IsPost) // NO Buttons Pressed
 {
@@ -36,10 +44,11 @@ else // Buttons Pressed
         }
         else
         {
+            message += "Your Choices: ";
             var choicesarray = choices.Split(',');
             for (int i = 0; i < choicesarray.Length; i++)
             {
-                message += "Choice " + i + ": " + @choicesarray[i] + ". ";
+                message += @choicesarray[i] + ", ";
                 color = "color:green";
             }
             //for a checkbox list, your choices will be a set of strings
@@ -52,8 +61,10 @@ else // Buttons Pressed
 
 <form id="theform" method="post">
     <div class="row">
-        <div class="offset-1">
-            <label id="lblGameGroup">Select you favourite gaming platforms:</label><br />
+        <div class="col-4 text-right">
+            <label id="lblGameGroup">Select you favourite gaming platforms:</label>
+        </div>
+        <div class="col-8 text-left">
             <input type="checkbox" id="group" name="group" value="PS4"
                    @(Array.IndexOf(choices.Split(','), "PS4") >= 0 ? "checked" : "") />PS4<br />
             <input type="checkbox" id="group" name="group" value="Computer"
@@ -65,11 +76,13 @@ else // Buttons Pressed
             <input type="checkbox" id="group" name="group" value="Wii"
                    @(Array.IndexOf(choices.Split(','), "Wii") >= 0 ? "checked" : "") />Wii<br /><br />
             @*<input type="checkbox" id="group" name="group" value="Wii" checked
-                @(Array.IndexOf(choices.Split(','), "Wii") >= 0 ? "checked" : "") />Wii<br /><br />*@
+        @(Array.IndexOf(choices.Split(','), "Wii") >= 0 ? "checked" : "") />Wii<br /><br />*@
         </div>
     </div>
     <div class="row">
-        <div class="offset-1">
+        <div class="col-4">
+        </div>
+        <div class="col-8 text-left">
             <button type="submit" id="theButton" name="theButton"
                     value="submit" class="btn btn-light">
                 Submit
@@ -83,7 +96,9 @@ else // Buttons Pressed
 </form>
 <br />
 <div class="row">
-    <div class="offset-1 text-center">
+    <div class="col-4">
+    </div>
+    <div class="col-8 text-left">
         <p style=@color>
             @message
         </p>

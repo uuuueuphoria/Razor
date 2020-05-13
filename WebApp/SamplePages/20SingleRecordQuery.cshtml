@@ -18,10 +18,18 @@
     //this page will access the database when the submit button is pressed
     //the project needs access to 2 more NuGet packages
     //Microsoft.Aspnet.WebPages.Data
-    //Microsoft.Aspnet.Webpages.WebData    
+    //Microsoft.Aspnet.Webpages.WebData
 }
 
-@section banner {<h1>@Page.Title</h1>}
+@section banner {
+    <div class="row">
+        <div class="col-4">
+        </div>
+        <div class="col-8 text-left">
+            <h3>@Page.Title</h3>
+        </div>
+    </div>
+}
 
 @if (!IsPost) // NO Buttons Pressed
 {

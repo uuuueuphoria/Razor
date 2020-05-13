@@ -1,6 +1,6 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
-    Page.Title = string.Format("Razor - {0}", "Partial String Search To Custom Grid View To CRUD - Page 3 Add/Update/Delete with Validation");
+    Page.Title = string.Format("Razor - {0}", "Page 3 Partial Search To CGV To CRUD");
 
     var pid = Request.QueryString["pid"];
     if (pid.IsEmpty())
@@ -29,7 +29,15 @@
     var queryCategories = db.Query(categoryStatement);
 }
 
-@section banner{<h1>@Page.Title</h1>}
+@section banner {
+    <div class="row">
+        <div class="col-4">
+        </div>
+        <div class="col-8 text-left">
+            <h3>@Page.Title</h3>
+        </div>
+    </div>
+}
 
 @if (!IsPost) // NO Buttons Pressed
 {
@@ -322,10 +330,10 @@ else // Buttons Pressed
         }
     </script>
 </form>
-<br/>
+<br />
 <div class="row">
-     <div class="col-4">
-     </div>
+    <div class="col-4">
+    </div>
     <div class="col-8 text-left">
         <p style=@color>
             @message

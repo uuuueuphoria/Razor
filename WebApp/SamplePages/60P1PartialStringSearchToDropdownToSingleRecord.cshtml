@@ -1,6 +1,6 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
-    Page.Title = string.Format("Razor - {0}", "Partial String Search To Dropdown To CRUD - Page 1 Search/Dropdown (Ex04)");
+    Page.Title = string.Format("Razor - {0}", "Page 1 Partial Search To Dropdown To CRUD (Ex04)");
 
     var message = "";
     var color = "";
@@ -10,7 +10,15 @@
     IEnumerable<dynamic> partialstringresults = null;
 }
 
-@section banner {<h1>@Page.Title</h1>}
+@section banner {
+    <div class="row">
+        <div class="col-4">
+        </div>
+        <div class="col-8 text-left">
+            <h3>@Page.Title</h3>
+        </div>
+    </div>
+}
 
 @if (!IsPost) // NO Buttons Pressed
 {

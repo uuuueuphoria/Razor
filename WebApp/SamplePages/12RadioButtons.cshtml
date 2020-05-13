@@ -1,6 +1,6 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
-    Page.Title = string.Format("Razor - {0}", "Form with Radio Buttons");
+    Page.Title = string.Format("Razor - {0}", "Radio Buttons");
 
     //if you need to have a variable for the entire page
     //  that variable needs to be declared at a global level
@@ -11,7 +11,15 @@
     var color = "";
 }
 
-@section banner {<h1>@Page.Title</h1>}
+@section banner {
+    <div class="row">
+        <div class="col-4">
+        </div>
+        <div class="col-8 text-left">
+            <h3>@Page.Title</h3>
+        </div>
+    </div>
+}
 
 @if (!IsPost) // NO Buttons Pressed
 {
@@ -74,8 +82,10 @@ else // Buttons Pressed
 
 <form id="theform" method="post">
     <div class="row">
-        <div class="offset-1">
-            <label id="lblLanguageGroup">Select you favourite programming language:</label><br />
+        <div class="col-4 text-right">
+            <label id="lblLanguageGroup">Select a programming language:</label>
+        </div>
+        <div class="col-8 text-left">
             <input type="radio" id="LanguageGroup" name="LanguageGroup" value="C#"
                    checked="@(languagegroup.Equals("C#")?true:false)" />C#<br />
             <input type="radio" id="LanguageGroup" name="LanguageGroup" value="VisualBasic"
@@ -86,7 +96,11 @@ else // Buttons Pressed
                    checked="@(languagegroup.Equals("Cobol")?true:false)" />Cobol<br />
             <input type="radio" id="LanguageGroup" name="LanguageGroup" value="ObjectiveC"
                    checked="@(languagegroup.Equals("ObjectiveC")?true:false)" />ObjectiveC<br /><br />
-            <label id="lblScriptGroup">Select you favourite scripting language:</label><br />
+        </div>
+        <div class="col-4 text-right">
+            <label id="lblScriptGroup">Select a scripting language:</label>
+        </div>
+        <div class="col-8 text-left">
             <input type="radio" id="ScriptGroup" name="ScriptGroup" value="Javascript"
                    checked="@(scriptgroup.Equals("Javascript")?true:false)" />Javascript<br />
             <input type="radio" id="ScriptGroup" name="ScriptGroup" value="Razor"
@@ -96,7 +110,9 @@ else // Buttons Pressed
         </div>
     </div>
     <div class="row">
-        <div class="offset-1">
+        <div class="col-4">
+        </div>
+        <div class="col-8 text-left">
             <button type="submit" id="theButton" name="theButton"
                     value="submit" class="btn btn-light">
                 Submit
@@ -110,7 +126,9 @@ else // Buttons Pressed
 </form>
 <br />
 <div class="row">
-    <div class="offset-1 text-center">
+    <div class="col-4">
+    </div>
+    <div class="col-8 text-left">
         <p style=@color>
             @message
         </p>

@@ -1,6 +1,6 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
-    Page.Title = string.Format("Razor - {0}", "CRUD - Insert with Validation (Ex03)");
+    Page.Title = string.Format("Razor - {0}", "CRUD - Add with Validation (Ex03)");
 
     var message = "";
     var color = "";
@@ -21,11 +21,19 @@
     var categorylist = db.Query(categoryquery);
 }
 
-@section banner{<h1>@Page.Title</h1>}
+@section banner {
+    <div class="row">
+        <div class="col-4">
+        </div>
+        <div class="col-8 text-left">
+            <h3>@Page.Title</h3>
+        </div>
+    </div>
+}
 
 @if (!IsPost) // NO Buttons Pressed
 {
-    
+
 }
 else // Buttons Pressed
 {

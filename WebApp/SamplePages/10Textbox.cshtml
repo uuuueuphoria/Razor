@@ -1,6 +1,6 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
-    Page.Title = string.Format("Razor - {0}", "Form with Text Box");
+    Page.Title = string.Format("Razor - {0}", "Text Box");
 
     var myname = "";
     var thebutton = "";
@@ -8,7 +8,15 @@
     var color = "";
 }
 
-@section banner {<h1>@Page.Title</h1>}
+@section banner {
+    <div class="row">
+        <div class="col-4">
+        </div>
+        <div class="col-8 text-left">
+            <h3>@Page.Title</h3>
+        </div>
+    </div>
+}
 
 @if (!IsPost) // NO Buttons Pressed
 {
@@ -49,8 +57,10 @@ else // Buttons Pressed
 
 <form id="theform" method="post">
     <div class="row">
-        <div class="offset-1">
-            <label id="label1" for="dataentry">Enter a Name:</label>&nbsp;&nbsp;
+        <div class="col-4 text-right">
+            <label id="label1" for="dataentry">Enter a Name:</label>
+        </div>
+        <div class="col-8 text-left">
             <input type="text" id="dataentry" name="dataentry" value="@myname" />
             <br /><br />
             <button type="submit" id="theButton" name="theButton"
@@ -66,7 +76,9 @@ else // Buttons Pressed
 </form>
 <br />
 <div class="row">
-    <div class="offset-1 text-center">
+    <div class="col-4">
+    </div>
+    <div class="col-8 text-left">
         <p style=@color>
             @message
         </p>
