@@ -20,6 +20,7 @@
 
 @if (!IsPost) // NO Buttons Pressed
 {
+    choices = "";
     message = "IsPost = false";
     color = "color:green";
 }
@@ -27,17 +28,17 @@ else // Buttons Pressed
 {
     if (thebutton.Equals("reset"))
     {
+        choices = "";
         message = "Reset button pressed";
         color = "color:green";
-        choices = "";
     }
     else if (thebutton.Equals("submit"))
     {
         if (choices.IsEmpty())
         {
+            choices = "";
             message = "You don't like to play games? ";
             color = "color:firebrick";
-            choices = "";
         }
         else
         {
