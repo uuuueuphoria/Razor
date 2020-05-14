@@ -2,10 +2,10 @@
     Layout = "~/_Layout.cshtml";
     Page.Title = string.Format("Razor - {0}", "Check Boxes");
 
-    string choices = "";
-    var thebutton = "";
     var message = "";
     var color = "";
+    var choices = Request.Form["group"];
+    var thebutton = Request.Form["theButton"];
 }
 
 @section banner {
@@ -25,9 +25,6 @@
 }
 else // Buttons Pressed
 {
-    choices = Request.Form["group"];
-    thebutton = Request.Form["theButton"];
-
     if (thebutton.Equals("reset"))
     {
         message = "Reset button pressed";
@@ -86,7 +83,7 @@ else // Buttons Pressed
             <button type="submit" id="theButton" name="theButton"
                     value="submit" class="btn btn-light">
                 Submit
-            </button>&nbsp;&nbsp;
+            </button>&nbsp;
             <button type="submit" id="theButton" name="theButton"
                     value="reset" class="btn btn-light">
                 Reset

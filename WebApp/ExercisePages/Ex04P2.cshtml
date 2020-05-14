@@ -6,11 +6,12 @@
 
     var message = "";
     var color = "";
-    var albumid = "";
-    var albumtitle = "";
-    var artistid = "0";
-    var releaseyear = "";
-    var releaselabel = "";
+    var albumid = Request.Form["AlbumID"];
+    var albumtitle = Request.Form["AlbumTitle"];
+    var artistid = Request.Form["ArtistList"];
+    var releaseyear = Request.Form["ReleaseYear"];
+    var releaselabel = Request.Form["ReleaseLabel"];
+    var thebutton = Request.Form["theButton"];
     bool updateDeleteEnabled = true;
 
     var aid = Request.QueryString["aid"];
@@ -38,7 +39,6 @@
 
 @if (!IsPost) // NO Buttons Pressed
 {
-    albumid = aid;
     var albumquery = "SELECT AlbumID, Title, ArtistID, ReleaseYear, ReleaseLabel "
         + "FROM Albums "
         + "WHERE AlbumID = @0 "
@@ -62,12 +62,6 @@ else // Buttons Pressed
 {
     try
     {
-        albumid = Request.Form["AlbumID"];
-        albumtitle = Request.Form["AlbumTitle"];
-        artistid = Request.Form["ArtistList"];
-        releaseyear = Request.Form["ReleaseYear"];
-        releaselabel = Request.Form["ReleaseLabel"];
-        var thebutton = Request.Form["theButton"];
         if (thebutton.Equals("back"))
         {
             Response.Redirect("Ex04P1.cshtml");

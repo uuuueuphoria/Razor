@@ -2,13 +2,11 @@
     Layout = "~/_Layout.cshtml";
     Page.Title = string.Format("Razor - {0}", "Radio Buttons");
 
-    //if you need to have a variable for the entire page
-    //  that variable needs to be declared at a global level
-    var languagegroup = "";
-    var scriptgroup = "";
-    var thebutton = "";
     var message = "";
     var color = "";
+    var languagegroup = Request.Form["LanguageGroup"];
+    var scriptgroup = Request.Form["ScriptGroup"];
+    var thebutton = Request.Form["theButton"];
 }
 
 @section banner {
@@ -28,10 +26,6 @@
 }
 else // Buttons Pressed
 {
-    languagegroup = Request.Form["LanguageGroup"];
-    scriptgroup = Request.Form["ScriptGroup"];
-    thebutton = Request.Form["theButton"];
-
     if (thebutton.Equals("reset"))
     {
         languagegroup = "";
@@ -116,7 +110,7 @@ else // Buttons Pressed
             <button type="submit" id="theButton" name="theButton"
                     value="submit" class="btn btn-light">
                 Submit
-            </button>&nbsp;&nbsp;
+            </button>&nbsp;
             <button type="submit" id="theButton" name="theButton"
                     value="reset" class="btn btn-light">
                 Reset

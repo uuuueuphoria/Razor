@@ -4,11 +4,13 @@
 
     var message = "";
     var color = "";
-    var productid = "";
-    var productname = "";
-    var supplierid = "0";
-    var categoryid = "0";
-    var unitprice = "";
+    var productid = Request.Form["ProductID"];
+    var productname = Request.Form["ProductName"];
+    var supplierid = Request.Form["SupplierList"];
+    var categoryid = Request.Form["CategoryList"];
+    var unitprice = Request.Form["UnitPrice"];
+    var discontinued = Request.Form["Discontinued"];
+    var thebutton = Request.Form["theButton"];
 
     var db = Database.Open("NWDB");
     var supplierquery = "SELECT SupplierID, CompanyName "
@@ -37,62 +39,64 @@
 }
 else // Buttons Pressed
 {
-    productname = Request.Form["ProductName"];
-    supplierid = Request.Form["SupplierList"];
-    categoryid = Request.Form["CategoryList"];
-    unitprice = Request.Form["UnitPrice"];
-    var thebutton = Request.Form["FormButton"];
-
-    if (thebutton.Equals("Clear")) //pressed the CLEAR button
+    try
     {
-        productid = "";
-        productname = "";
-        supplierid = "0";
-        categoryid = "0";
-        unitprice = "";
-    }
-    else //pressed the ADD button
-    {
-        if (productname == "")
+        if (thebutton.Equals("clear"))
         {
-            message = "Product Name is required";
-            color = "color:firebrick";
+            productid = "";
+            productname = "";
+            supplierid = "0";
+            categoryid = "0";
+            unitprice = "";
         }
-        else if (categoryid == "0")
+        else if (thebutton.Equals("add"))
         {
-            message = "Category is required";
-            color = "color:firebrick";
-        }
-        else if (unitprice == "")
-        {
-            message = "Unit Price is required";
-            color = "color:firebrick";
-        }
-        else
-        {
-            var inscommand = "INSERT INTO Products "
-                + "(ProductName, SupplierID, CategoryID, "
-                + "UnitPrice, "
-                + "Discontinued) "
-                + "VALUES(@0, @1, @2, @3, @4)";
-            var rowsaffected = db.Execute(inscommand, productname,
-                supplierid.Equals("0") ? null : supplierid,
-                categoryid,
-                unitprice,
-                0);
-            if (rowsaffected > 0)
+            if (productname == "")
             {
-                decimal newid = db.GetLastInsertId();
-                productid = newid.ToString();
-                message = "Record ADDED";
-                color = "color:green";
+                message = "Product Name is required";
+                color = "color:firebrick";
+            }
+            else if (categoryid == "0")
+            {
+                message = "Category is required";
+                color = "color:firebrick";
+            }
+            else if (unitprice == "")
+            {
+                message = "Unit Price is required";
+                color = "color:firebrick";
             }
             else
             {
-                message = "Record NOT found";
-                color = "color:firebrick";
+                var inscommand = "INSERT INTO Products "
+                    + "(ProductName, SupplierID, CategoryID, "
+                    + "UnitPrice, "
+                    + "Discontinued) "
+                    + "VALUES(@0, @1, @2, @3, @4)";
+                var rowsaffected = db.Execute(inscommand, productname,
+                    supplierid.Equals("0") ? null : supplierid,
+                    categoryid,
+                    unitprice,
+                    0);
+                if (rowsaffected > 0)
+                {
+                    decimal newid = db.GetLastInsertId();
+                    productid = newid.ToString();
+                    message = "Record ADDED";
+                    color = "color:green";
+                }
+                else
+                {
+                    message = "Record NOT found";
+                    color = "color:firebrick";
+                }
             }
         }
+    }
+    catch (Exception ex)
+    {
+        message = "Processing error:" + @ex.Message;
+        color = "color:firebrick";
     }
 }
 
@@ -168,10 +172,14 @@ else // Buttons Pressed
         <div class="col-4">
         </div>
         <div class="col-8 text-left">
-            <input type="submit" id="theClear" name="FormButton"
-                   class="btn btn-light" value="Clear" />&nbsp;&nbsp;
-            <input type="submit" id="theAdd" name="FormButton"
-                   class="btn btn-light" value="Add" />
+            <button type="submit" name="theButton" id="theClear" class="btn btn-light"
+                    value="clear">
+                Clear
+            </button>&nbsp;
+            <button type="submit" name="theButton" id="theAdd" class="btn btn-light"
+                    value="add">
+                Add
+            </button>
         </div>
     </div>
 </form>

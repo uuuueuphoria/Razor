@@ -4,11 +4,12 @@
 
     var message = "";
     var color = "";
-    var albumid = "";
-    var albumtitle = "";
-    var artistid = "0";
-    var releaseyear = "";
-    var releaselabel = "";
+    var albumid = Request.Form["AlbumID"];
+    var albumtitle = Request.Form["AlbumTitle"];
+    var artistid = Request.Form["ArtistList"];
+    var releaseyear = Request.Form["ReleaseYear"];
+    var releaselabel = Request.Form["ReleaseLabel"];
+    var thebutton = Request.Form["theButton"];
 
     var db = Database.Open("CHINOOKDB");
     var artistquery = "SELECT ArtistId, Name "
@@ -33,68 +34,71 @@
 }
 else // Buttons Pressed
 {
-    albumtitle = Request.Form["AlbumTitle"];
-    artistid = Request.Form["ArtistList"];
-    releaseyear = Request.Form["ReleaseYear"];
-    releaselabel = Request.Form["ReleaseLabel"];
-    var thebutton = Request.Form["FormButton"];
-
-    if (thebutton.Equals("Clear")) //pressed the CLEAR button
+    try
     {
-        albumtitle = "";
-        artistid = "0";
-        releaseyear = "";
-        releaselabel = "";
-    }
-    else //pressed the ADD button
-    {
-        if (albumtitle == "")
+        if (thebutton.Equals("clear"))
         {
-            message = "Album Title is required";
-            color = "color:firebrick";
+            albumid = "";
+            albumtitle = "";
+            artistid = "0";
+            releaseyear = "";
+            releaselabel = "";
         }
-        else if (artistid == "0")
+        else if (thebutton.Equals("add"))
         {
-            message = "Artist is required";
-            color = "color:firebrick";
-        }
-        else if (releaseyear == "")
-        {
-            message = "Release Year is required";
-            color = "color:firebrick";
-        }
-        else if (int.Parse(releaseyear) < 1950 || int.Parse(releaseyear) > DateTime.Today.Year)
-        {
-            message = "Release Year must be between 1950 and this year";
-            color = "color:firebrick";
-        }
-        else if (releaselabel == "")
-        {
-            message = "Release Label is required";
-            color = "color:firebrick";
-        }
-        else
-        {
-            var inscommand = "INSERT INTO Albums "
-                + "(Title, ArtistID, ReleaseYear, ReleaseLabel) "
-                + "VALUES(@0, @1, @2, @3)";
-            var rowsaffected = db.Execute(inscommand, albumtitle,
-                artistid,
-                int.Parse(releaseyear),
-                releaselabel);
-            if (rowsaffected > 0)
+            if (albumtitle == "")
             {
-                decimal newid = db.GetLastInsertId();
-                albumid = newid.ToString();
-                message = "Record ADDED";
-                color = "color:green";
+                message = "Album Title is required";
+                color = "color:firebrick";
+            }
+            else if (artistid == "0")
+            {
+                message = "Artist is required";
+                color = "color:firebrick";
+            }
+            else if (releaseyear == "")
+            {
+                message = "Release Year is required";
+                color = "color:firebrick";
+            }
+            else if (int.Parse(releaseyear) < 1950 || int.Parse(releaseyear) > DateTime.Today.Year)
+            {
+                message = "Release Year must be between 1950 and this year";
+                color = "color:firebrick";
+            }
+            else if (releaselabel == "")
+            {
+                message = "Release Label is required";
+                color = "color:firebrick";
             }
             else
             {
-                message = "Record NOT found";
-                color = "color:firebrick";
+                var inscommand = "INSERT INTO Albums "
+                    + "(Title, ArtistID, ReleaseYear, ReleaseLabel) "
+                    + "VALUES(@0, @1, @2, @3)";
+                var rowsaffected = db.Execute(inscommand, albumtitle,
+                    artistid,
+                    int.Parse(releaseyear),
+                    releaselabel);
+                if (rowsaffected > 0)
+                {
+                    decimal newid = db.GetLastInsertId();
+                    albumid = newid.ToString();
+                    message = "Record ADDED";
+                    color = "color:green";
+                }
+                else
+                {
+                    message = "Record NOT found";
+                    color = "color:firebrick";
+                }
             }
         }
+    }
+    catch (Exception ex)
+    {
+        message = "Processing error:" + @ex.Message;
+        color = "color:firebrick";
     }
 }
 
@@ -157,10 +161,14 @@ else // Buttons Pressed
         <div class="col-4">
         </div>
         <div class="col-8 text-left">
-            <input type="submit" id="theClear" name="FormButton"
-                   class="btn btn-light" value="Clear" />&nbsp;&nbsp;
-            <input type="submit" id="theAdd" name="FormButton"
-                   class="btn btn-light" value="Add" />
+            <button type="submit" name="theButton" id="theClear" class="btn btn-light"
+                    value="clear">
+                Clear
+            </button>&nbsp;
+            <button type="submit" name="theButton" id="theAdd" class="btn btn-light"
+                    value="add">
+                Add
+            </button>
         </div>
     </div>
 </form>

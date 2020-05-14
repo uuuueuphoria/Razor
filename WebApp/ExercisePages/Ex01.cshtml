@@ -2,11 +2,11 @@
     Layout = "~/_Layout.cshtml";
     Page.Title = string.Format("Razor - {0}", "Ex01");
 
-    var myname = "";
-    string choices = "";
-    var thebutton = "";
     var message = "";
     var color = "";
+    var myname = Request.Form["dataentry"];
+    var choices = Request.Form["group"];
+    var thebutton = Request.Form["theButton"];
 }
 
 @section banner {
@@ -26,10 +26,6 @@
 }
 else // Buttons Pressed
 {
-    myname = Request.Form["dataentry"];
-    choices = Request.Form["group"];
-    thebutton = Request.Form["theButton"];
-
     if (thebutton.Equals("reset"))
     {
         message = "Reset button pressed";

@@ -4,6 +4,7 @@
 
     var message = "";
     var color = "";
+    var choice = Request.Form["CodingSamples"];
 }
 
 @section banner {
@@ -18,7 +19,6 @@
 
 @if (IsPost) // Buttons Pressed
 {
-    var choice = Request.Form["CodingSamples"];
     switch (choice.ToUpper())
     {
         case "TEXTBOX":

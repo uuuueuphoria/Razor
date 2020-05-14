@@ -4,7 +4,7 @@
 
     var message = "";
     var color = "";
-    var partialstring = "";
+    var partialstring = Request.Form["ProductSearch"];
 }
 
 @section banner {
@@ -23,7 +23,6 @@
 }
 else // Buttons Pressed
 {
-    partialstring = Request.Form["ProductSearch"];
     if (partialstring.IsEmpty())
     {
         message = "Enter a product name (or partial name).";

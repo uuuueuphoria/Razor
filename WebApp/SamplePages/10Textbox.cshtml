@@ -1,11 +1,14 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
     Page.Title = string.Format("Razor - {0}", "Text Box");
-
-    var myname = "";
-    var thebutton = "";
+    //if you need to have a variable for the entire page
+    //  that variable needs to be declared at a global level
     var message = "";
     var color = "";
+    //to access a control of your page use: Request.Form["control parameter name"]
+    //the data returned comes in as a STRING
+    var myname = Request.Form["dataentry"];
+    var thebutton = Request.Form["theButton"];
 }
 
 @section banner {
@@ -25,11 +28,6 @@
 }
 else // Buttons Pressed
 {
-    //to access a control of your page use: Request.Form["control parameter name"]
-    //the data returned comes in as a STRING
-    myname = Request.Form["dataentry"];
-    thebutton = Request.Form["theButton"];
-
     //IF you have multiple buttons on your form, you SHOULD
     //determine which button was pressed; thus; dictating WHICH
     //logic is to be EXECUTED
@@ -66,7 +64,7 @@ else // Buttons Pressed
             <button type="submit" id="theButton" name="theButton"
                     value="submit" class="btn btn-light">
                 Submit
-            </button>&nbsp;&nbsp;
+            </button>&nbsp;
             <button type="submit" id="theButton" name="theButton"
                     value="reset" class="btn btn-light">
                 Reset
