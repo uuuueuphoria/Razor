@@ -1,18 +1,8 @@
 ﻿@{
     Layout = "~/_Layout.cshtml";
-    Page.Title = string.Format("Razor - {0}", "Page 1 InClass02");
+    Page.Title = string.Format("Razor - {0}", "InClass02 Page01");
 
-    var message = "";
-    var color = "";
-    var choice = Request.Form["List"];
-
-    var db = Database.Open("ACTIVITYDB");
-    var querystatement = "Select StudentId, "
-        + "StudentName, "
-        + "Credits "
-        + "From Student "
-        + "Order By StudentName";
-    var queryrecords = db.Query(querystatement);
+    
 }
 
 @section banner {
@@ -24,64 +14,3 @@
         </div>
     </div>
 }
-
-@if (!IsPost) // NO Buttons Pressed
-{
-    if (queryrecords.Count() == 0)
-    {
-        message = "There are no records on file.";
-        color = "color:firebrick";
-    }
-}
-else // Submit Button Pressed
-{
-    if (choice.Equals("0"))
-    {
-        message = "Select a Student.";
-        color = "color:firebrick";
-    }
-    else
-    {
-        Response.Redirect("Inclass02P2.cshtml?sid=" + choice);
-    }
-}
-
-<form id="theform" method="post">
-    <div class="row">
-        <div class="col-4 text-right">
-            <label class="label" for="List">Student:</label>&nbsp;&nbsp;
-        </div>
-        <div class="col-8 text-left">
-            <select id="List" name="List">
-                <option value="0">select ...</option>
-                @foreach (var item in queryrecords)
-                {
-                    if (choice == item.StudentID.ToString())
-                    {
-                        <option value="@item.StudentID" selected>@item.StudentName</option>
-                    }
-                    else
-                    {
-                        <option value="@item.StudentID">@item.StudentName</option>
-                    }
-                }
-            </select>&nbsp;&nbsp;
-            <button type="submit" id="theButton" name="theButton" value="submit"
-                    class="btn btn-light">
-                Fetch
-            </button>
-        </div>
-    </div>
-    <br />
-    <div class="row">
-        <div class="col-4">
-        </div>
-        <div class="col-8 text-left">
-            <p style=@color>
-                @message
-            </p>
-        </div>
-    </div>
-</form>
-
-

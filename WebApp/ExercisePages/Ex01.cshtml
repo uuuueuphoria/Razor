@@ -2,11 +2,7 @@
     Layout = "~/_Layout.cshtml";
     Page.Title = string.Format("Razor - {0}", "Ex01");
 
-    var message = "";
-    var color = "";
-    var myname = Request.Form["dataentry"];
-    var choices = Request.Form["group"];
-    var thebutton = Request.Form["theButton"];
+    
 }
 
 @section banner {
@@ -18,99 +14,3 @@
         </div>
     </div>    
 }
-
-@if (!IsPost) // NO Buttons Pressed
-{
-    message = "IsPost = false";
-    color = "color:green";
-    choices = "";
-}
-else // Buttons Pressed
-{
-    if (thebutton.Equals("reset"))
-    {
-        message = "Reset button pressed";
-        color = "color:green";
-        myname = "";
-        choices = "";
-    }
-    else if (thebutton.Equals("submit"))
-    {
-        if (string.IsNullOrEmpty(myname))
-        {
-            message = "Please enter a name. ";
-            color = "color:firebrick";
-        }
-        if (choices.IsEmpty())
-        {
-            message += "Please enter a meal item. ";
-            color = "color:firebrick";
-            choices = "";
-        }
-        if ((!string.IsNullOrEmpty(myname)) && (!choices.IsEmpty()))
-        {
-            message += "Customer Name: " + @myname + ". ";
-            color = "color:green";
-        }
-        if ((!string.IsNullOrEmpty(myname)) && (!choices.IsEmpty()))
-        {
-            message += "Menu Items: ";
-            var choicesarray = choices.Split(',');
-            for (int i = 0; i < choicesarray.Length; i++)
-            {
-                message += @choicesarray[i] + ", ";
-                color = "color:green";
-            }
-        }
-    }
-}
-
-<form id="theform" method="post">
-    <div class="row">
-        <div class="col-4 text-right">
-            <label id="label1" for="dataentry">Customer Name:</label>
-        </div>
-        <div class="col-8 text-left">
-            <input type="text" id="dataentry" name="dataentry" value="@myname" />
-        </div>
-    </div>
-    <br />
-    <div class="row">
-        <div class="col-4 text-right">
-            <label id="lblGroup">Menu Items:</label><br />
-        </div>
-        <div class="col-8 text-left">
-            <input type="checkbox" id="group" name="group" value="Steak"
-                   @(Array.IndexOf(choices.Split(','), "Steak") >= 0 ? "checked" : "") />Steak<br />
-            <input type="checkbox" id="group" name="group" value="Seafood"
-                   @(Array.IndexOf(choices.Split(','), "Seafood") >= 0 ? "checked" : "") />Seafood<br />
-            <input type="checkbox" id="group" name="group" value="Vegetables"
-                   @(Array.IndexOf(choices.Split(','), "Vegetables") >= 0 ? "checked" : "") />Vegetables<br />
-        </div>
-    </div>
-    <br />
-    <div class="row">
-        <div class="col-4 text-right">
-        </div>
-        <div class="col-8 text-left">
-            <button type="submit" id="theButton" name="theButton"
-                    value="submit" class="btn btn-light">
-                Submit
-            </button>&nbsp;&nbsp;
-            <button type="submit" id="theButton" name="theButton"
-                    value="reset" class="btn btn-light">
-                Reset
-            </button>
-        </div>
-    </div>
-</form>
-<br />
-<div class="row">
-    <div class="col-4">
-    </div>
-    <div class="col-8 text-left">
-        <p style=@color>
-            @message
-        </p>
-    </div>
-</div>
